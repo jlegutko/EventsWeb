@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.user_list'|trans({'%id%': user.id}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.user_list'|trans({'%id%': user.id}) }}</h1>
+    {% if user is defined and user|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.id'|trans }}</dt>
+            <dd>{{ user.id }}</dd>
+            <dt>{{ 'label.created_at'|trans }}</dt>
+            <dd>{{ user.createdAt|localizeddate }}</dd>
+            <dt>{{ 'label.updated_at'|trans }}</dt>
+            <dd>{{ user.updatedAt|localizeddate }}</dd>
+            <dt>{{ 'label.email'|trans }}</dt>
+            <dd>{{  user.email }}</dd>
+            <dt>{{ 'label.Firstname'|trans }}</dt>
+            <dd>{{  user.Firstname }}</dd>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}
