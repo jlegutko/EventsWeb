@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Category
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -24,6 +26,16 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="category", orphanRemoval=true)
      */
     private $event;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $updatedAt;
     public function __construct()
     {
         $this->event = new ArrayCollection();
@@ -65,6 +77,30 @@ class Category
                 $event->setCategory(null);
             }
         }
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
         return $this;
     }
 }

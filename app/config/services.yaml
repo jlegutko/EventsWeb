@@ -28,4 +28,15 @@ services:
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+# please note that last definitions always *replace* previous ones
+    # ...
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%photos_directory%'
+    # ...
+    # ...
+    App\EventListener\PhotoUploadListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+# ...

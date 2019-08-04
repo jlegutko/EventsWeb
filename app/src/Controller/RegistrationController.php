@@ -3,8 +3,10 @@
  * Registration controller.
  */
 namespace App\Controller;
+
 use App\Entity\User;
 use App\Form\UserType;
+use App\Form\ChangePasswordType;
 use App\Repository\UserRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
@@ -17,6 +19,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\OptimisticLockException;
 use \Exception;
+
 /**
  * Class RegistrationController.
  */
@@ -31,7 +34,7 @@ class RegistrationController extends AbstractController
      *
      * @return Response HTTP response
      *
-     * @Route(
+     * @Route (
      *     "/users",
      *     name="user_index",
      * )
@@ -43,6 +46,7 @@ class RegistrationController extends AbstractController
             $request->query->getInt('page', 1),
             User::NUMBER_OF_ITEMS
         );
+
         return $this->render(
             'registration/index.html.twig',
             ['pagination' => $pagination]
@@ -101,8 +105,10 @@ class RegistrationController extends AbstractController
             $user->setPassword($password);
             $repository->save($user);
             $this->addFlash('success', 'message.created_successfully');
+
             return $this->redirectToRoute('user_index');
         }
+
         return $this->render(
             'registration/new.html.twig',
             ['form' => $form->createView()]
@@ -134,8 +140,10 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($user);
             $this->addFlash('success', 'message.updated_successfully');
+
             return $this->redirectToRoute('user_index');
         }
+
         return $this->render(
             'registration/edit.html.twig',
             [
@@ -144,18 +152,19 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+
     /**
      * Change password action.
      *
-     * @param Request        $request    HTTP request
-     * @param User           $user       User entity
+     * @param Request $request HTTP request
+     * @param User $user User entity
      * @param UserRepository $repository User repository
      *
+     * @param UserPasswordEncoderInterface $passwordEncoder
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
-     *
      * @Route(
      *     "/users/{id}/change_pswd",
      *     methods={"GET", "PUT"},
@@ -163,27 +172,29 @@ class RegistrationController extends AbstractController
      *     name="user_change_pswd",
      * )
      */
-//    public function change_pswd(Request $request, User $user, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
-//    {
-//        $form = $this->createForm(ChangePasswordType::class, $user, ['method' => 'put']);
-//        $form->handleRequest($request);
-//        if ($form->isSubmitted() && $form->isValid()) {
-//            $user->setUpdatedAt(new DateTime());
-//            $password = $user->getPassword();
-//            $password = $passwordEncoder->encodePassword($user, $password);
-//            $user->setPassword($password);
-//            $repository->save($user);
-//            $this->addFlash('success', 'message.updated_successfully');
-//            return $this->redirectToRoute('dashboard');
-//        }
-//        return $this->render(
-//            'user/change_pswd.html.twig',
-//            [
-//                'form' => $form->createView(),
-//                'user' => $user,
-//            ]
-//        );
-//    }
+    public function changePswd(Request $request, User $user, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
+    {
+        $form = $this->createForm(ChangePasswordType::class, $user, ['method' => 'put']);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user->setUpdatedAt(new DateTime());
+            $password = $user->getPassword();
+            $password = $passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($password);
+            $repository->save($user);
+            $this->addFlash('success', 'message.updated_successfully');
+
+            return $this->redirectToRoute('dashboard');
+        }
+
+        return $this->render(
+            'registration/change_pswd.html.twig',
+            [
+                'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
     /**
      * Delete action.
      *
@@ -213,8 +224,10 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->delete($user);
             $this->addFlash('success', 'message.deleted_successfully');
+
             return $this->redirectToRoute('user_index');
         }
+
         return $this->render(
             'registration/delete.html.twig',
             [

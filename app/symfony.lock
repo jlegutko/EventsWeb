@@ -114,8 +114,14 @@
     "knplabs/knp-components": {
         "version": "v1.3.10"
     },
+    "knplabs/knp-markdown-bundle": {
+        "version": "1.7.1"
+    },
     "knplabs/knp-paginator-bundle": {
         "version": "v3.0.0"
+    },
+    "michelf/php-markdown": {
+        "version": "1.8.0"
     },
     "nikic/php-parser": {
         "version": "v4.2.2"
@@ -146,6 +152,18 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "sensio/framework-extra-bundle": {
+        "version": "5.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        },
+        "files": [
+            "config/packages/sensio_framework_extra.yaml"
+        ]
     },
     "sensiolabs/security-checker": {
         "version": "4.0",
