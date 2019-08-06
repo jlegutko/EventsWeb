@@ -398,11 +398,18 @@ class Event
         return $this;
     }
 
+    /**
+     * @return Photo|null
+     */
     public function getPhoto(): ?Photo
     {
         return $this->photo;
     }
 
+    /**
+     * @param Photo $photo
+     * @return Event
+     */
     public function setPhoto(Photo $photo): self
     {
         $this->photo = $photo;

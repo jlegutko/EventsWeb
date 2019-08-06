@@ -61,7 +61,7 @@ class PhotoController extends AbstractController
             $repository->save($photo);
             $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render(

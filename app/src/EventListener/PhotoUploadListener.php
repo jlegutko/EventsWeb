@@ -63,6 +63,29 @@ class PhotoUploadListener
     }
 
     /**
+     * Post load.
+     *
+     * @param \Doctrine\ORM\Event\LifecycleEventArgs $args Event args
+     *
+     * @throws \Exception
+     */
+    public function postLoad(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+
+        if (!$entity instanceof Photo) {
+            return;
+        }
+
+        if ($fileName = $entity->getFile()) {
+            $entity->setFile(
+                new File(
+                    $this->uploaderService->getTargetDirectory().'/'.$fileName
+                )
+            );
+        }
+    }
+    /**
      * Upload file.
      *
      * @param \App\Entity\Photo $entity Photo entity
