@@ -249,4 +249,51 @@ class EventController extends AbstractController
             ]
         );
     }
+    /**
+     * Add a new grade action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param Event  $event
+     * @param GradeRepository $repository EventRepository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "event/{id}/newgrade",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_grade",
+     * )
+     */
+    public function newGrade(Request $request, Event $event, GradeRepository $repository): Response
+    {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $grade = new Grade();
+        $form = $this->createForm(GradeType::class, $grade);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $grade->setCreatedAt(new DateTime());
+            $grade->setUpdatedAt(new DateTime());
+            $grade->setUser($this->getUser());
+            $grade->setEvent($event);
+            $repository->save($grade);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_grade.html.twig',
+            ['form' => $form->createView(),
+                'event' => $event,
+            ]
+        );
+    }
 }
