@@ -15,6 +15,7 @@ use App\Form\GradeType;
 use App\Repository\EventRepository;
 use App\Repository\CommentRepository;
 use App\Repository\GradeRepository;
+use App\Repository\InterestRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -207,7 +208,7 @@ class EventController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param Event  $event
-     * @param CommentRepository $repository EventRepository
+     * @param CommentRepository $repository Event Repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -254,7 +255,7 @@ class EventController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param Event  $event
-     * @param GradeRepository $repository EventRepository
+     * @param GradeRepository $repository Event Repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -295,5 +296,45 @@ class EventController extends AbstractController
                 'event' => $event,
             ]
         );
+    }
+    /**
+     * Interest action.
+     *
+     * @param Event $event
+     * @param InterestRepository $repository Event Repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "event/{id}/interest",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_interest",
+     * )
+     */
+    public function interest(Event $event, InterestRepository $repository): Response
+    {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+
+        $check = $repository -> findOneBy(['author' => $this->getUser(), 'event' => $event]);
+        if ($check instanceof Interest) {
+            $repository->delete($check);
+
+            $this->addFlash('success', 'message.uninterested');
+        } else {
+            $interest = new Interest();
+            $interest->setUser($this->getUser());
+            $interest->setEvent($event);
+            $repository->save($interest);
+
+            $this -> addFlash('success', 'message.voted_successfully');
+        }
+
+        return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
     }
 }
