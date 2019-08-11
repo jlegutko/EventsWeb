@@ -6,6 +6,8 @@
 namespace App\Repository;
 
 use App\Entity\Interest;
+use App\Entity\User;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -42,7 +44,47 @@ class InterestRepository extends ServiceEntityRepository
         return $this->getOrCreateQueryBuilder()
             ->orderBy('t.updatedAt', 'DESC');
     }
+    /**
+     * Query interests by owner.
+     *
+     * @param User|null $user User Entity
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryByOwner(User $user = null): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
 
+        if (!is_null($user)) {
+            $queryBuilder->andWhere('i.author= :author')
+                -> setParameter('author', $user);
+        }
+
+        return $queryBuilder;
+    }
+    /**
+     *Query interests by owner and event.
+     *
+     * @param User $user User Entity
+     * @param Event|null $event
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryByOwnerAndEvent(User $user = null, Event $event = null): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        if (!is_null($user)) {
+            $queryBuilder->andWhere('i.author= :author')
+                -> setParameter('author', $user);
+        }
+        if (!is_null($event)) {
+            $queryBuilder->andWhere('i.event= :event')
+                -> setParameter('event', $event);
+        }
+
+        return $queryBuilder;
+    }
     /**
      * Save record.
      *
