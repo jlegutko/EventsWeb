@@ -1,0 +1,7 @@
+{% include 'default/_form.html.twig' with {
+    page_title:'title.event_add_comment',
+    attr: {
+        method: 'POST',
+        action: url('event_new_comment', {'id':event.id}),
+    },
+} %}

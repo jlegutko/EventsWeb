@@ -9,13 +9,16 @@ use App\Entity\Event;
 use App\Entity\Comment;
 use App\Entity\Grade;
 use App\Entity\Interest;
+use App\Entity\Photo;
 use App\Form\EventType;
 use App\Form\CommentType;
 use App\Form\GradeType;
+use App\Form\PhotoType;
 use App\Repository\EventRepository;
 use App\Repository\CommentRepository;
 use App\Repository\GradeRepository;
 use App\Repository\InterestRepository;
+use App\Repository\PhotoRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -336,5 +339,46 @@ class EventController extends AbstractController
         }
 
         return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+    }
+    /**
+     * Add a new photo action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param Event  $event
+     * @param PhotoRepository $repository Event Repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "event/{id}/newphoto",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_photo",
+     * )
+     */
+    public function newPhoto(Request $request, Event $event, PhotoRepository $repository): Response
+    {
+        $photo = new Photo();
+        $form = $this->createForm(PhotoType::class, $photo);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo->setEvent($event);
+            $repository->save($photo);
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view');
+        }
+
+        return $this->render(
+            'event/new_photo.html.twig',
+
+            ['form' => $form->createView(),
+             'event' => $event,
+            ]
+        );
     }
 }

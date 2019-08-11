@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.grade_list'|trans({'%id%': grade.id}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.grade_list'|trans({'%id%': grade.id}) }}</h1>
+    {% if grade is defined and grade|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.grade_id'|trans }}</dt>
+            <dd>{{ grade.id }}</dd>
+            <dt>{{ 'label.grade_name'|trans }}</dt>
+            <dd>{{  grade.title }}</dd>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

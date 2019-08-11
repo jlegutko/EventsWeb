@@ -32,41 +32,4 @@ class PhotoController extends AbstractController
     {
         $this->uploaderService = $uploaderService;
     }
-
-    /**
-     * New action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\PhotoRepository           $repository Photo repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @Route(
-     *     "/new",
-     *     methods={"GET", "POST"},
-     *     name="photo_new",
-     * )
-     */
-    public function new(Request $request, PhotoRepository $repository): Response
-    {
-        $photo = new Photo();
-        $form = $this->createForm(PhotoType::class, $photo);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $photo->setEvent($this->getEvent());
-            $repository->save($photo);
-            $this->addFlash('success', 'message.created_successfully');
-
-            return $this->redirectToRoute('category_index');
-        }
-
-        return $this->render(
-            'photo/new.html.twig',
-            ['form' => $form->createView()]
-        );
-    }
 }

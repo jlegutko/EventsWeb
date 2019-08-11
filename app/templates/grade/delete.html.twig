@@ -1,0 +1,9 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.grade_delete',
+    page_title_param: {'%id%': grade.id},
+    attr: {
+        method: 'DELETE',
+        action: url('grade_delete', {'id': grade.id}),
+    },
+    back_to_list_path: 'grade_index',
+} %}

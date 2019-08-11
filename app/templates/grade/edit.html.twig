@@ -1,0 +1,9 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.grade_edit',
+    page_title_param: {'%id%': grade.id},
+    attr: {
+        method: 'PUT',
+        action: url('grade_edit', {'id': grade.id}),
+    },
+    back_to_list_path: 'grade_index',
+} %}
