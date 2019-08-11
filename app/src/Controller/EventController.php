@@ -6,8 +6,15 @@
 namespace App\Controller;
 
 use App\Entity\Event;
+use App\Entity\Comment;
+use App\Entity\Grade;
+use App\Entity\Interest;
 use App\Form\EventType;
+use App\Form\CommentType;
+use App\Form\GradeType;
 use App\Repository\EventRepository;
+use App\Repository\CommentRepository;
+use App\Repository\GradeRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -192,6 +199,53 @@ class EventController extends AbstractController
             [
                 'form' => $form->createView(),
                 'event' => $event,
+            ]
+        );
+    }
+    /**
+     * Add a new comment action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param Event  $event
+     * @param CommentRepository $repository EventRepository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "event/{id}/newcomment",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_comment",
+     * )
+     */
+    public function newComment(Request $request, Event $event, CommentRepository $repository): Response
+    {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new DateTime());
+            $comment->setUpdatedAt(new DateTime());
+            $comment->setOwner($this->getUser());
+            $comment->setEvent($event);
+            $repository->save($comment);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_comment.html.twig',
+            ['form' => $form->createView(),
+             'event' => $event,
             ]
         );
     }

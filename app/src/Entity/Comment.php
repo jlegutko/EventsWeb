@@ -95,10 +95,19 @@ class Comment
         $this->owner = $owner;
         return $this;
     }
+
+    /**
+     * @return Event|null
+     */
     public function getEvent(): ?Event
     {
         return $this->event;
     }
+
+    /**
+     * @param Event|null $event
+     * @return Comment
+     */
     public function setEvent(?Event $event): self
     {
         $this->event = $event;

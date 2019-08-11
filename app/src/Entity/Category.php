@@ -23,11 +23,6 @@ class Category
      */
     private $name;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="category", orphanRemoval=true)
-     */
-    private $event;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -36,9 +31,15 @@ class Category
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="category", orphanRemoval=true)
+     */
+    private $events;
     public function __construct()
     {
         $this->event = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -102,5 +103,13 @@ class Category
         $this->updatedAt = $updatedAt;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
     }
 }

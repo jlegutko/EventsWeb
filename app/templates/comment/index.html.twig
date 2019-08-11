@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.event_list'|trans }}
+    {{ 'title.comment_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.event_list'|trans }}</h1>
+    <h1>{{ 'title.comment_list'|trans }}</h1>
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
@@ -15,17 +15,17 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.event_id'|trans, 'u.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.event_name'|trans, 'u.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.comment_id'|trans, 'u.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.comment_name'|trans, 'u.name') }}</th>
             </tr>
             </thead>
             <tbody>
-            {% for event in pagination %}
+            {% for comment in pagination %}
                 <tr>
-                    <td>{{ event.id }}</td>
-                    <td>{{ event.name }}</td>
+                    <td>{{ comment.id }}</td>
+                    <td>{{ comment.title}}</td>
                     <td>
-                        <a href="{{ url('event_view', {id: event.id}) }}" title="{{ 'action.view'|trans }}">
+                        <a href="{{ url('comment_view', {id: comment.id}) }}" title="{{ 'action.view'|trans }}">
                             {{ 'action.view'|trans }}
                         </a>
                     </td>

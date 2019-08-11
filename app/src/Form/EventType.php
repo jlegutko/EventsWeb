@@ -6,9 +6,13 @@
 namespace App\Form;
 
 use App\Entity\Event;
+use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -45,12 +49,13 @@ class EventType extends AbstractType
             [
                 'label' => 'label.event_date',
                 'required' => true,
+                'format' => 'yyyy-MM-dd',
                 'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
             'price',
-            DateType::class,
+            MoneyType::class,
             [
                 'label' => 'label.event_price',
                 'required' => true,
@@ -59,29 +64,42 @@ class EventType extends AbstractType
         );
         $builder->add(
             'is_active',
-            DateType::class,
+            IntegerType::class,
             [
-                'label' => 'label.event_price',
+                'label' => 'label.event_active',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
             'place',
-            DateType::class,
+            TextType::class,
             [
-                'label' => 'label.event_price',
+                'label' => 'label.event_place',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
             'event_size',
-            DateType::class,
+            IntegerType::class,
             [
-                'label' => 'label.event_price',
+                'label' => 'label.event_size',
                 'required' => true,
                 'attr' => ['max_length' => 255],
+            ]
+        );
+        $builder->add(
+            'category',
+            EntityType::class,
+            [
+                'class' => Category::class,
+                'choice_label' => function ($category) {
+                    return $category->getName();
+                },
+                'label' => 'label.category',
+                'placeholder' => 'label.none',
+                'required' => true,
             ]
         );
     }

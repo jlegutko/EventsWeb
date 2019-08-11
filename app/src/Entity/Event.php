@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Event
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -62,10 +63,6 @@ class Event
      */
     private $grades;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Category", mappedBy="event", orphanRemoval=true)
-     */
-    private $category;
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="event", orphanRemoval=true)
      */
     private $groups;
@@ -74,6 +71,12 @@ class Event
      * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event", cascade={"persist", "remove"})
      */
     private $photo;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="events")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
     public function __construct()
     {
         $this->comments = new ArrayCollection();
