@@ -83,6 +83,74 @@ class EventRepository extends ServiceEntityRepository
         return $queryBuilder ?: $this->createQueryBuilder('t');
     }
 
+    /**
+     * Find events with string in name.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByNamePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('t.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, t.name), t.name')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
+    /**
+     * Find events with string in date.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByDatePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('t.eventDate LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, t.eventDate), t.eventDate')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
+    /**
+     * Find events with string in size.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findBySizePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('t.eventSize LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, t.eventSize), t.eventSize')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
+    /**
+     * Find events with string in price.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByPricePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('t.price LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, t.price), t.price')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */

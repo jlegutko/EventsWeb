@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.search_results'|trans }}
+{% endblock %}
+
+{% block body %}
+<h1>{{ 'title.search_results'|trans }} <span class="search-word">{{ search }}</span></h1>
+
+<h2>{{ 'label.events'|trans }}</h2>
+<div class="search-results">
+    {% if (events_names is not defined and events_names|length and events_dates is defined and events_dates|length and
+        events_sizes is defined and events_sizes|length and events_prices is defined and events_prices|length) %}
+    <span>{{ 'label.no_results'|trans }}</span>
+    {% else %}
+        {% if events_names is defined and events_names|length %}
+            {% for event_name in events_names %}
+            <div class="event">
+                <a href="{{ url('event_view', {'id': event_name.id}) }}" title="{{ 'action.view'|trans }}">
+                    <h2 class="name">
+                        {{ event_name.name }}
+                    </h2>
+                </a>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% if events_dates is defined and events_dates|length %}
+            {% for event_date in events_dates %}
+                <div class="event">
+                    <a href="{{ url('event_view', {'id': event_date.id}) }}" title="{{ 'action.view'|trans }}">
+                        <h2 class="name">
+                            {{ event_date.name }}
+                        </h2>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if events_prices is defined and events_prices|length %}
+            {% for event_price in events_prices %}
+                <div class="event">
+                    <a href="{{ url('event_view', {'id': event_price.id}) }}" title="{{ 'action.view'|trans }}">
+                        <h2 class="name">
+                            {{ event_price.name }}
+                        </h2>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if events_sizes is defined and events_sizes|length %}
+            {% for event_size in events_sizes %}
+                <div class="event">
+                    <a href="{{ url('event_view', {'id': event_size.id}) }}" title="{{ 'action.view'|trans }}">
+                        <h2 class="name">
+                            {{ event_size.name }}
+                        </h2>
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endif %}
+</div>
+<h2>{{ 'label.users'|trans }}</h2>
+{% if users is defined and users|length %}
+<div class="search-results scrollbox">
+    {% for user in users %}
+    <div class="user">
+        <a href="{{ url('user_view', {'id': user.id}) }}" title="{{ 'action.view'|trans }}">
+            <h2 class="name">
+                {{ user.firstName }}
+            </h2>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+    <div class="search-results">
+        <span>{{ 'label.no_results'|trans }}</span>
+    </div>
+{% endif %}
+{% endblock %}

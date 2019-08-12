@@ -62,6 +62,22 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->flush($user);
     }
     /**
+     * Find events with string in size.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByUserNamePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('u.firstName LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, u.firstName), u.firstName')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+    /**
      * Get or create new query builder.
      *
      * @param QueryBuilder|null $queryBuilder Query builder

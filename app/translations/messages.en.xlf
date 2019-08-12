@@ -18,6 +18,10 @@
                 <source>action.login</source>
                 <target>Log in</target>
             </trans-unit>
+            <trans-unit id="label.events_page">
+                <source>label.events_page</source>
+                <target>Events</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

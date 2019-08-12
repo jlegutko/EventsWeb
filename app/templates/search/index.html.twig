@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<form method="post" class="search" action="{{ url('search_index')}}">
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <input autocomplete="off" class="form-control" id="search" name="search"
+                   placeholder="{{ 'label.search_placeholder'|trans }}" required="required" type="text"/>
+            <button type = "submit" title="{{ 'action.search'|trans}}>
+            </button>
+        </div>
+    </div>
+</form>
+{% endblock %}

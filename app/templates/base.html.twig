@@ -3,19 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
 {% block body %}
-    <div class="container-fluid">
-        {% for type, messages in app.session.flashBag.all %}
-            {% for message in messages %}
-                <div class="alert alert-{{ type }}" role="alert">
-                    {{ message|trans }}
-                </div>
-            {% endfor %}
-        {% endfor %}
-    </div>
+    {% include 'default/_flash_messages.html.twig' %}
+    <nav class="main_nav">
+        <ul>
+            <li class="nav_element">
+                <a href = "{{ url('event_index') }}" title = "{{ 'label.events_page'|trans }}" {% if app.request.attributes.get('_route') == 'event_index' %} class="active" {% endif %}>
+                </a>
+            </li>
+            {% if is_granted('ROLE_USER') %}
+                <li class="nav_element">
+                    <a href = "{{ url('user_index') }}" title = "{{ 'label.users_page'|trans }}" {% if app.request.attributes.get('_route') == 'user_index' %} class="active" {% endif %}>
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li class="nav_element">
+                    <a href = "{{ url('comment_index') }}" title = "{{ 'label.comments_page'|trans }}" {% if app.request.attributes.get('_route') == 'comment_index' %} class="active" {% endif %}>
+                    </a>
+                </li>
+                <li class="nav_element">
+                    <a href = "{{ url('grade_index') }}" title = "{{ 'label.grades_page'|trans }}" {% if app.request.attributes.get('_route') == 'grade_index' %} class="active" {% endif %}>
+                    </a>
+                </li>
+            {% endif %}
+            <li class="nav_element">
+                <a href = "{{ url('user_new') }}" title = "{{ 'label.registration_page'|trans }}" {% if app.request.attributes.get('_route') == 'user_new' %} class="active" {% endif %}>
+                </a>
+            </li>
+            <li class="nav_element">
+                <a href = "{{ url('security_login') }}" title = "{{ 'label.login_page'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+                </a>
+            </li>
+        </ul>
+    </nav>
 {% endblock %}
 {% block javascripts %}{% endblock %}
 </body>
