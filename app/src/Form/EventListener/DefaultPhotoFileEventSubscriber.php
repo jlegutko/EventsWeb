@@ -38,7 +38,6 @@ class DefaultPhotoFileEventSubscriber implements EventSubscriberInterface
         // event and that the preSetData method should be called.
         return [FormEvents::PRE_SUBMIT => 'preSubmitData'];
     }
-
     /**
      * Pre submit handler.
      *

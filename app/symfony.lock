@@ -226,6 +226,9 @@
             "config/bootstrap.php"
         ]
     },
+    "symfony/contracts": {
+        "version": "v1.1.5"
+    },
     "symfony/debug": {
         "version": "v3.4.27"
     },
@@ -361,6 +364,9 @@
     },
     "symfony/stopwatch": {
         "version": "v3.4.27"
+    },
+    "symfony/templating": {
+        "version": "v3.4.30"
     },
     "symfony/translation": {
         "version": "3.3",
