@@ -361,6 +361,14 @@ class EventController extends AbstractController
      */
     public function newPhoto(Request $request, Event $event, PhotoRepository $repository): Response
     {
+        if ($this->getUser()->getPhoto()) {
+            $photo = $this->getUser()->getPhoto();
+
+            return $this->redirectToRoute(
+                'photo_edit',
+                ['id' => $photo->getId()]
+            );
+        }
         $photo = new Photo();
         $form = $this->createForm(PhotoType::class, $photo);
         $form->handleRequest($request);

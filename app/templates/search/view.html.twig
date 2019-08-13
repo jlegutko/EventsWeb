@@ -9,8 +9,8 @@
 
 <h2>{{ 'label.events'|trans }}</h2>
 <div class="search-results">
-    {% if (events_names is not defined and events_names|length and events_dates is defined and events_dates|length and
-        events_sizes is defined and events_sizes|length and events_prices is defined and events_prices|length) %}
+    {% if not ((events_names is defined and events_names|length) or (events_dates is defined and events_dates|length) or
+        (events_sizes is defined and events_sizes|length) or (events_prices is defined and events_prices|length)) %}
     <span>{{ 'label.no_results'|trans }}</span>
     {% else %}
         {% if events_names is defined and events_names|length %}
