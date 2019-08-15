@@ -8,14 +8,74 @@
     <h1>{{ 'title.event_list'|trans({'%id%': event.id}) }}</h1>
     {% if event is defined and event|length %}
         <dl class="dl-horizontal">
-            <dt>{{ 'label.event_id'|trans }}</dt>
-            <dd>{{ event.id }}</dd>
             <dt>{{ 'label.event_name'|trans }}</dt>
             <dd>{{  event.name }}</dd>
+            <dt>{{ 'label.event_date'|trans }}</dt>
+            <dd>{{  event.eventDate|date("m/d/Y") }}</dd>
+            <dt>{{ 'label.event_price'|trans }}</dt>
+            <dd>{{  event.price }}</dd>
+            <dt>{{ 'label.event_place'|trans }}</dt>
+            <dd>{{  event.place }}</dd>
+            <dt>{{ 'label.event_size'|trans }}</dt>
+            <dd>{{  event.Eventsize }}</dd>
         </dl>
+        <a href = "{{ url('event_new_photo', {id: event.id}) }}" title = "{{ 'label.event_new_photo'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+            <h3>{{ 'label.event_new_photo'|trans }}</h3>
+        </a>
+        {% if photo is defined and photo|length %}
+            <div>
+                <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}">
+            </div>
+        {% else %}
+            {% include 'default/_flash_messages.html.twig' with {
+                type: 'warning',
+                message: 'message.item_not_found'|trans
+            } %}
+        {% endif %}
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}
         </p>
     {% endif %}
+    <div class="event-interest">
+        {% for interest in event.interests %}
+            {% if null != app.user and interest.user.id == app.user.id%}
+                {% set favourite = 1 %}
+            {% endif %}
+        {% endfor %}
+        <a class="interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
+            {{ 'label.event_interest'|trans }}
+        </a>
+    </div>
+    <div class = "event-comments">
+        {% if event.comments|length %}
+            <h3>{{ 'label.comments'|trans }} ({{ event.comments|length }})</h3>
+            {% for comment in event.comments %}
+                <div class="comment-container" id="comment-{{ comment.id }}">
+                    <div class="comment">
+                        <div>
+                            <b class="comment-owner">{{ comment.owner.firstName }}</b><span class="comment-text">{{ comment.content}}</span>
+                        </div>
+                        <div>
+                            <span class="date">{{ comment.createdAt|date()|localizeddate('short', 'short') }}
+                                {% if comment.createdAt != comment.updatedAt %} ({{ 'label.comment_edited'|trans }})
+                                {% endif %}</span>
+                            {% if null != app.user %}
+                                {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                    <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}">{{ 'action.edit'|trans }}</a>
+                                {% endif %}
+                                {% if comment.event.user.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                    <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}">{{ 'action.delete'|trans }}</a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+             {% endfor %}
+        {% else %}
+            <h3>{{ 'label.no_comments'|trans }}</h3>
+        {% endif %}
+    </div>
+
 {% endblock %}
+

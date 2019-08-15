@@ -30,7 +30,7 @@ class SearchController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $search = trim($request->get('search'), ' ');
+        $search = $request->get('search');
         if ($search) {
             if (preg_match('/^[\p{L}\p{N}_-]+$/u', $search)) {
                 return $this -> redirectToRoute('search_action', ['search' => $search]);

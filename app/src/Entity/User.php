@@ -142,10 +142,6 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $pictureUrl;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Interest", mappedBy="user", orphanRemoval=true)
-     */
     private $interests;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Grade", mappedBy="user", orphanRemoval=true)
@@ -161,6 +157,11 @@ class User implements UserInterface
     private $posts;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user")
+     */
+    private $events;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -170,6 +171,7 @@ class User implements UserInterface
         $this->grades = new ArrayCollection();
         $this->groups = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->events = new ArrayCollection();
     }
     /**
      * Getter for the Id.
@@ -354,24 +356,6 @@ class User implements UserInterface
         }
         return $this;
     }
-
-    /**
-     * @return string|null
-     */
-    public function getPictureUrl(): ?string
-    {
-        return $this->pictureUrl;
-    }
-
-    /**
-     * @param string $pictureUrl
-     * @return User
-     */
-    public function setPictureUrl(string $pictureUrl): self
-    {
-        $this->pictureUrl = $pictureUrl;
-        return $this;
-    }
     /**
      * @return Collection|Interest[]
      */
@@ -481,6 +465,37 @@ class User implements UserInterface
                 $post->setUser(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->events->contains($event)) {
+            $this->events[] = $event;
+            $event->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->events->contains($event)) {
+            $this->events->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getUser() === $this) {
+                $event->setUser(null);
+            }
+        }
+
         return $this;
     }
 }

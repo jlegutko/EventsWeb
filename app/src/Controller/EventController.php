@@ -65,7 +65,7 @@ class EventController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Event $event Event entity
+     * @param Event $event Event entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -107,6 +107,7 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $event->setUser($this->getUser());
             $event->setCreatedAt(new DateTime());
             $event->setUpdatedAt(new DateTime());
             $repository->save($event);
@@ -219,7 +220,7 @@ class EventController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "event/{id}/newcomment",
+     *     "/{id}/newcomment",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_new_comment",
@@ -266,7 +267,7 @@ class EventController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "event/{id}/newgrade",
+     *     "/{id}/newgrade",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_new_grade",
@@ -312,7 +313,7 @@ class EventController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "event/{id}/interest",
+     *     "/{id}/interest",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_interest",
@@ -345,6 +346,7 @@ class EventController extends AbstractController
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
      * @param Event  $event
+     * @param Photo $photo
      * @param PhotoRepository $repository Event Repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -353,7 +355,7 @@ class EventController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "event/{id}/newphoto",
+     *     "/{id}/newphoto",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_new_photo",
@@ -361,8 +363,8 @@ class EventController extends AbstractController
      */
     public function newPhoto(Request $request, Event $event, PhotoRepository $repository): Response
     {
-        if ($this->getUser()->getPhoto()) {
-            $photo = $this->getUser()->getPhoto();
+        if ($event->getPhoto()) {
+            $photo = $event->getPhoto();
 
             return $this->redirectToRoute(
                 'photo_edit',
@@ -375,10 +377,12 @@ class EventController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $photo->setEvent($event);
+            $photo->setCreatedAt(new DateTime());
+            $photo->setUpdatedAt(new DateTime());
             $repository->save($photo);
             $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('event_view');
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
         }
 
         return $this->render(

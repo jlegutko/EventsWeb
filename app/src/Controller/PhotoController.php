@@ -11,6 +11,7 @@ use App\Repository\PhotoRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -141,7 +142,7 @@ class PhotoController extends AbstractController
         }
 
         return $this->render(
-            'photo/delete.html.twig',
+            'photo/remove.html.twig',
             [
                 'form' => $form->createView(),
                 'photo' => $photo,

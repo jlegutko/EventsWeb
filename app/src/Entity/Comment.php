@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Comment
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

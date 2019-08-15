@@ -29,7 +29,7 @@ security:
 
             logout:
                 path: security_logout
-                target: task_index
+                target: search_index
 
             switch_user: false
             logout_on_user_change: true

@@ -102,6 +102,15 @@ class EventType extends AbstractType
                 'required' => true,
             ]
         );
+        $builder->add(
+            'description',
+            TextType::class,
+            [
+                'label' => 'label.event_description',
+                'required' => true,
+                'attr' => ['max_length' => 255],
+            ]
+        );
     }
 
     /**

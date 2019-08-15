@@ -59,7 +59,7 @@ class CommentController extends AbstractController
      *
      * @Route(
      *     "/{id}",
-     *     name="comment_view",
+     *     name="comment_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )
      */

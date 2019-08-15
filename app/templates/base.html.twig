@@ -4,43 +4,65 @@
     <meta charset="UTF-8">
     <title>{% block title %}Welcome!{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.css">
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.css">
+        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    {% endblock %}
 </head>
 <body>
+    <main class="wrapper">
+        <div class="container">
+            {% include 'default/_flash_messages.html.twig' %}
+            <header class="header">
+                <section class="container clearfix">
+                    <a class="logo logo-title float-left">
+                        {{ 'title.logo'|trans}}
+                    </a>
+                    <nav class="navigation">
+                        <ul class="navigation-list float-right">
+                            <li class="navigation-item">
+                                <a class ="navigation-link" href = "{{ url('event_index') }}" title = "{{ 'label.events_page'|trans }}" {% if app.request.attributes.get('_route') == 'event_index' %} class="active" {% endif %}>
+                                    {{ 'label.event_index'|trans }}
+                                </a>
+                            </li>
+                            {% if is_granted('ROLE_USER') %}
+                                <li class="nav_element">
+                                    <a class ="navigation-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" {% if app.request.attributes.get('_route') == 'user_index' %} class="active" {% endif %}>
+                                        {{ 'label.user_index'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav_element">
+                                    <a class ="navigation-link" href = "{{ url('comment_index') }}" title = "{{ 'label.comment_index'|trans }}" {% if app.request.attributes.get('_route') == 'comment_index' %} class="active" {% endif %}>
+                                        {{ 'label.comment_index'|trans }}
+                                    </a>
+                                </li>
+                                <li class="nav_element">
+                                    <a class ="navigation-link" href = "{{ url('grade_index') }}" title = "{{ 'label.grade_index'|trans }}" {% if app.request.attributes.get('_route') == 'grade_index' %} class="active" {% endif %}>
+                                        {{ 'label.grade_index'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
+                            <li class="navigation-item">
+                                <a class ="navigation-link" href = "{{ url('user_new') }}" title = "{{ 'label.registration'|trans }}" {% if app.request.attributes.get('_route') == 'user_new' %} class="active" {% endif %}>
+                                    {{ 'label.registration'|trans }}
+                                </a>
+                            </li>
+                            <li class="navigation-item">
+                                <a class ="navigation-link" href = "{{ url('security_login') }}" title = "{{ 'label.login_page'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+                                    {{ 'label.login_page'|trans }}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </section>
+            </header>
+        </div>
+    </main>
 {% block body %}
-    {% include 'default/_flash_messages.html.twig' %}
-    <nav class="main_nav">
-        <ul>
-            <li class="nav_element">
-                <a href = "{{ url('event_index') }}" title = "{{ 'label.events_page'|trans }}" {% if app.request.attributes.get('_route') == 'event_index' %} class="active" {% endif %}>
-                </a>
-            </li>
-            {% if is_granted('ROLE_USER') %}
-                <li class="nav_element">
-                    <a href = "{{ url('user_index') }}" title = "{{ 'label.users_page'|trans }}" {% if app.request.attributes.get('_route') == 'user_index' %} class="active" {% endif %}>
-                    </a>
-                </li>
-            {% endif %}
-            {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav_element">
-                    <a href = "{{ url('comment_index') }}" title = "{{ 'label.comments_page'|trans }}" {% if app.request.attributes.get('_route') == 'comment_index' %} class="active" {% endif %}>
-                    </a>
-                </li>
-                <li class="nav_element">
-                    <a href = "{{ url('grade_index') }}" title = "{{ 'label.grades_page'|trans }}" {% if app.request.attributes.get('_route') == 'grade_index' %} class="active" {% endif %}>
-                    </a>
-                </li>
-            {% endif %}
-            <li class="nav_element">
-                <a href = "{{ url('user_new') }}" title = "{{ 'label.registration_page'|trans }}" {% if app.request.attributes.get('_route') == 'user_new' %} class="active" {% endif %}>
-                </a>
-            </li>
-            <li class="nav_element">
-                <a href = "{{ url('security_login') }}" title = "{{ 'label.login_page'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-                </a>
-            </li>
-        </ul>
-    </nav>
 {% endblock %}
 {% block javascripts %}{% endblock %}
 </body>

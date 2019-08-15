@@ -22,6 +22,34 @@
                 <source>label.events_page</source>
                 <target>Events</target>
             </trans-unit>
+            <!--transalations from base.html.twig-->
+            <trans-unit id="title.logo">
+                <source>title.logo</source>
+                <target>whatsnew</target>
+            </trans-unit>
+            <trans-unit id="label.event_index">
+                <source>label.event_index</source>
+                <target>events</target>
+            </trans-unit>
+            <trans-unit id="label.registration">
+                <source>label.registration</source>
+                <target>sign up</target>
+            </trans-unit>
+            <trans-unit id="label.login_page">
+                <source>label.login_page</source>
+                <target>sign in</target>
+            </trans-unit>
+            <!--search/index page-->
+            <trans-unit id="description.title">
+                <source>description.title</source>
+                <target>Welcome on whatsnew in PL website!</target>
+            </trans-unit>
+            <trans-unit id="description.description">
+                <source>description.description</source>
+                <target>On our page you can find the events from all over the Poland. Join to our community to add
+                    comments and grades for your favourite events. You can also add the best events to your interests.
+                    Use our search below to find what you're looking for :) </target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

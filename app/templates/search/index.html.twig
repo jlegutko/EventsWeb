@@ -1,15 +1,19 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-<form method="post" class="search" action="{{ url('search_index')}}">
-    <div class="form-group row">
-        <div class="col-sm-10">
-            <input autocomplete="off" class="form-control" id="search" name="search[]"
-                   placeholder="{{ 'label.search_placeholder'|trans }}" type="text"/>
-            <input autocomplete="off" class="form-control" id="search" name="search[]"
-                    placeholder="{{ 'label.search_placeholder'|trans }}" type="date"/>
-            <button type = "submit" title="{{ 'action.search'|trans}}>
-            </button>
-        </div>
+    <div class="container container-bg">
+        <div class="container container-sm">
+            <article class="description">
+                <h3 class="h2-bold">{{ 'description.title'|trans }}</h3>
+                <p class="desc-bg">{{ 'description.description'|trans }}</p>
+            </article>
+            <form class="form-search" method="post" class="search" action="{{ url('search_index')}}">
+                <div class="row">
+                    <div class="column column-50 column-offset-25">
+                        <input autocomplete="off" id="search" name="search" placeholder="{{ 'label.search_placeholder'|trans }}" type="text" required="required"/>
+                        <button type = "submit">{{ 'action.search'|trans}}</button>
+                    </div>
+                </div>
+            </form>
+          </div>
     </div>
-</form>
 {% endblock %}

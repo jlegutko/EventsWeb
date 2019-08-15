@@ -22,6 +22,35 @@
                 <source>label.events_page</source>
                 <target>Wydarzenia</target>
             </trans-unit>
+            <!--translations from base.html.twig-->
+            <trans-unit id="label.event_index">
+                <source>label.event_index</source>
+                <target>Wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.user_index">
+                <source>label.user_index</source>
+                <target>Użytkownicy</target>
+            </trans-unit>
+            <trans-unit id="label.comment_index">
+                <source>label.comment_index</source>
+                <target>Komentarze</target>
+            </trans-unit>
+            <trans-unit id="label.grade_index">
+                <source>label.grade_index</source>
+                <target>Oceny</target>
+            </trans-unit>
+            <trans-unit id="label.registration">
+                <source>label.registration</source>
+                <target>Rejestracja</target>
+            </trans-unit>
+            <trans-unit id="label.login_page">
+                <source>label.login_page</source>
+                <target>Logowanie</target>
+            </trans-unit>
+            <trans-unit id="title.search_results">
+                <source>title.search_results</source>
+                <target>Wyniki wyszukiwania</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
