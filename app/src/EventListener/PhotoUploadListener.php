@@ -9,7 +9,7 @@ use App\Entity\Photo;
 use App\Service\FileUploader;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
-use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -105,7 +105,6 @@ class PhotoUploadListener
             $entity->setFile($filename);
         }
     }
-    // ...
     /**
      * Pre remove.
      *
@@ -117,10 +116,11 @@ class PhotoUploadListener
 
         $this->removeFile($entity);
     }
+
     /**
      * Remove file from disk.
      *
-     * @param \App\Entity\Photo $entity Photo entity
+     * @param Photo $entity Photo entity
      */
     private function removeFile($entity): void
     {
@@ -130,7 +130,8 @@ class PhotoUploadListener
 
         $file = $entity->getFile();
         if ($file instanceof File) {
-            $this->filesystem->remove($file->getPathname());
+            $filesystem = new Filesystem();
+            $filesystem->remove($file);
         }
     }
 }

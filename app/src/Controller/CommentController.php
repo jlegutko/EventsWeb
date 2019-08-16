@@ -49,9 +49,29 @@ class CommentController extends AbstractController
             ['pagination' => $pagination]
         );
     }
+/** 
+ * View action.
+*
+* @param \App\Entity\Comment $comment Comment entity
+*
+* @return \Symfony\Component\HttpFoundation\Response HTTP response
+*
+* @Route(
+*     "/{id}",
+*     name="comment_view",
+*     requirements={"id": "[1-9]\d*"},
+* )
+*/
 
+public function view(Comment $comment): Response
+{
+    return $this->render(
+        'comment/view.html.twig',
+        ['comment' => $comment]
+    );
+}
     /**
-     * View action.
+     * Edit action.
      *
      * @param \App\Entity\Comment $comment Comment entity
      *

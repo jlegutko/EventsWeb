@@ -142,7 +142,7 @@ class PhotoController extends AbstractController
         }
 
         return $this->render(
-            'photo/remove.html.twig',
+            'photo/delete.html.twig',
             [
                 'form' => $form->createView(),
                 'photo' => $photo,

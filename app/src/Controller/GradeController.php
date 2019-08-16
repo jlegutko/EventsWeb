@@ -63,28 +63,13 @@ class GradeController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function edit(Request $request, Grade $grade, GradeRepository $repository): Response
+    public function view(Grade $grade): Response
     {
-        $form = $this->createForm(GradeType::class, $grade, ['method' => 'PUT']);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($grade);
-
-            $this->addFlash('success', 'message.updated_successfully');
-
-            return $this->redirectToRoute('grade_index');
-        }
-
         return $this->render(
-            'grade/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'grade' => $grade,
-            ]
+            'grade/view.html.twig',
+            ['grade' => $grade]
         );
     }
-
     /**
      * Delete action.
      *

@@ -39,10 +39,6 @@ class Event
      */
     private $price;
     /**
-     * @ORM\Column(type="boolean")
-     */
-    private $isActive;
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $place;
@@ -66,12 +62,6 @@ class Event
      * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="event", orphanRemoval=true)
      */
     private $groups;
-
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event", cascade={"persist", "remove"})
-     */
-    private $photo;
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
@@ -88,6 +78,12 @@ class Event
      * @ORM\Column(type="text")
      */
     private $description;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event")
+     */
+    private $photo;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -193,25 +189,6 @@ class Event
         $this->price = $price;
         return $this;
     }
-
-    /**
-     * @return bool|null
-     */
-    public function getIsActive(): ?bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     * @return Event
-     */
-    public function setIsActive(bool $isActive): self
-    {
-        $this->isActive = $isActive;
-        return $this;
-    }
-
     /**
      * @return string|null
      */
@@ -411,31 +388,6 @@ class Event
 
         return $this;
     }
-
-    /**
-     * @return Photo|null
-     */
-    public function getPhoto(): ?Photo
-    {
-        return $this->photo;
-    }
-
-    /**
-     * @param Photo $photo
-     * @return Event
-     */
-    public function setPhoto(Photo $photo): self
-    {
-        $this->photo = $photo;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $photo->getEvent()) {
-            $photo->setEvent($this);
-        }
-
-        return $this;
-    }
-
     public function getUser(): ?User
     {
         return $this->user;
@@ -456,6 +408,23 @@ class Event
     public function setDescription(string $description): self
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function getPhoto(): ?Photo
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(Photo $photo): self
+    {
+        $this->photo = $photo;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $photo->getEvent()) {
+            $photo->setEvent($this);
+        }
 
         return $this;
     }

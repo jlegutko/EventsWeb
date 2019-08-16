@@ -16,14 +16,14 @@
             <thead>
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label.grade_id'|trans, 'u.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.grade_name'|trans, 'u.name') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.grade_name'|trans, 'u.grade') }}</th>
             </tr>
             </thead>
             <tbody>
             {% for grade in pagination %}
                 <tr>
                     <td>{{ grade.id }}</td>
-                    <td>{{ grade.title}}</td>
+                    <td>{{ grade.grade}}</td>
                     <td>
                         <a href="{{ url('grade_view', {id: grade.id}) }}" title="{{ 'action.view'|trans }}">
                             {{ 'action.view'|trans }}

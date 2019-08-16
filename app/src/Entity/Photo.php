@@ -84,13 +84,13 @@ class Photo
      * )
      */
     private $file;
+
     /**
-     * Event.
-     *
-     * @ORM\OneToOne(targetEntity="App\Entity\Event", inversedBy="photo", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Event", inversedBy="photo")
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
+
     /**
      * Getter for Id.
      *
@@ -161,23 +161,11 @@ class Photo
         $this->file = $file;
     }
 
-    /**
-     * Getter for Event.
-     *
-     * @return Event|null Event entity
-     */
     public function getEvent(): ?Event
     {
         return $this->event;
     }
 
-    /**
-     * Setter for Event.
-     *
-     * @param Event $event Event entity
-     *
-     * @return Photo
-     */
     public function setEvent(Event $event): self
     {
         $this->event = $event;

@@ -19,18 +19,30 @@
             <dt>{{ 'label.event_size'|trans }}</dt>
             <dd>{{  event.Eventsize }}</dd>
         </dl>
-        <a href = "{{ url('event_new_photo', {id: event.id}) }}" title = "{{ 'label.event_new_photo'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-            <h3>{{ 'label.event_new_photo'|trans }}</h3>
+        <a href = "{{ url('event_edit', {id: event.id}) }}" title = "{{ 'label.event_edit'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+            <h3>{{ 'label.event_edit'|trans }}</h3>
+        </a>
+        <a href = "{{ url('event_delete', {id: event.id}) }}" title = "{{ 'label.event_delete'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+            <h3>{{ 'label.event_delete'|trans }}</h3>
         </a>
         {% if photo is defined and photo|length %}
-            <div>
-                <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}">
-            </div>
+            <a href = "{{ url('photo_edit', {id: photo.id}) }}" title = "{{ 'label.photo_edit'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+                <h3>{{ 'label.photo_edit'|trans }}</h3>
+            </a>
+            <a href = "{{ url('photo_delete', {id: photo.id}) }}" title = "{{ 'label.photo_delete'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+                <h3>{{ 'label.photo_delete'|trans }}</h3>
+            </a>
         {% else %}
-            {% include 'default/_flash_messages.html.twig' with {
-                type: 'warning',
-                message: 'message.item_not_found'|trans
-            } %}
+            <a href = "{{ url('event_new_photo', {id: event.id}) }}" title = "{{ 'label.event_new_photo'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
+                <h3>{{ 'label.event_new_photo'|trans }}</h3>
+            </a>
+        {% endif %}
+        {% if photo is defined and photo|length %}
+            <div>
+                <a href="{{ url('photo_view', {id: photo.id}) }}">
+                    <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}">
+                </a>
+            </div>
         {% endif %}
     {% else %}
         <p>
@@ -46,6 +58,42 @@
         <a class="interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
             {{ 'label.event_interest'|trans }}
         </a>
+    </div>
+    <div class="post-grade-form">
+        {% for grade in event.grades %}
+            {% if null != app.user and grade.user.id == app.user.id%}
+                {{ grade.grade }}
+                {{ form_start(event.form_grade, { method: 'post', action: url('grade_edit', {'id': grade.id}) }) }}
+                {% if false == event.form_grade.vars.valid %}
+                    {% include 'default/_single_flash_message.html.twig' with {
+                        type: 'danger',
+                        message: 'message.form_error'|trans,
+                    }%}
+                {% endif %}
+                {{ form_widget(event.form_grade) }}
+                <div class="form-group row float-sm-right">
+                    <button type="submit" title="{{ 'action.update_grade'|trans }}" class="btn btn-primary">
+                        {{ 'button.submit_grade'|trans }}
+                    </button>
+                </div>
+                {{ form_end(event.form_grade) }}
+            {% else %}
+                {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+                {% if false == event.form_grade.vars.valid %}
+                    {% include 'default/_single_flash_message.html.twig' with {
+                        type: 'danger',
+                        message: 'message.form_error'|trans,
+                    }%}
+                {% endif %}
+                {{ form_widget(event.form_grade) }}
+                <div class="form-group row float-sm-right">
+                    <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
+                        {{ 'button.update_grade'|trans }}
+                    </button>
+                </div>
+                {{ form_end(event.form_grade) }}
+            {% endif %}
+        {% endfor %}
     </div>
     <div class = "event-comments">
         {% if event.comments|length %}
@@ -75,6 +123,22 @@
         {% else %}
             <h3>{{ 'label.no_comments'|trans }}</h3>
         {% endif %}
+    </div>
+    <div class="post-comment-form">
+        {{ form_start(event.form, { method: 'post', action: url('event_new_comment', {'id': event.id}) }) }}
+        {% if false == event.form.vars.valid %}
+            {% include 'default/_single_flash_message.html.twig' with {
+                type: 'danger',
+                message: 'message.form_error'|trans,
+            }%}
+        {% endif %}
+        {{ form_widget(event.form) }}
+        <div class="form-group row float-sm-right">
+            <button type="submit" title="{{ 'action.new_comment'|trans }}" class="btn btn-primary">
+                {{ 'button.submit_comment'|trans }}
+            </button>
+        </div>
+        {{ form_end(event.form) }}
     </div>
 
 {% endblock %}

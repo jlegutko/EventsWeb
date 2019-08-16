@@ -6,6 +6,7 @@
 namespace App\Repository;
 
 use App\Entity\Grade;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -42,7 +43,33 @@ class GradeRepository extends ServiceEntityRepository
         return $this->getOrCreateQueryBuilder()
             ->orderBy('t.updatedAt', 'DESC');
     }
+    /**
+     * Query grades by event.
+     *
+     * @param Event|null $event Event entity
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
+     */
+    public function queryByEvent(Event $event = null) : QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
 
+        if (!is_null($event)) {
+            $queryBuilder->andWhere('t.event = :event')
+                ->setParameter('event', $event);
+        }
+        $typeQuery = $queryBuilder -> getType();
+
+        return $queryBuilder;
+    }
+    /**
+     * Average grade for event.
+     *
+     * @param Event|null $event Event entity
+     */
+    public function gradesAverage(Event $event = null) : QueryBuilder
+    {
+    }
     /**
      * Save record.
      *

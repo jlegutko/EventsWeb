@@ -63,15 +63,6 @@ class EventType extends AbstractType
             ]
         );
         $builder->add(
-            'is_active',
-            IntegerType::class,
-            [
-                'label' => 'label.event_active',
-                'required' => true,
-                'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
             'place',
             TextType::class,
             [
