@@ -60,8 +60,11 @@
         </a>
     </div>
     <div class="post-grade-form">
+    {% set flag = 0 %}
+    {% if event.grades is defined and event.grades|length%}
         {% for grade in event.grades %}
             {% if null != app.user and grade.user.id == app.user.id%}
+                {% set flag = flag + 1 %}
                 {{ grade.grade }}
                 {{ form_start(event.form_grade, { method: 'post', action: url('grade_edit', {'id': grade.id}) }) }}
                 {% if false == event.form_grade.vars.valid %}
@@ -73,27 +76,25 @@
                 {{ form_widget(event.form_grade) }}
                 <div class="form-group row float-sm-right">
                     <button type="submit" title="{{ 'action.update_grade'|trans }}" class="btn btn-primary">
-                        {{ 'button.submit_grade'|trans }}
-                    </button>
-                </div>
-                {{ form_end(event.form_grade) }}
-            {% else %}
-                {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
-                {% if false == event.form_grade.vars.valid %}
-                    {% include 'default/_single_flash_message.html.twig' with {
-                        type: 'danger',
-                        message: 'message.form_error'|trans,
-                    }%}
-                {% endif %}
-                {{ form_widget(event.form_grade) }}
-                <div class="form-group row float-sm-right">
-                    <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
                         {{ 'button.update_grade'|trans }}
                     </button>
                 </div>
                 {{ form_end(event.form_grade) }}
+            {% else %}
+                {% if flag == 0 %}
+                    {% set flag = flag + 1 %}
+                    {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+                    {{ form_widget(event.form_grade) }}
+                    <div class="form-group row float-sm-right">
+                        <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
+                            {{ 'button.new_grade'|trans }}
+                        </button>
+                    </div>
+                    {{ form_end(event.form_grade) }}
+                {% endif %}
             {% endif %}
         {% endfor %}
+    {% endif %}
     </div>
     <div class = "event-comments">
         {% if event.comments|length %}

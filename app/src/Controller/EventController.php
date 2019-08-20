@@ -8,6 +8,7 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Comment;
 use App\Entity\Grade;
+use App\Entity\User;
 use App\Entity\Interest;
 use App\Entity\Photo;
 use App\Form\EventType;
@@ -67,6 +68,7 @@ class EventController extends AbstractController
      *
      * @param Event $event Event entity
      * @param Grade $grade Grade entity
+     * @param User $user User entity
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -86,6 +88,8 @@ class EventController extends AbstractController
         $event->form_grade = $form_grade->createView();
         $photo = $event->getPhoto();
         $grade = $event->getGrades();
+        $user = $this->getUser();
+
         if ($photo === null) {
             return $this->render(
                 'event/view.html.twig',
@@ -96,7 +100,8 @@ class EventController extends AbstractController
                 'event/view.html.twig',
                 ['event' => $event,
                  'photo' => $photo,
-                 'grade' => $grade]
+                 'grade' => $grade,
+                  'user' => $user]
             );
         }
     }
