@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Discussion
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

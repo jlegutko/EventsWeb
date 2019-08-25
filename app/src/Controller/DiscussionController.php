@@ -5,9 +5,13 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Discussion;
 use App\Form\DiscussionType;
+use App\Entity\Post;
+use App\Form\PostType;
 use App\Repository\DiscussionRepository;
+use App\Repository\PostRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -53,6 +57,7 @@ class DiscussionController extends AbstractController
      * View action.
      *
      * @param \App\Entity\Discussion $discussion Discussion entity
+     * @param \App\Entity\Post $post
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -63,8 +68,10 @@ class DiscussionController extends AbstractController
      * )
      */
 
-    public function view(Discussion $discussion): Response
+    public function view(Discussion $discussion, Post $post): Response
     {
+        $form = $this->createForm(PostType::class, $post);
+        $discussion->form = $form->createView();
         return $this->render(
             'discussion/view.html.twig',
             ['discussion' => $discussion]
@@ -144,6 +151,51 @@ class DiscussionController extends AbstractController
             'discussion/delete.html.twig',
             [
                 'form' => $form->createView(),
+                'discussion' => $discussion,
+            ]
+        );
+    }
+    /**
+     * Add a new post action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\PostRepository            $repository Post repository
+     * @param Post  $post
+     * @param Discussion  $discussion
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newpost",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="discussion_new_post",
+     * )
+     */
+    public function newPost(Request $request, Discussion $discussion, PostRepository $repository): Response
+    {
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post->setCreatedAt(new DateTime());
+            $post->setUpdatedAt(new DateTime());
+            $post->setDiscussion($discussion);
+            $post->setUser($this->getUser());
+            $repository->save($post);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('discussion_view', ['id' => $discussion->getId()]);
+        }
+
+        return $this->render(
+            'discussion/new_post.html.twig',
+            ['form' => $form->createView(),
                 'discussion' => $discussion,
             ]
         );

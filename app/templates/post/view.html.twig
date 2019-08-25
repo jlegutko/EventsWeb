@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.post_list'|trans({'%id%': post.id}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.post_list'|trans({'%id%': post.id}) }}</h1>
+    {% if post is defined and post|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.post_id'|trans }}</dt>
+            <dd>{{ post.id }}</dd>
+            <dt>{{ 'label.post_topic'|trans }}</dt>
+            <dd>{{  post.topic }}</dd>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

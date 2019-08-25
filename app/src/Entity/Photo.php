@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Photo
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * Primary key.
      *

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.post_list'|trans }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.post_list'|trans }}</h1>
+    {% if pagination is defined and pagination|length %}
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ knp_pagination_sortable(pagination, 'label.post_id'|trans, 'u.id') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.post_topic'|trans, 'u.topic') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for post in pagination %}
+                <tr>
+                    <td>{{ post.id }}</td>
+                    <td>{{ post.topic}}</td>
+                    <td>
+                        <a href="{{ url('post_view', {id: post.id}) }}" title="{{ 'action.view'|trans }}">
+                            {{ 'action.view'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+
+    {% else %}
+        <p>
+            {{ 'message.empty_list'|trans }}
+        </p>
+    {% endif %}
+
+{% endblock %}

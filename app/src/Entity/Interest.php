@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Interest
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
