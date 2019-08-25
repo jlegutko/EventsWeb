@@ -7,6 +7,9 @@ namespace App\Controller;
 
 use App\Entity\Group;
 use App\Entity\User;
+use App\Entity\Discussion;
+use App\Repository\DiscussionRepository;
+use App\Form\DiscussionType;
 use App\Entity\Member;
 use App\Repository\MemberRepository;
 use App\Form\GroupType;
@@ -201,4 +204,48 @@ class GroupController extends AbstractController
         return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
     }
 
+    /**
+     * Add a new discussion action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\DiscussionRepository            $repository Discussion repository
+     * @param Group  $group
+     * @param Discussion  $discussion
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newdiscussion",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="group_new_discussion",
+     * )
+     */
+    public function newDiscussion(Request $request, Group $group, DiscussionRepository $repository): Response
+    {
+        $discussion = new Discussion();
+        $form = $this->createForm(DiscussionType::class, $discussion);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $discussion->setCreatedAt(new DateTime());
+            $discussion->setUpdatedAt(new DateTime());
+            $discussion->setGroups($group);
+            $repository->save($discussion);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
+        }
+
+        return $this->render(
+            'group/new_discussion.html.twig',
+            ['form' => $form->createView(),
+                'group' => $group,
+            ]
+        );
+    }
 }

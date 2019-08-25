@@ -29,6 +29,18 @@
                     </a>
                 {% endif %}
             </div>
+            <div class="new-discussion">
+                <a class="discussion-new" href="{{ url('group_new_discussion', {id: group.id}) }}" title ="{{ 'action.new_discussion'|trans }}">
+                    {{ 'label.discussion_new'|trans  }}
+                </a>
+            </div>
+            <div class="group-discussions">
+                {% for discussion in group.discussions %}
+                    <a class="discussion-view" href="{{ url('discussion_view', {id: discussion.id}) }}" title ="{{ 'action.discussion'|trans }}">
+                        {{ discussion.name }}
+                    </a>
+                {% endfor %}
+            </div>
         </dl>
     {% else %}
         <p>

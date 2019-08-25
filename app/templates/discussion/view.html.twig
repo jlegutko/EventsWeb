@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.discussion_list'|trans({'%id%': discussion.id}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.discussion_list'|trans({'%id%': discussion.id}) }}</h1>
+    {% if discussion is defined and discussion|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.discussion_id'|trans }}</dt>
+            <dd>{{ discussion.id }}</dd>
+            <dt>{{ 'label.discussion_name'|trans }}</dt>
+            <dd>{{  discussion.name }}</dd>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

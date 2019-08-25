@@ -1,0 +1,7 @@
+{% include 'default/_form.html.twig' with {
+    page_title:'title.group_add_discussion',
+    attr: {
+        method: 'POST',
+        action: url('group_new_discussion', {'id':group.id}),
+    },
+} %}
