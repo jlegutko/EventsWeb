@@ -148,10 +148,6 @@ class User implements UserInterface
      */
     private $grades;
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group", mappedBy="user")
-     */
-    private $groups;
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", orphanRemoval=true)
      */
     private $posts;
@@ -162,6 +158,11 @@ class User implements UserInterface
     private $events;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="member")
+     */
+    private $members;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -169,9 +170,9 @@ class User implements UserInterface
         $this->comments = new ArrayCollection();
         $this->interests = new ArrayCollection();
         $this->grades = new ArrayCollection();
-        $this->groups = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->events = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
     /**
      * Getter for the Id.
@@ -419,29 +420,6 @@ class User implements UserInterface
         return $this;
     }
     /**
-     * @return Collection|Group[]
-     */
-    public function getGroups(): Collection
-    {
-        return $this->groups;
-    }
-    public function addGroup(Group $group): self
-    {
-        if (!$this->groups->contains($group)) {
-            $this->groups[] = $group;
-            $group->addUser($this);
-        }
-        return $this;
-    }
-    public function removeGroup(Group $group): self
-    {
-        if ($this->groups->contains($group)) {
-            $this->groups->removeElement($group);
-            $group->removeUser($this);
-        }
-        return $this;
-    }
-    /**
      * @return Collection|Post[]
      */
     public function getPosts(): Collection
@@ -493,6 +471,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($event->getUser() === $this) {
                 $event->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Member[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): self
+    {
+        if ($this->members->contains($member)) {
+            $this->members->removeElement($member);
+            // set the owning side to null (unless already changed)
+            if ($member->getMember() === $this) {
+                $member->setMember(null);
             }
         }
 

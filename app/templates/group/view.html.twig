@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.group_list'|trans({'%id%': group.id}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.group_list'|trans({'%id%': group.id}) }}</h1>
+    {% if group is defined and group|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.group_id'|trans }}</dt>
+            <dd>{{ group.id }}</dd>
+            <dt>{{ 'label.group_name'|trans }}</dt>
+            <dd>{{  group.name }}</dd>
+            <div class="group-member">
+                {% set favourite = 0 %}
+                {% for member in group.members %}
+                    {% if null != app.user and member.member.id == app.user.id%}
+                        {% set favourite = 1 %}
+                    {% endif %}
+                {% endfor %}
+                {% if favourite == 0 %}
+                    <a class="add_member" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                        {{ 'label.group_member'|trans }}
+                    </a>
+                {% else %}
+                    <a class="remove_member" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.remove_member'|trans }}">
+                    {{ 'label.remove_member'|trans }}
+                    </a>
+                {% endif %}
+            </div>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.item_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

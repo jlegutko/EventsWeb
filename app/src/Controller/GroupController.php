@@ -6,8 +6,12 @@
 namespace App\Controller;
 
 use App\Entity\Group;
+use App\Entity\User;
+use App\Entity\Member;
+use App\Repository\MemberRepository;
 use App\Form\GroupType;
 use App\Repository\GroupRepository;
+use App\Repository\UserRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,9 +30,9 @@ class GroupController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\GroupRepository            $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Repository\GroupRepository $repository Repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -73,50 +77,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * New action.
-     *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\GroupRepository            $repository Group repository
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
-     *
-     * @Route(
-     *     "/new",
-     *     methods={"GET", "POST"},
-     *     name="group_new",
-     * )
-     */
-    public function new(Request $request, GroupRepository $repository): Response
-    {
-        $group = new Group();
-        $form = $this->createForm(GroupType::class, $group);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $group->setCreatedAt(new DateTime());
-            $group->setUpdatedAt(new DateTime());
-            $repository->save($group);
-
-            $this->addFlash('success', 'message.created_successfully');
-
-            return $this->redirectToRoute('group_index');
-        }
-
-        return $this->render(
-            'group/new.html.twig',
-            ['form' => $form->createView()]
-        );
-    }
-
-    /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Group                          $group       Group entity
-     * @param \App\Repository\GroupRepository            $repository Group repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Group $group Group entity
+     * @param \App\Repository\GroupRepository $repository Group repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -155,9 +120,9 @@ class GroupController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Group                          $group       Group entity
-     * @param \App\Repository\GroupRepository            $repository Group repository
+     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
+     * @param \App\Entity\Group $group Group entity
+     * @param \App\Repository\GroupRepository $repository Group repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -199,7 +164,7 @@ class GroupController extends AbstractController
      * Adding a new member of group.
      *
      * @param Group $group
-     * @param GroupRepository $repository Group Repository
+     * @param MemberRepository $repository Member Repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -213,25 +178,27 @@ class GroupController extends AbstractController
      *     name="group_member",
      * )
      */
-    public function newMember(Group $group, GroupRepository $repository): Response
+    public function newMember(Group $group, MemberRepository $repository): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
         }
 
-        $check = $repository -> findOneBy(['user' => $this->getUser(), 'group' => $group]);
-        if ($check instanceof Group) {
+        $check = $repository -> findOneBy(['member' => $this->getUser(), 'community' => $group]);
+        if ($check instanceof Member) {
             $repository->delete($check);
 
-            $this->addFlash('success', 'message.not_in_group');
+            $this->addFlash('success', 'message.not_member');
         } else {
-            $member = $group -> addUser($this->getUser());
-            $repository->save($group);
+            $member = new Member();
+            $member->setMember($this->getUser());
+            $member->setCommunity($group);
+            $repository->save($member);
 
-            $this -> addFlash('success', 'message.voted_successfully');
+            $this -> addFlash('success', 'message.member_successfully');
         }
 
         return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
     }
-}
 
+}

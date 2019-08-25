@@ -78,7 +78,7 @@ public function view(Comment $comment): Response
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
-     *     "/{id}",
+     *     "/{id}/edit",
      *     name="comment_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )

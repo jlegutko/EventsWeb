@@ -50,50 +50,88 @@
         </p>
     {% endif %}
     <div class="event-interest">
+        {% set favourite = 0 %}
         {% for interest in event.interests %}
             {% if null != app.user and interest.user.id == app.user.id%}
                 {% set favourite = 1 %}
             {% endif %}
         {% endfor %}
-        <a class="interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
-            {{ 'label.event_interest'|trans }}
-        </a>
+        {% if favourite == 0 %}
+            <a class="add_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
+                {{ 'label.event_interested'|trans }}
+            </a>
+        {% else %}
+            <a class="remove_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.remove_interest'|trans }}">
+                {{ 'label.remove_interest'|trans }}
+            </a>
+        {% endif %}
+    </div>
+    <div class="all-groups">
+        {% if event.groups|length %}
+            {% for group in event.groups %}
+                <a class="group" href="{{ url('group_view', {id: group.id}) }}" title ="{{ 'action.view'|trans }}">
+                    {{ group.name }}
+                </a>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="grades-average">
+        {% set sum = 0 %}
+        {% set average = 0 %}
+        {% if all_grades|length %}
+            {% for grade in all_grades %}
+                {% set sum = sum + grade.grade %}
+            {% endfor %}
+            {% set average = sum / all_grades|length %}
+            {{ average }}
+        {% endif %}
     </div>
     <div class="post-grade-form">
-    {% set flag = 0 %}
-    {% if event.grades is defined and event.grades|length%}
-        {% for grade in event.grades %}
-            {% if null != app.user and grade.user.id == app.user.id%}
-                {% set flag = flag + 1 %}
-                {{ grade.grade }}
-                {{ form_start(event.form_grade, { method: 'post', action: url('grade_edit', {'id': grade.id}) }) }}
-                {% if false == event.form_grade.vars.valid %}
-                    {% include 'default/_single_flash_message.html.twig' with {
-                        type: 'danger',
-                        message: 'message.form_error'|trans,
-                    }%}
-                {% endif %}
-                {{ form_widget(event.form_grade) }}
-                <div class="form-group row float-sm-right">
-                    <button type="submit" title="{{ 'action.update_grade'|trans }}" class="btn btn-primary">
-                        {{ 'button.update_grade'|trans }}
-                    </button>
-                </div>
-                {{ form_end(event.form_grade) }}
+    {% set have_own_grade = 0 %}
+    {% set other_grade = 0 %}
+    {% if check|length %}
+        {% for check_one in check %}
+            {% if null != app.user and check_one.user.id == app.user.id %}
+                {% set have_own_grade = 1 %}
+                {{ check_one.grade }}
             {% else %}
-                {% if flag == 0 %}
-                    {% set flag = flag + 1 %}
-                    {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
-                    {{ form_widget(event.form_grade) }}
-                    <div class="form-group row float-sm-right">
-                        <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
-                            {{ 'button.new_grade'|trans }}
-                        </button>
-                    </div>
-                    {{ form_end(event.form_grade) }}
+                {% if null != app.user and check_one.user.id != app.user.id %}
+                    {% set other_grade = 1 %}
                 {% endif %}
             {% endif %}
         {% endfor %}
+    {% endif %}
+    {% if (have_own_grade == 1 and other_grade == 0) or (have_own_grade == 1 and other_grade == 1) %}
+        {{ form_start(event.form_grade, { method: 'put', action: url('grade_edit', {'id': event.id}) }) }}
+        {% if false == event.form_grade.vars.valid %}
+            {% include 'default/_single_flash_message.html.twig' with {
+                type: 'danger',
+                message: 'message.form_error'|trans,
+            }%}
+        {% endif %}
+        {{ form_widget(event.form_grade) }}
+        <div class="form-group row float-sm-right">
+            <button type="submit" title="{{ 'action.update_grade'|trans }}" class="btn btn-primary">
+                {{ 'button.update_grade'|trans }}
+            </button>
+        </div>
+        {{ form_end(event.form_grade) }}
+    {% endif %}
+    {% if have_own_grade == 0 and other_grade == 1 %}
+        {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+        {% if false == event.form_grade.vars.valid %}
+            {% include 'default/_single_flash_message.html.twig' with {
+                type: 'danger',
+                message: 'message.form_error'|trans,
+            }%}
+        {% endif %}
+        {{ form_widget(event.form_grade) }}
+        <div class="form-group row float-sm-right">
+            <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
+                {{ 'button.new_grade'|trans }}
+            </button>
+        </div>
+        {{ form_end(event.form_grade) }}
     {% endif %}
     </div>
     <div class = "event-comments">

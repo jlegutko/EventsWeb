@@ -8,16 +8,19 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Comment;
 use App\Entity\Grade;
+use App\Entity\Group;
 use App\Entity\User;
 use App\Entity\Interest;
 use App\Entity\Photo;
 use App\Form\EventType;
 use App\Form\CommentType;
 use App\Form\GradeType;
+use App\Form\GroupType;
 use App\Form\PhotoType;
 use App\Repository\EventRepository;
 use App\Repository\CommentRepository;
 use App\Repository\GradeRepository;
+use App\Repository\GroupRepository;
 use App\Repository\InterestRepository;
 use App\Repository\PhotoRepository;
 use DateTime;
@@ -67,9 +70,10 @@ class EventController extends AbstractController
      * View action.
      *
      * @param Event $event Event entity
-     * @param Grade $grade Grade entity
-     * @param User $user User entity
+     * @param \App\Repository\GradeRepository $repository Repository
+     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
      *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -78,7 +82,7 @@ class EventController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function view(Event $event): Response
+    public function view(Event $event, GradeRepository $repository, PaginatorInterface $paginator, Request $request): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -89,11 +93,25 @@ class EventController extends AbstractController
         $photo = $event->getPhoto();
         $grade = $event->getGrades();
         $user = $this->getUser();
+        $check = $paginator->paginate(
+            $repository->queryByOwnerAndEvent($user, $event),
+            $request->query->getInt('page', 1),
+            Event::NUMBER_OF_ITEMS
+        );
+        $allGrades = $paginator->paginate(
+            $repository->queryByEvent($event),
+            $request->query->getInt('page', 1),
+            Event::NUMBER_OF_ITEMS
+        );
 
         if ($photo === null) {
             return $this->render(
                 'event/view.html.twig',
-                ['event' => $event]
+                ['event' => $event,
+                    'grade' => $grade,
+                    'user' => $user,
+                    'check' => $check,
+                    'all_grades' => $allGrades]
             );
         } else {
             return $this->render(
@@ -101,7 +119,9 @@ class EventController extends AbstractController
                 ['event' => $event,
                  'photo' => $photo,
                  'grade' => $grade,
-                  'user' => $user]
+                 'user' => $user,
+                 'check' => $check,
+                 'all_grades' => $allGrades]
             );
         }
     }
@@ -334,7 +354,7 @@ class EventController extends AbstractController
      * Edit Grade action.
      *
      * @param \App\Entity\Grade $grade Grade entity
-     *
+     * @param \App\Entity\Event $event Event entity
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -343,55 +363,33 @@ class EventController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function editGrade(Request $request, Grade $grade, GradeRepository $repository): Response
+    public function editGrade(Request $request, Grade $grade, Event $event,GradeRepository $repository): Response
     {
-        $form = $this->createForm(GradeType::class, $grade, ['method' => 'PUT']);
-        $form->handleRequest($request);
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $check = $repository -> findOneBy(['user' => $this->getUser(), 'event' => $event]);
+        if ($check instanceof Grade) {
+            $form = $this->createForm(GradeType::class, $grade, ['method' => 'PUT']);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->save($grade);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $repository->save($grade);
 
-            $this->addFlash('success', 'message.updated_successfully');
+                $this->addFlash('success', 'message.updated_successfully');
 
-            return $this->redirectToRoute('grade_index');
+                return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+            }
+        } else {
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
         }
 
         return $this->render(
             'grade/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'grade' => $grade,
+            ['form' => $form->createView(),
+                'event' => $event,
+                'grade' => $grade
             ]
-        );
-    }
-
-    /**
-     * Grades for an event.
-     *
-     * @param Event $event Event entity
-     * @param GradeRepository $repository Grade Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
-     *
-     * @Route(
-     *     "/{id}/allgrades",
-     *     methods={"GET", "POST"},
-     *     requirements={"id": "[1-9]\d*"},
-     *     name="all_grades",
-     *     )
-     */
-    public function grades(Request $request, Event $event, GradeRepository $repository, PaginatorInterface $paginator): Response
-    {
-        $pagination = $paginator->paginate(
-            $repository->queryByEvent($event),
-            $request->query->getInt('page', 1),
-            Event::NUMBER_OF_ITEMS
-        );
-
-        return $this->render(
-            'event/grades.html.twig',
-            ['pagination' => $pagination]
         );
     }
     /**
@@ -480,6 +478,49 @@ class EventController extends AbstractController
 
         return $this->render(
             'event/new_photo.html.twig',
+            ['form' => $form->createView(),
+             'event' => $event,
+            ]
+        );
+    }
+    /**
+     * Add a new group action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Repository\GroupRepository            $repository Group repository
+     * @param Event  $event
+     * @param Group  $group
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newgroup",
+     *     methods={"GET", "POST"},
+     *     name="event_new_group",
+     * )
+     */
+    public function newGroup(Request $request, Event $event, GroupRepository $repository): Response
+    {
+        $group = new Group();
+        $form = $this->createForm(GroupType::class, $group);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $group->setCreatedAt(new DateTime());
+            $group->setUpdatedAt(new DateTime());
+            $group->setEvent($event);
+            $repository->save($group);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_group.html.twig',
             ['form' => $form->createView(),
              'event' => $event,
             ]

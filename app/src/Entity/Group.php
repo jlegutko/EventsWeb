@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Group
 {
+    const NUMBER_OF_ITEMS = 3;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -34,17 +35,19 @@ class Group
      */
     private $event;
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="groups")
-     */
-    private $user;
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="groups", orphanRemoval=true)
      */
     private $discussions;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="community")
+     */
+    private $members;
+
     public function __construct()
     {
-        $this->user = new ArrayCollection();
         $this->discussions = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -87,27 +90,6 @@ class Group
         return $this;
     }
     /**
-     * @return Collection|User[]
-     */
-    public function getUser(): Collection
-    {
-        return $this->user;
-    }
-    public function addUser(User $user): self
-    {
-        if (!$this->user->contains($user)) {
-            $this->user[] = $user;
-        }
-        return $this;
-    }
-    public function removeUser(User $user): self
-    {
-        if ($this->user->contains($user)) {
-            $this->user->removeElement($user);
-        }
-        return $this;
-    }
-    /**
      * @return Collection|Discussion[]
      */
     public function getDiscussions(): Collection
@@ -131,6 +113,37 @@ class Group
                 $discussion->setGroups(null);
             }
         }
+        return $this;
+    }
+
+    /**
+     * @return Collection|Member[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+            $member->setCommunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): self
+    {
+        if ($this->members->contains($member)) {
+            $this->members->removeElement($member);
+            // set the owning side to null (unless already changed)
+            if ($member->getCommunity() === $this) {
+                $member->setCommunity(null);
+            }
+        }
+
         return $this;
     }
 }

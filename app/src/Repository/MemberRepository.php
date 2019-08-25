@@ -1,13 +1,13 @@
 <?php
 /**
- * Grade repository.
+ * Member repository.
  */
 
 namespace App\Repository;
 
-use App\Entity\Grade;
-use App\Entity\Event;
+use App\Entity\Member;
 use App\Entity\User;
+use App\Entity\Group;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -15,23 +15,23 @@ use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * Class GradeRepository.
+ * Class MemberRepository.
  *
- * @method Grade|null find($id, $lockMode = null, $lockVersion = null)
- * @method Grade|null findOneBy(array $criteria, array $orderBy = null)
- * @method Grade[]    findAll()
- * @method Grade[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Member|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Member|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Member[]    findAll()
+ * @method Member[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class GradeRepository extends ServiceEntityRepository
+class MemberRepository extends ServiceEntityRepository
 {
     /**
-     * GradeRepository constructor.
+     * MemberRepository constructor.
      *
      * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry Registry
      */
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Grade::class);
+        parent::__construct($registry, Member::class);
     }
 
     /**
@@ -45,82 +45,72 @@ class GradeRepository extends ServiceEntityRepository
             ->orderBy('t.updatedAt', 'DESC');
     }
     /**
-     *Query interests by owner and event.
+     * Query members by owner.
      *
-     * @param User $user User Entity
-     * @param Event|null $event
+     * @param User|null $user User Entity
      *
      * @return QueryBuilder Query builder
      */
-    public function queryByOwnerAndEvent(User $user = null, Event $event = null): QueryBuilder
+    public function queryByMember(User $user = null): QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         if (!is_null($user)) {
-            $queryBuilder->andWhere('g.user = :user')
-                -> setParameter('user', $user);
+            $queryBuilder->andWhere('i.member= :member')
+                -> setParameter('member', $user);
         }
-        if (!is_null($event)) {
-            $queryBuilder->andWhere('i.event= :event')
-                -> setParameter('event', $event);
-        }
-
-        return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
-    }
-    /**
-     * Query grades by event.
-     *
-     * @param Event|null $event Event entity
-     *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
-     */
-    public function queryByEvent(Event $event = null) : QueryBuilder
-    {
-        $queryBuilder = $this->queryAll();
-
-        if (!is_null($event)) {
-            $queryBuilder->andWhere('t.event = :event')
-                ->setParameter('event', $event);
-        }
-        $typeQuery = $queryBuilder -> getType();
 
         return $queryBuilder;
     }
     /**
-     * Average grade for event.
+     * Query members by owner and group.
      *
-     * @param Event|null $event Event entity
+     * @param User $user User Entity
+     * @param Group|null $group
+     *
+     * @return QueryBuilder Query builder
      */
-    public function gradesAverage(Event $event = null) : QueryBuilder
+    public function queryByMemberAndGroup(User $user = null, Group $group = null): QueryBuilder
     {
+        $queryBuilder = $this->queryAll();
+
+        if (!is_null($user)) {
+            $queryBuilder->andWhere('i.member= :member')
+                -> setParameter('member', $user);
+        }
+        if (!is_null($group)) {
+            $queryBuilder->andWhere('i.community= :community')
+                -> setParameter('community', $group);
+        }
+
+        return $queryBuilder;
     }
     /**
      * Save record.
      *
-     * @param Grade $grade Grade entity
+     * @param Member $member Member entity
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function save(Grade $grade): void
+    public function save(Member $member): void
     {
-        $this->_em->persist($grade);
-        $this->_em->flush($grade);
+        $this->_em->persist($member);
+        $this->_em->flush($member);
     }
 
     /**
      * Delete record.
      *
-     * @param Grade $grade Grade entity
+     * @param Member $member Member entity
      *
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function delete(Grade $grade): void
+    public function delete(Member $member): void
     {
-        $this->_em->remove($grade);
-        $this->_em->flush($grade);
+        $this->_em->remove($member);
+        $this->_em->flush($member);
     }
 
     /**
@@ -136,7 +126,7 @@ class GradeRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Grade[] Returns an array of Grade objects
+    //  * @return Member[] Returns an array of Member objects
     //  */
     /*
     public function findByExampleField($value)
@@ -153,7 +143,7 @@ class GradeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Grade
+    public function findOneBySomeField($value): ?Member
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
