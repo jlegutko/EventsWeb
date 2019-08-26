@@ -163,6 +163,11 @@ class User implements UserInterface
     private $members;
 
     /**
+     * @ORM\OneToOne(targetEntity="ProfilePhoto.php", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $yes;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -503,6 +508,24 @@ class User implements UserInterface
             if ($member->getMember() === $this) {
                 $member->setMember(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getYes(): ?Profilephoto
+    {
+        return $this->yes;
+    }
+
+    public function setYes(?Profilephoto $yes): self
+    {
+        $this->yes = $yes;
+
+        // set (or unset) the owning side of the relation if necessary
+        $newUser = $yes === null ? null : $this;
+        if ($newUser !== $yes->getUser()) {
+            $yes->setUser($newUser);
         }
 
         return $this;

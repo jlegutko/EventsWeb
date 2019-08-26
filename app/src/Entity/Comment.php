@@ -29,10 +29,6 @@ class Comment
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $title;
-    /**
-     * @ORM\Column(type="text")
-     */
     private $content;
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
@@ -67,15 +63,6 @@ class Comment
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-        return $this;
-    }
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-    public function setTitle(string $title): self
-    {
-        $this->title = $title;
         return $this;
     }
     public function getContent(): ?string

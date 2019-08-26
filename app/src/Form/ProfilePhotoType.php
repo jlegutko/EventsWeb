@@ -1,20 +1,20 @@
 <?php
 /**
- * Post type.
+ * ProfilePhoto type.
  */
 
 namespace App\Form;
 
-use App\Entity\Post;
+use App\Entity\ProfilePhoto;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * Class PostType.
+ * Class ProfilePhotoType.
  */
-class PostType extends AbstractType
+class ProfilePhotoType extends AbstractType
 {
     /**
      * Builds the form.
@@ -30,12 +30,11 @@ class PostType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
-            'content',
-            TextType::class,
+            'file',
+            FileType::class,
             [
-                'label' => 'label.name',
+                'label' => 'label.profile_photo',
                 'required' => true,
-                'attr' => ['max_length' => 255],
             ]
         );
     }
@@ -47,7 +46,7 @@ class PostType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(['data_class' => Post::class]);
+        $resolver->setDefaults(['data_class' => ProfilePhoto::class]);
     }
 
     /**
@@ -60,7 +59,6 @@ class PostType extends AbstractType
      */
     public function getBlockPrefix(): string
     {
-        return 'post';
+        return 'profile_photo';
     }
 }
-
