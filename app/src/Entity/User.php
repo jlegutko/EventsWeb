@@ -38,7 +38,7 @@ class User implements UserInterface
      *
      * @constant int NUMBER_OF_ITEMS
      */
-    const NUMBER_OF_ITEMS = 3;
+    const NUMBER_OF_ITEMS = 10;
     /**
      * Role user.
      *
@@ -153,7 +153,7 @@ class User implements UserInterface
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user",orphanRemoval=true)
      */
     private $events;
 
@@ -161,12 +161,10 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="member")
      */
     private $members;
-
     /**
-     * @ORM\OneToOne(targetEntity="ProfilePhoto.php", mappedBy="user", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
-    private $yes;
-
+    private $profilePhoto;
     /**
      * User constructor.
      */
@@ -513,19 +511,18 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getYes(): ?Profilephoto
+    public function getProfilePhoto(): ?ProfilePhoto
     {
-        return $this->yes;
+        return $this->profilePhoto;
     }
 
-    public function setYes(?Profilephoto $yes): self
+    public function setProfilePhoto(ProfilePhoto $profilePhoto): self
     {
-        $this->yes = $yes;
+        $this->profilePhoto = $profilePhoto;
 
-        // set (or unset) the owning side of the relation if necessary
-        $newUser = $yes === null ? null : $this;
-        if ($newUser !== $yes->getUser()) {
-            $yes->setUser($newUser);
+        // set the owning side of the relation if necessary
+        if ($this !== $profilePhoto->getUser()) {
+            $profilePhoto->setUser($this);
         }
 
         return $this;

@@ -6,10 +6,19 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MemberRepository")
+ * @ORM\Table(
+ *     name="members")
  */
 class Member
 {
-    const NUMBER_OF_ITEMS = 3;
+    /**
+     * Use constants to define configuration options that rarely change instead
+     * of specifying them in app/config/config.yml.
+     * See http://symfony.com/doc/current/best_practices/configuration.html#constants-vs-configuration-options
+     *
+     * @constant int NUMBER_OF_ITEMS
+     */
+    const NUMBER_OF_ITEMS = 10;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()

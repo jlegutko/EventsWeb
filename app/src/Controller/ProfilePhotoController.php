@@ -10,6 +10,8 @@ use App\Form\ProfilePhotoType;
 use App\Repository\ProfilePhotoRepository;
 use App\Service\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,15 +26,91 @@ class ProfilePhotoController extends AbstractController
 {
     private $uploaderService = null;
 
+    /**
+     * ProfilePhotoController constructor.
+     * @param FileUploader $uploaderService
+     */
     public function __construct(FileUploader $uploaderService)
     {
         $this->uploaderService = $uploaderService;
     }
-
     /**
-     * New action.
+     * View action.
+     *
+     * @param \App\Entity\ProfilePhoto $profilePhoto ProfilePhoto entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}",
+     *     name="profile_photo_view",
+     *     requirements={"id": "[1-9]\d*"},
+     * )
+     */
+    public function view(ProfilePhoto $profilePhoto): Response
+    {
+        return $this->render(
+            'profile_photo/view.html.twig',
+            ['profile_photo' => $profilePhoto]
+        );
+    }
+    /**
+     * Edit action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP  request
+     * @param \App\Entity\ProfilePhoto                         $profilePhoto      ProfilePhoto entity
+     * @param \App\Repository\ProfilePhotoRepository           $repository ProfilePhoto repository
+     * @param \Symfony\Component\Filesystem\Filesystem  $filesystem Filesystem component
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/edit",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="profile_photo_edit",
+     * )
+     */
+    public function edit(Request $request, ProfilePhoto $profilePhoto, ProfilePhotoRepository $repository, Filesystem $filesystem): Response
+    {
+        $originalProfilePhoto = clone $profilePhoto;
+
+        $form = $this->createForm(ProfilePhotoType::class, $profilePhoto, ['method' => 'PUT']);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $formData = $form->getData();
+
+            if ($formData->getFile() instanceof UploadedFile) {
+                $repository->save($profilePhoto);
+                $file = $originalProfilePhoto->getFile();
+                $filesystem->remove($file->getPathname());
+            }
+
+            $this->addFlash('success', 'message.updated_successfully');
+
+            return $this->redirectToRoute(
+                'profile_photo_view',
+                ['id' => $profilePhoto->getId()]
+            );
+        }
+
+        return $this->render(
+            'profile_photo/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'profile_photo' => $profilePhoto,
+            ]
+        );
+    }
+    /**
+     * Delete action.
      *
      * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param \App\Entity\ProfilePhoto                         $profilePhoto      ProfilePhoto entity
      * @param \App\Repository\ProfilePhotoRepository           $repository ProfilePhoto repository
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
@@ -41,28 +119,34 @@ class ProfilePhotoController extends AbstractController
      * @throws \Doctrine\ORM\OptimisticLockException
      *
      * @Route(
-     *     "/new",
-     *     methods={"GET", "POST"},
-     *     name="profile_photo_new",
+     *     "/{id}/delete",
+     *     methods={"GET", "DELETE"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="profile_photo_delete",
      * )
      */
-    public function new(Request $request, ProfilePhotoRepository $repository): Response
+    public function delete(Request $request, ProfilePhoto $profilePhoto, ProfilePhotoRepository $repository): Response
     {
-        $profile_photo = new ProfilePhoto();
-        $form = $this->createForm(ProfilePhotoType::class, $profile_photo);
+        $form = $this->createForm(FormType::class, $profilePhoto, ['method' => 'DELETE']);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $profile_photo->setUser($this->getUser());
-            $repository->save($profile_photo);
-            $this->addFlash('success', 'message.created_successfully');
+        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+            $form->submit($request->request->get($form->getName()));
+        }
 
-            return $this->redirectToRoute('task_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            $repository->delete($profilePhoto);
+            $this->addFlash('success', 'message.deleted_successfully');
+
+            return $this->redirectToRoute('event_index');
         }
 
         return $this->render(
-            'profile_photo/new.html.twig',
-            ['form' => $form->createView()]
+            'profile_photo/delete.html.twig',
+            [
+                'form' => $form->createView(),
+                'profile_photo' => $profilePhoto,
+            ]
         );
     }
 }

@@ -446,6 +446,9 @@
     "symfony/yaml": {
         "version": "v3.4.27"
     },
+    "twbs/bootstrap": {
+        "version": "v4.3.1"
+    },
     "twig/extensions": {
         "version": "1.0",
         "recipe": {

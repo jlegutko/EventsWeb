@@ -1,0 +1,8 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.profile_photo_edit',
+    page_title_param: {'%id%': profile_photo.id},
+    attr: {
+        method: 'PUT',
+        action: url('profile_photo_edit', {'id': profile_photo.id}),
+    },
+} %}

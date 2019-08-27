@@ -5,9 +5,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ProfilePhoto;
 use App\Form\UserType;
 use App\Form\ChangePasswordType;
+use App\Form\ProfilePhotoType;
 use App\Repository\UserRepository;
+use App\Repository\ProfilePhotoRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -214,7 +217,7 @@ class RegistrationController extends AbstractController
      *     name="user_delete",
      * )
      */
-    public function delete(Request $request, User $user, UserRepository $repository): Response
+    public function delete(Request $request, User $user, UserRepository $repository, ProfilePhotoRepository $profilePhotoRepository): Response
     {
         $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -232,6 +235,57 @@ class RegistrationController extends AbstractController
             'registration/delete.html.twig',
             [
                 'form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+    /**
+     * Add a new profile photo action.
+     *
+     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
+     * @param User  $user
+     * @param ProfilePhoto $profilePhoto
+     * @param ProfilePhotoRepository $repository ProfilePhoto Repository
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     *
+     * @Route(
+     *     "/users/{id}/newphoto",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="new_profile_photo",
+     * )
+     */
+    public function newPhoto(Request $request, User $user, ProfilePhotoRepository $repository): Response
+    {
+        if ($user->getProfilePhoto()) {
+            $profilePhoto = $user->getProfilePhoto();
+
+            return $this->redirectToRoute(
+                'profile_photo_edit',
+                ['id' => $profilePhoto->getId()]
+            );
+        }
+        $profilePhoto = new ProfilePhoto();
+        $form = $this->createForm(ProfilePhotoType::class, $profilePhoto);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $profilePhoto->setUser($user);
+            $profilePhoto->setCreatedAt(new DateTime());
+            $profilePhoto->setUpdatedAt(new DateTime());
+            $repository->save($profilePhoto);
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('user_view', ['id' => $user->getId()]);
+        }
+
+        return $this->render(
+            'registration/new_profile_photo.html.twig',
+            ['form' => $form->createView(),
                 'user' => $user,
             ]
         );

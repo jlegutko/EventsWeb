@@ -1,0 +1,11 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.profile_photo_delete',
+    page_title_param: {'%id%': profile_photo.id},
+    attr: {
+        method: 'DELETE',
+        action: url('profile_photo_delete', {'id': profile_photo.id}),
+    },
+    submit_label: 'action.delete',
+    profile_photo: profile_photo.file,
+} %}
+

@@ -16,4 +16,3 @@ framework:
     # ...
 parameters:
     photos_directory: '%kernel.project_dir%/public/uploads/photos'
-    profile_photos_directory: '%kernel.project_dir%/public/uploads/profile_photos'

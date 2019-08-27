@@ -6,6 +6,7 @@
 namespace App\Form;
 
 use App\Entity\ProfilePhoto;
+use App\Form\EventListener\DefaultPhotoFileEventSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -29,14 +30,18 @@ class ProfilePhotoType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $photo = $builder->getData();
+
         $builder->add(
             'file',
             FileType::class,
             [
                 'label' => 'label.profile_photo',
-                'required' => true,
+                'required' => $photo->getFile() ? false : true,
             ]
         );
+
+        $builder->addEventSubscriber(new DefaultPhotoFileEventSubscriber());
     }
 
     /**

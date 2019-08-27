@@ -1,0 +1,7 @@
+{% include 'default/_form.html.twig' with {
+    page_title:'title.user_add_photo',
+    attr: {
+        method: 'POST',
+        action: url('new_profile_photo', {'id':user.id}),
+    },
+} %}
