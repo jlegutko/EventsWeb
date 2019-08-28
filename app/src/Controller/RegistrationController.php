@@ -13,6 +13,7 @@ use App\Repository\UserRepository;
 use App\Repository\ProfilePhotoRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -290,6 +291,55 @@ class RegistrationController extends AbstractController
         return $this->render(
             'registration/new_profile_photo.html.twig',
             ['form' => $form->createView(),
+                'user' => $user,
+            ]
+        );
+    }
+    /**
+     * Change user's role.
+     *
+     * @param Request        $request    HTTP request
+     * @param User           $user       User entity
+     * @param UserRepository $repository User repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/changerole",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_change_role",
+     * )
+     *
+     * @IsGranted(
+     *     "ROLE_ADMIN",
+     * )
+     */
+    public function changeRole(Request $request, User $user, UserRepository $repository): Response
+    {
+        $form = $this->createForm(FormType::class, $user, ['method' => 'PUT', 'validation_groups' => ['userChangeRole']]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (in_array('ROLE_ADMIN', $user->getRoles())) {
+                $user->setRoles(['ROLE_USER']);
+            } else {
+                $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
+            }
+            $repository->save($user);
+
+            $this->addFlash('success', 'message.updated_successfully');
+
+            return $this->redirectToRoute('user_view', ['id' => $user->getId()]);
+        }
+
+        return $this->render(
+            'registration/change_role.html.twig',
+            [
+                'form' => $form->createView(),
                 'user' => $user,
             ]
         );
