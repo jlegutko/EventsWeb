@@ -1,8 +1,14 @@
 <?php
+/**
+ * Group entity.
+ */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\Table(
@@ -42,58 +48,109 @@ class Group
      */
     private $event;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="groups", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="groups", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $discussions;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="community")
+     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="community", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $members;
 
+    /**
+     * Group constructor.
+     */
     public function __construct()
     {
         $this->discussions = new ArrayCollection();
         $this->members = new ArrayCollection();
     }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Group
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
-    public function getCreatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Group
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
-    public function getUpdatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Group
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
+
+    /**
+     * @return Event|null
+     */
     public function getEvent(): ?Event
     {
         return $this->event;
     }
+
+    /**
+     * @param Event|null $event
+     *
+     * @return Group
+     */
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
         return $this;
     }
     /**
@@ -103,14 +160,27 @@ class Group
     {
         return $this->discussions;
     }
+
+    /**
+     * @param Discussion $discussion
+     *
+     * @return Group
+     */
     public function addDiscussion(Discussion $discussion): self
     {
         if (!$this->discussions->contains($discussion)) {
             $this->discussions[] = $discussion;
             $discussion->setGroups($this);
         }
+
         return $this;
     }
+
+    /**
+     * @param Discussion $discussion
+     *
+     * @return Group
+     */
     public function removeDiscussion(Discussion $discussion): self
     {
         if ($this->discussions->contains($discussion)) {
@@ -120,6 +190,7 @@ class Group
                 $discussion->setGroups(null);
             }
         }
+
         return $this;
     }
 
@@ -131,6 +202,11 @@ class Group
         return $this->members;
     }
 
+    /**
+     * @param Member $member
+     *
+     * @return Group
+     */
     public function addMember(Member $member): self
     {
         if (!$this->members->contains($member)) {
@@ -141,6 +217,11 @@ class Group
         return $this;
     }
 
+    /**
+     * @param Member $member
+     *
+     * @return Group
+     */
     public function removeMember(Member $member): self
     {
         if ($this->members->contains($member)) {

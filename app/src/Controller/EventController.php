@@ -24,6 +24,8 @@ use App\Repository\GroupRepository;
 use App\Repository\InterestRepository;
 use App\Repository\PhotoRepository;
 use DateTime;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -41,11 +43,11 @@ class EventController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\EventRepository            $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     * @param Request            $request    HTTP request
+     * @param EventRepository    $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -69,12 +71,13 @@ class EventController extends AbstractController
     /**
      * View action.
      *
-     * @param Event $event Event entity
-     * @param \App\Repository\GradeRepository $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @param Event              $event      Event entity
+     * @param GradeRepository    $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request            $request
+     *
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -87,9 +90,9 @@ class EventController extends AbstractController
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
         $event->form = $form->createView();
-        $grade_new = new Grade();
-        $form_grade = $this->createForm(GradeType::class, $grade_new);
-        $event->form_grade = $form_grade->createView();
+        $gradeNew = new Grade();
+        $formGrade = $this->createForm(GradeType::class, $gradeNew);
+        $event->formGrade = $formGrade->createView();
         $photo = $event->getPhoto();
         $grade = $event->getGrades();
         $user = $this->getUser();
@@ -104,38 +107,34 @@ class EventController extends AbstractController
             Event::NUMBER_OF_ITEMS
         );
 
-        if ($photo === null) {
-            return $this->render(
-                'event/view.html.twig',
-                ['event' => $event,
-                    'grade' => $grade,
-                    'user' => $user,
-                    'check' => $check,
-                    'all_grades' => $allGrades]
-            );
-        } else {
-            return $this->render(
-                'event/view.html.twig',
-                ['event' => $event,
-                 'photo' => $photo,
-                 'grade' => $grade,
-                 'user' => $user,
-                 'check' => $check,
-                 'all_grades' => $allGrades]
-            );
-        }
+        return ($photo === null) ? $this->render(
+            'event/view.html.twig',
+            ['event' => $event,
+                'grade' => $grade,
+                'user' => $user,
+                'check' => $check,
+                'all_grades' => $allGrades, ]
+        ) : $this->render(
+            'event/view.html.twig',
+            ['event' => $event,
+                'photo' => $photo,
+                'grade' => $grade,
+                'user' => $user,
+                'check' => $check,
+                'all_grades' => $allGrades, ]
+        );
     }
 
     /**
      * New action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\EventRepository            $repository Event repository
+     * @param Request         $request    HTTP request
+     * @param EventRepository $repository Event repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/new",
@@ -169,14 +168,14 @@ class EventController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Event                          $event       Event entity
-     * @param \App\Repository\EventRepository            $repository Event repository
+     * @param Request         $request    HTTP request
+     * @param Event           $event      Event entity
+     * @param EventRepository $repository Event repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -210,14 +209,14 @@ class EventController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Event                          $event       Event entity
-     * @param \App\Repository\EventRepository            $repository Event repository
+     * @param Request         $request    HTTP request
+     * @param Event           $event      Event entity
+     * @param EventRepository $repository Event repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -253,14 +252,14 @@ class EventController extends AbstractController
     /**
      * Add a new comment action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param Event  $event
+     * @param Request           $request    HTTP request
+     * @param Event             $event
      * @param CommentRepository $repository Event Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newcomment",
@@ -300,20 +299,20 @@ class EventController extends AbstractController
     /**
      * Add a new grade action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param Event  $event
+     * @param Request         $request    HTTP request
+     * @param Event           $event
      * @param GradeRepository $repository Event Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newgrade",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="event_new_grade",
+     *     name="event_newGrade",
      * )
      */
     public function newGrade(Request $request, Event $event, GradeRepository $repository): Response
@@ -353,9 +352,16 @@ class EventController extends AbstractController
     /**
      * Edit Grade action.
      *
-     * @param \App\Entity\Grade $grade Grade entity
-     * @param \App\Entity\Event $event Event entity
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param Request         $request
+     * @param Grade           $grade      Grade entity
+     * @param Event           $event      Event entity
+     *
+     * @param GradeRepository $repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/grade/{id}/edit",
@@ -363,7 +369,7 @@ class EventController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function editGrade(Request $request, Grade $grade, Event $event,GradeRepository $repository): Response
+    public function editGrade(Request $request, Grade $grade, Event $event, GradeRepository $repository): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
@@ -388,20 +394,20 @@ class EventController extends AbstractController
             'grade/edit.html.twig',
             ['form' => $form->createView(),
                 'event' => $event,
-                'grade' => $grade
+                'grade' => $grade,
             ]
         );
     }
     /**
      * Interest action.
      *
-     * @param Event $event
+     * @param Event              $event
      * @param InterestRepository $repository Event Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/interest",
@@ -432,18 +438,18 @@ class EventController extends AbstractController
 
         return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
     }
+
     /**
      * Add a new photo action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param Event  $event
-     * @param Photo $photo
-     * @param PhotoRepository $repository Event Repository
+     * @param Request         $request    HTTP request
+     * @param Event           $event
+     * @param PhotoRepository $repository Photo Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newphoto",
@@ -486,15 +492,14 @@ class EventController extends AbstractController
     /**
      * Add a new group action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\GroupRepository            $repository Group repository
-     * @param Event  $event
-     * @param Group  $group
+     * @param Request         $request    HTTP request
+     * @param GroupRepository $repository Group repository
+     * @param Event           $event
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newgroup",

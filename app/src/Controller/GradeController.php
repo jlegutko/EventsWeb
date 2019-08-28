@@ -6,8 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\Grade;
-use App\Form\GradeType;
 use App\Repository\GradeRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,11 +26,11 @@ class GradeController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\GradeRepository            $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     * @param Request            $request    HTTP request
+     * @param GradeRepository    $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -53,9 +54,9 @@ class GradeController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Grade $grade Grade entity
+     * @param Grade $grade Grade entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -70,17 +71,18 @@ class GradeController extends AbstractController
             ['grade' => $grade]
         );
     }
+
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Grade                          $grade       Grade entity
-     * @param \App\Repository\GradeRepository            $repository Grade repository
+     * @param Request         $request    HTTP request
+     * @param Grade           $grade      Grade entity
+     * @param GradeRepository $repository Grade repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

@@ -27,7 +27,7 @@ class GradeRepository extends ServiceEntityRepository
     /**
      * GradeRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry Registry
+     * @param RegistryInterface $registry Registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -37,17 +37,17 @@ class GradeRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('g.updatedAt', 'DESC');
     }
     /**
      *Query interests by owner and event.
      *
-     * @param User $user User Entity
+     * @param User       $user  User Entity
      * @param Event|null $event
      *
      * @return QueryBuilder Query builder
@@ -61,39 +61,30 @@ class GradeRepository extends ServiceEntityRepository
                 -> setParameter('user', $user);
         }
         if (!is_null($event)) {
-            $queryBuilder->andWhere('i.event= :event')
+            $queryBuilder->andWhere('g.event= :event')
                 -> setParameter('event', $event);
         }
 
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('g.updatedAt', 'DESC');
     }
     /**
      * Query grades by event.
      *
      * @param Event|null $event Event entity
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryByEvent(Event $event = null) : QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         if (!is_null($event)) {
-            $queryBuilder->andWhere('t.event = :event')
+            $queryBuilder->andWhere('g.event = :event')
                 ->setParameter('event', $event);
         }
-        $typeQuery = $queryBuilder -> getType();
 
         return $queryBuilder;
-    }
-    /**
-     * Average grade for event.
-     *
-     * @param Event|null $event Event entity
-     */
-    public function gradesAverage(Event $event = null) : QueryBuilder
-    {
     }
     /**
      * Save record.
@@ -126,13 +117,13 @@ class GradeRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('g');
     }
 
     // /**

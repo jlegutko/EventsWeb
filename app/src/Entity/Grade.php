@@ -1,6 +1,12 @@
 <?php
+/**
+ * Grade entity.
+ */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GradeRepository")
  * @ORM\Table(
@@ -46,56 +52,109 @@ class Grade
      * @ORM\Column(type="datetime")
      */
     private $updatedAt;
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return int|null
+     */
     public function getGrade(): ?int
     {
         return $this->grade;
     }
+
+    /**
+     * @param int $grade
+     *
+     * @return Grade
+     */
     public function setGrade(int $grade): self
     {
         $this->grade = $grade;
+
         return $this;
     }
+
+    /**
+     * @return Event|null
+     */
     public function getEvent(): ?Event
     {
         return $this->event;
     }
+
+    /**
+     * @param Event|null $event
+     *
+     * @return Grade
+     */
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
         return $this;
     }
+
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
+
+    /**
+     * @param User|null $user
+     *
+     * @return Grade
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Grade
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Grade
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

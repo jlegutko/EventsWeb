@@ -1,5 +1,9 @@
 <?php
+/**
+ * Interest entity.
+ */
 namespace App\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,12 +32,12 @@ class Interest
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
+
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="interests")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
     /**
      * @return int|null
      */
@@ -52,11 +56,13 @@ class Interest
 
     /**
      * @param Event|null $event
+     *
      * @return Interest
      */
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
         return $this;
     }
 
@@ -70,11 +76,13 @@ class Interest
 
     /**
      * @param User|null $user
+     *
      * @return Interest
      */
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 }

@@ -4,8 +4,12 @@
  */
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Serializable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     fields={"file"}
  * )
  */
-class ProfilePhoto implements \Serializable
+class ProfilePhoto implements Serializable
 {
     /**
      * Use constants to define configuration options that rarely change instead
@@ -52,7 +56,7 @@ class ProfilePhoto implements \Serializable
     /**
      * Created at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -65,7 +69,7 @@ class ProfilePhoto implements \Serializable
     /**
      * Updated at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -119,9 +123,9 @@ class ProfilePhoto implements \Serializable
     /**
      * Getter for Created at.
      *
-     * @return \DateTimeInterface|null Created at
+     * @return DateTimeInterface|null Created at
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -129,9 +133,9 @@ class ProfilePhoto implements \Serializable
     /**
      * Setter for Created at.
      *
-     * @param \DateTimeInterface $createdAt Created at
+     * @param DateTimeInterface $createdAt Created at
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -139,9 +143,9 @@ class ProfilePhoto implements \Serializable
     /**
      * Getter for Updated at.
      *
-     * @return \DateTimeInterface|null Updated at
+     * @return DateTimeInterface|null Updated at
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -149,9 +153,9 @@ class ProfilePhoto implements \Serializable
     /**
      * Setter for Updated at.
      *
-     * @param \DateTimeInterface $updatedAt Updated at
+     * @param DateTimeInterface $updatedAt Updated at
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -171,7 +175,7 @@ class ProfilePhoto implements \Serializable
      *
      * @param mixed|null $file File
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function setFile($file = null): void
     {
@@ -181,7 +185,7 @@ class ProfilePhoto implements \Serializable
     /**
      * Getter for User.
      *
-     * @return \App\Entity\User|null User entity
+     * @return User|null User entity
      */
     public function getUser(): ?User
     {
@@ -191,7 +195,7 @@ class ProfilePhoto implements \Serializable
     /**
      * Setter for User.
      *
-     * @param \App\Entity\User $user User entity
+     * @param User $user User entity
      */
     public function setUser(User $user): void
     {

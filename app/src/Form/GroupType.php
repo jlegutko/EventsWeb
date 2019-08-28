@@ -33,7 +33,7 @@ class GroupType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'label.name',
+                'label' => 'label.group_name',
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]

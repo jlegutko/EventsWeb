@@ -1,6 +1,12 @@
 <?php
+/**
+ * Post entity.
+ */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
  * @ORM\Table(
@@ -44,53 +50,112 @@ class Post
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
+
+    /**
+     * @param string $content
+     *
+     * @return Post
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
+
         return $this;
     }
-    public function getCreatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Post
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
-    public function getUpdatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Post
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
+
+    /**
+     * @return Discussion|null
+     */
     public function getDiscussion(): ?Discussion
     {
         return $this->discussion;
     }
+
+    /**
+     * @param Discussion|null $discussion
+     *
+     * @return Post
+     */
     public function setDiscussion(?Discussion $discussion): self
     {
         $this->discussion = $discussion;
+
         return $this;
     }
+
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
+
+    /**
+     * @param User|null $user
+     *
+     * @return Post
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
         return $this;
     }
 }

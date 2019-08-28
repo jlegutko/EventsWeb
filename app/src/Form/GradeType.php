@@ -33,9 +33,9 @@ class GradeType extends AbstractType
             'grade',
             IntegerType::class,
             [
-                'label' => 'label.name',
+                'label' => 'label.grade',
                 'required' => true,
-                'attr' => ['max_length' => 255],
+                'scale' => 5,
             ]
         );
     }

@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Member entity.
+ */
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

@@ -8,10 +8,10 @@ namespace App\Form;
 use App\Entity\Event;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,9 +38,8 @@ class EventType extends AbstractType
             'name',
             TextType::class,
             [
-                'label' => 'label.name',
+                'label' => 'label.event_name',
                 'required' => true,
-                'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
@@ -50,7 +49,6 @@ class EventType extends AbstractType
                 'label' => 'label.event_date',
                 'required' => true,
                 'format' => 'yyyy-MM-dd',
-                'attr' => ['max_length' => 255],
             ]
         );
         $builder->add(
@@ -58,8 +56,7 @@ class EventType extends AbstractType
             MoneyType::class,
             [
                 'label' => 'label.event_price',
-                'required' => true,
-                'attr' => ['max_length' => 255],
+                'currency' => 'zł',
             ]
         );
         $builder->add(
@@ -73,7 +70,7 @@ class EventType extends AbstractType
         );
         $builder->add(
             'event_size',
-            IntegerType::class,
+            TextType::class,
             [
                 'label' => 'label.event_size',
                 'required' => true,
@@ -88,18 +85,16 @@ class EventType extends AbstractType
                 'choice_label' => function ($category) {
                     return $category->getName();
                 },
-                'label' => 'label.category',
-                'placeholder' => 'label.none',
+                'label' => 'label.event_category',
                 'required' => true,
             ]
         );
         $builder->add(
             'description',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'label.event_description',
                 'required' => true,
-                'attr' => ['max_length' => 255],
             ]
         );
     }

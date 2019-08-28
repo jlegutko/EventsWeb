@@ -3,7 +3,10 @@
  * Comment entity.
  */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
  * @ORM\Table(
@@ -54,40 +57,84 @@ class Comment
     {
         return $this->id;
     }
-    public function getCreatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Comment
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
-    public function getUpdatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Comment
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
+
+    /**
+     * @return string|null
+     */
     public function getContent(): ?string
     {
         return $this->content;
     }
+
+    /**
+     * @param string $content
+     *
+     * @return Comment
+     */
     public function setContent(string $content): self
     {
         $this->content = $content;
+
         return $this;
     }
+
+    /**
+     * @return User|null
+     */
     public function getOwner(): ?User
     {
         return $this->owner;
     }
+
+    /**
+     * @param User|null $owner
+     *
+     * @return Comment
+     */
     public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -101,11 +148,13 @@ class Comment
 
     /**
      * @param Event|null $event
+     *
      * @return Comment
      */
     public function setEvent(?Event $event): self
     {
         $this->event = $event;
+
         return $this;
     }
 }

@@ -37,12 +37,12 @@ class MemberRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('m.updatedAt', 'DESC');
     }
     /**
      * Query members by owner.
@@ -56,7 +56,7 @@ class MemberRepository extends ServiceEntityRepository
         $queryBuilder = $this->queryAll();
 
         if (!is_null($user)) {
-            $queryBuilder->andWhere('i.member= :member')
+            $queryBuilder->andWhere('m.member= :member')
                 -> setParameter('member', $user);
         }
 
@@ -65,7 +65,7 @@ class MemberRepository extends ServiceEntityRepository
     /**
      * Query members by owner and group.
      *
-     * @param User $user User Entity
+     * @param User       $user  User Entity
      * @param Group|null $group
      *
      * @return QueryBuilder Query builder
@@ -75,11 +75,11 @@ class MemberRepository extends ServiceEntityRepository
         $queryBuilder = $this->queryAll();
 
         if (!is_null($user)) {
-            $queryBuilder->andWhere('i.member= :member')
+            $queryBuilder->andWhere('m.member= :member')
                 -> setParameter('member', $user);
         }
         if (!is_null($group)) {
-            $queryBuilder->andWhere('i.community= :community')
+            $queryBuilder->andWhere('m.community= :community')
                 -> setParameter('community', $group);
         }
 
@@ -116,13 +116,13 @@ class MemberRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('m');
     }
 
     // /**

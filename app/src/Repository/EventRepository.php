@@ -25,7 +25,7 @@ class EventRepository extends ServiceEntityRepository
     /**
      * EventRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry Registry
+     * @param RegistryInterface $registry Registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -35,12 +35,12 @@ class EventRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('e.updatedAt', 'DESC');
     }
 
     /**
@@ -74,13 +74,13 @@ class EventRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('e');
     }
 
     /**
@@ -93,9 +93,9 @@ class EventRepository extends ServiceEntityRepository
     public function findByNamePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('t.name LIKE :search')
+            ->where('e.name LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, t.name), t.name')
+            ->orderBy('LOCATE(:pos, e.name), e.name')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }
@@ -110,9 +110,9 @@ class EventRepository extends ServiceEntityRepository
     public function findByDatePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('t.eventDate LIKE :search')
+            ->where('e.eventDate LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, t.eventDate), t.eventDate')
+            ->orderBy('LOCATE(:pos, e.eventDate), e.eventDate')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }
@@ -127,9 +127,9 @@ class EventRepository extends ServiceEntityRepository
     public function findBySizePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('t.eventSize LIKE :search')
+            ->where('e.eventSize LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, t.eventSize), t.eventSize')
+            ->orderBy('LOCATE(:pos, e.eventSize), e.eventSize')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }
@@ -144,9 +144,9 @@ class EventRepository extends ServiceEntityRepository
     public function findByPricePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('t.price LIKE :search')
+            ->where('e.price LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, t.price), t.price')
+            ->orderBy('LOCATE(:pos, e.price), e.price')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }

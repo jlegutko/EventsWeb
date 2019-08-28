@@ -12,6 +12,8 @@ use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\DiscussionRepository;
 use App\Repository\PostRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -29,11 +31,11 @@ class DiscussionController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\DiscussionRepository            $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface   $paginator  Paginator
+     * @param Request              $request    HTTP request
+     * @param DiscussionRepository $repository Repository
+     * @param PaginatorInterface   $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -56,10 +58,10 @@ class DiscussionController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Discussion $discussion Discussion entity
-     * @param \App\Entity\Post $post
+     * @param Discussion $discussion Discussion entity
+     * @param Post       $post
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -67,11 +69,11 @@ class DiscussionController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-
     public function view(Discussion $discussion, Post $post): Response
     {
         $form = $this->createForm(PostType::class, $post);
         $discussion->form = $form->createView();
+
         return $this->render(
             'discussion/view.html.twig',
             ['discussion' => $discussion]
@@ -80,9 +82,15 @@ class DiscussionController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \App\Entity\Discussion $discussion Discussion entity
+     * @param Request              $request
+     * @param Discussion           $discussion Discussion entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param DiscussionRepository $repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -115,14 +123,14 @@ class DiscussionController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Discussion                          $discussion       Discussion entity
-     * @param \App\Repository\DiscussionRepository            $repository Discussion repository
+     * @param Request              $request    HTTP request
+     * @param Discussion           $discussion Discussion entity
+     * @param DiscussionRepository $repository Discussion repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -158,15 +166,15 @@ class DiscussionController extends AbstractController
     /**
      * Add a new post action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\PostRepository            $repository Post repository
-     * @param Post  $post
-     * @param Discussion  $discussion
+     * @param Request        $request    HTTP request
+     * @param Discussion     $discussion
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param PostRepository $repository Post repository
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newpost",

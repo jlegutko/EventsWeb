@@ -4,6 +4,7 @@
  */
 namespace App\Entity;
 
+use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
@@ -52,7 +53,7 @@ class Photo
     /**
      * Created at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -65,7 +66,7 @@ class Photo
     /**
      * Updated at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -169,16 +170,23 @@ class Photo
         $this->file = $file;
     }
 
+    /**
+     * @return Event|null
+     */
     public function getEvent(): ?Event
     {
         return $this->event;
     }
 
+    /**
+     * @param Event $event
+     *
+     * @return Photo
+     */
     public function setEvent(Event $event): self
     {
         $this->event = $event;
 
         return $this;
     }
-
 }

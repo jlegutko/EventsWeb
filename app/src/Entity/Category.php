@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Category entity.
+*/
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * @ORM\Table(
@@ -43,22 +48,41 @@ class Category
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="category", orphanRemoval=true)
      */
     private $events;
+
+    /**
+     * Category constructor.
+     */
     public function __construct()
     {
         $this->event = new ArrayCollection();
         $this->events = new ArrayCollection();
     }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Category
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
     /**
@@ -68,14 +92,27 @@ class Category
     {
         return $this->event;
     }
+
+    /**
+     * @param Event $event
+     *
+     * @return Category
+     */
     public function addEvent(Event $event): self
     {
         if (!$this->event->contains($event)) {
             $this->event[] = $event;
             $event->setCategory($this);
         }
+
         return $this;
     }
+
+    /**
+     * @param Event $event
+     *
+     * @return Category
+     */
     public function removeEvent(Event $event): self
     {
         if ($this->event->contains($event)) {
@@ -85,27 +122,44 @@ class Category
                 $event->setCategory(null);
             }
         }
+
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Category
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Category
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 

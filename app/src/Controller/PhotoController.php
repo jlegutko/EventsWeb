@@ -9,6 +9,8 @@ use App\Entity\Photo;
 use App\Form\PhotoType;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploader;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -37,9 +39,9 @@ class PhotoController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Photo $photo Photo entity
+     * @param Photo $photo Photo entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -57,15 +59,15 @@ class PhotoController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP  request
-     * @param \App\Entity\Photo                         $photo      Photo entity
-     * @param \App\Repository\PhotoRepository           $repository Photo repository
-     * @param \Symfony\Component\Filesystem\Filesystem  $filesystem Filesystem component
+     * @param Request         $request    HTTP  request
+     * @param Photo           $photo      Photo entity
+     * @param PhotoRepository $repository Photo repository
+     * @param Filesystem      $filesystem Filesystem component
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -109,14 +111,14 @@ class PhotoController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Entity\Photo                         $photo      Photo entity
-     * @param \App\Repository\PhotoRepository           $repository Photo repository
+     * @param Request         $request    HTTP request
+     * @param Photo           $photo      Photo entity
+     * @param PhotoRepository $repository Photo repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

@@ -23,7 +23,8 @@ class ChangePasswordType extends AbstractType
      * top most type. Type extensions can further modify the form.
      *
      * @param FormBuilderInterface $builder The form builder
-     * @param array $options The options
+     * @param array                $options The options
+     *
      * @see FormTypeExtensionInterface::buildForm()
      *
      */
@@ -34,7 +35,7 @@ class ChangePasswordType extends AbstractType
             RepeatedType::class,
             [
                 'type' => PasswordType::class,
-                'invalid_message' => 'message.invalid.passwords.',
+                'invalid_message' => 'message.invalid.passwords',
                 'first_options' => ['label' => 'label.password'],
                 'second_options' => ['label' => 'label.repeat.password'],
                 'required' => true,

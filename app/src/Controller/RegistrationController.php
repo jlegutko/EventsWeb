@@ -159,15 +159,17 @@ class RegistrationController extends AbstractController
     /**
      * Change password action.
      *
-     * @param Request $request HTTP request
-     * @param User $user User entity
-     * @param UserRepository $repository User repository
+     * @param Request                      $request         HTTP request
+     * @param User                         $user            User entity
+     * @param UserRepository               $repository      User repository
      *
      * @param UserPasswordEncoderInterface $passwordEncoder
+     *
      * @return Response HTTP response
      *
      * @throws ORMException
      * @throws OptimisticLockException
+     *
      * @Route(
      *     "/users/{id}/change_pswd",
      *     methods={"GET", "PUT"},
@@ -187,7 +189,7 @@ class RegistrationController extends AbstractController
             $repository->save($user);
             $this->addFlash('success', 'message.updated_successfully');
 
-            return $this->redirectToRoute('dashboard');
+            return $this->redirectToRoute('user_view');
         }
 
         return $this->render(
@@ -198,6 +200,7 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
@@ -217,7 +220,7 @@ class RegistrationController extends AbstractController
      *     name="user_delete",
      * )
      */
-    public function delete(Request $request, User $user, UserRepository $repository, ProfilePhotoRepository $profilePhotoRepository): Response
+    public function delete(Request $request, User $user, UserRepository $repository): Response
     {
         $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
@@ -227,6 +230,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->delete($user);
             $this->addFlash('success', 'message.deleted_successfully');
+            $this->get('security.token_storage')->setToken(null);
 
             return $this->redirectToRoute('user_index');
         }
@@ -239,18 +243,18 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+
     /**
      * Add a new profile photo action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param User  $user
-     * @param ProfilePhoto $profilePhoto
+     * @param Request                $request    HTTP request
+     * @param User                   $user
      * @param ProfilePhotoRepository $repository ProfilePhoto Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/users/{id}/newphoto",

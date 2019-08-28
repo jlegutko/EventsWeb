@@ -6,7 +6,6 @@
 namespace App\Controller;
 
 use App\Entity\Group;
-use App\Entity\User;
 use App\Entity\Discussion;
 use App\Repository\DiscussionRepository;
 use App\Form\DiscussionType;
@@ -14,8 +13,9 @@ use App\Entity\Member;
 use App\Repository\MemberRepository;
 use App\Form\GroupType;
 use App\Repository\GroupRepository;
-use App\Repository\UserRepository;
 use DateTime;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -33,11 +33,11 @@ class GroupController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\GroupRepository $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @param Request            $request    HTTP request
+     * @param GroupRepository    $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -61,9 +61,9 @@ class GroupController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Group $group Group entity
+     * @param Group $group Group entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -82,14 +82,14 @@ class GroupController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Group $group Group entity
-     * @param \App\Repository\GroupRepository $repository Group repository
+     * @param Request         $request    HTTP request
+     * @param Group           $group      Group entity
+     * @param GroupRepository $repository Group repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -123,14 +123,14 @@ class GroupController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Group $group Group entity
-     * @param \App\Repository\GroupRepository $repository Group repository
+     * @param Request         $request    HTTP request
+     * @param Group           $group      Group entity
+     * @param GroupRepository $repository Group repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",
@@ -166,13 +166,13 @@ class GroupController extends AbstractController
     /**
      * Adding a new member of group.
      *
-     * @param Group $group
+     * @param Group            $group
      * @param MemberRepository $repository Member Repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newmember",
@@ -207,15 +207,14 @@ class GroupController extends AbstractController
     /**
      * Add a new discussion action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request    HTTP request
-     * @param \App\Repository\DiscussionRepository            $repository Discussion repository
-     * @param Group  $group
-     * @param Discussion  $discussion
+     * @param Request              $request    HTTP request
+     * @param Group                $group
+     * @param DiscussionRepository $repository Discussion repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/newdiscussion",

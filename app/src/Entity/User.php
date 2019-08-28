@@ -4,13 +4,14 @@
  */
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -69,7 +70,7 @@ class User implements UserInterface
     /**
      * Created at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @Gedmo\Timestampable(on="create")
      *
@@ -81,7 +82,7 @@ class User implements UserInterface
     /**
      * Updated at.
      *
-     * @var \DateTime
+     * @var DateTime
      *
      * @Gedmo\Timestampable(on="update")
      *
@@ -136,46 +137,48 @@ class User implements UserInterface
      */
     private $firstName;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="owner", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $comments;
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
-    private $interests;
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Grade", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Grade", mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $grades;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $posts;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user",orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $events;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="member")
+     * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="member", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $members;
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $profilePhoto;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Interest", mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
+     */
+    private $interests;
+
     /**
      * User constructor.
      */
     public function __construct()
     {
         $this->comments = new ArrayCollection();
-        $this->interests = new ArrayCollection();
         $this->grades = new ArrayCollection();
         $this->posts = new ArrayCollection();
         $this->events = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->interests = new ArrayCollection();
     }
     /**
      * Getter for the Id.
@@ -189,36 +192,36 @@ class User implements UserInterface
     /**
      * Getter for the Created At.
      *
-     * @return \DateTimeInterface|null Created At
+     * @return DateTimeInterface|null Created At
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
     /**
      * Setter for the Created At.
      *
-     * @param \DateTimeInterface $createdAt Created At
+     * @param DateTimeInterface $createdAt Created At
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): void
+    public function setCreatedAt(DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
     /**
      * Getter for the Updated At.
      *
-     * @return \DateTimeInterface|null updated at
+     * @return DateTimeInterface|null updated at
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
     /**
      * Setter for the Updated At.
      *
-     * @param \DateTimeInterface $updatedAt Updated at
+     * @param DateTimeInterface $updatedAt Updated at
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -334,6 +337,7 @@ class User implements UserInterface
 
     /**
      * @param Comment $comment
+     *
      * @return User
      */
     public function addComment(Comment $comment): self
@@ -342,11 +346,13 @@ class User implements UserInterface
             $this->comments[] = $comment;
             $comment->setOwner($this);
         }
+
         return $this;
     }
 
     /**
      * @param Comment $comment
+     *
      * @return User
      */
     public function removeComment(Comment $comment): self
@@ -358,42 +364,7 @@ class User implements UserInterface
                 $comment->setOwner(null);
             }
         }
-        return $this;
-    }
-    /**
-     * @return Collection|Interest[]
-     */
-    public function getInterests(): Collection
-    {
-        return $this->interests;
-    }
 
-    /**
-     * @param Interest $interest
-     * @return User
-     */
-    public function addInterest(Interest $interest): self
-    {
-        if (!$this->interests->contains($interest)) {
-            $this->interests[] = $interest;
-            $interest->setUser($this);
-        }
-        return $this;
-    }
-
-    /**
-     * @param Interest $interest
-     * @return User
-     */
-    public function removeInterest(Interest $interest): self
-    {
-        if ($this->interests->contains($interest)) {
-            $this->interests->removeElement($interest);
-            // set the owning side to null (unless already changed)
-            if ($interest->getUser() === $this) {
-                $interest->setUser(null);
-            }
-        }
         return $this;
     }
     /**
@@ -403,14 +374,27 @@ class User implements UserInterface
     {
         return $this->grades;
     }
+
+    /**
+     * @param Grade $grade
+     *
+     * @return User
+     */
     public function addGrade(Grade $grade): self
     {
         if (!$this->grades->contains($grade)) {
             $this->grades[] = $grade;
             $grade->setUser($this);
         }
+
         return $this;
     }
+
+    /**
+     * @param Grade $grade
+     *
+     * @return User
+     */
     public function removeGrade(Grade $grade): self
     {
         if ($this->grades->contains($grade)) {
@@ -420,6 +404,7 @@ class User implements UserInterface
                 $grade->setUser(null);
             }
         }
+
         return $this;
     }
     /**
@@ -429,14 +414,27 @@ class User implements UserInterface
     {
         return $this->posts;
     }
+
+    /**
+     * @param Post $post
+     *
+     * @return User
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
             $post->setUser($this);
         }
+
         return $this;
     }
+
+    /**
+     * @param Post $post
+     *
+     * @return User
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->contains($post)) {
@@ -446,6 +444,7 @@ class User implements UserInterface
                 $post->setUser(null);
             }
         }
+
         return $this;
     }
 
@@ -457,6 +456,11 @@ class User implements UserInterface
         return $this->events;
     }
 
+    /**
+     * @param Event $event
+     *
+     * @return User
+     */
     public function addEvent(Event $event): self
     {
         if (!$this->events->contains($event)) {
@@ -467,6 +471,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Event $event
+     *
+     * @return User
+     */
     public function removeEvent(Event $event): self
     {
         if ($this->events->contains($event)) {
@@ -488,6 +497,11 @@ class User implements UserInterface
         return $this->members;
     }
 
+    /**
+     * @param Member $member
+     *
+     * @return User
+     */
     public function addMember(Member $member): self
     {
         if (!$this->members->contains($member)) {
@@ -498,6 +512,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Member $member
+     *
+     * @return User
+     */
     public function removeMember(Member $member): self
     {
         if ($this->members->contains($member)) {
@@ -511,11 +530,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return ProfilePhoto|null
+     */
     public function getProfilePhoto(): ?ProfilePhoto
     {
         return $this->profilePhoto;
     }
 
+    /**
+     * @param ProfilePhoto $profilePhoto
+     *
+     * @return User
+     */
     public function setProfilePhoto(ProfilePhoto $profilePhoto): self
     {
         $this->profilePhoto = $profilePhoto;
@@ -523,6 +550,47 @@ class User implements UserInterface
         // set the owning side of the relation if necessary
         if ($this !== $profilePhoto->getUser()) {
             $profilePhoto->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Interest[]
+     */
+    public function getInterests(): Collection
+    {
+        return $this->interests;
+    }
+
+    /**
+     * @param Interest $interest
+     *
+     * @return User
+     */
+    public function addInterest(Interest $interest): self
+    {
+        if (!$this->interests->contains($interest)) {
+            $this->interests[] = $interest;
+            $interest->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Interest $interest
+     *
+     * @return User
+     */
+    public function removeInterest(Interest $interest): self
+    {
+        if ($this->interests->contains($interest)) {
+            $this->interests->removeElement($interest);
+            // set the owning side to null (unless already changed)
+            if ($interest->getUser() === $this) {
+                $interest->setUser(null);
+            }
         }
 
         return $this;

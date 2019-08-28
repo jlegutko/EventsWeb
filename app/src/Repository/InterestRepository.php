@@ -27,7 +27,7 @@ class InterestRepository extends ServiceEntityRepository
     /**
      * InterestRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry Registry
+     * @param RegistryInterface $registry Registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -37,12 +37,12 @@ class InterestRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('i.updatedAt', 'DESC');
     }
     /**
      * Query interests by owner.
@@ -65,7 +65,7 @@ class InterestRepository extends ServiceEntityRepository
     /**
      *Query interests by owner and event.
      *
-     * @param User $user User Entity
+     * @param User       $user  User Entity
      * @param Event|null $event
      *
      * @return QueryBuilder Query builder
@@ -116,13 +116,13 @@ class InterestRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('i');
     }
 
     // /**

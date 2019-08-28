@@ -1,9 +1,14 @@
 <?php
-
+/**
+ * Event entity.
+ */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
  * @ORM\Table(
@@ -82,17 +87,18 @@ class Event
     private $user;
 
     /**
-     * cascade={"persist", "remove"},
-     * orphanRemoval=true
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event")
+     * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event", cascade={"persist", "remove"})
      */
     private $photo;
 
+    /**
+     * Event constructor.
+     */
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -119,65 +125,73 @@ class Event
 
     /**
      * @param string $name
+     *
      * @return Event
      */
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
     /**
-     * @param \DateTimeInterface $createdAt
+     * @param DateTimeInterface $createdAt
+     *
      * @return Event
      */
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
     /**
-     * @param \DateTimeInterface $updatedAt
+     * @param DateTimeInterface $updatedAt
+     *
      * @return Event
      */
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
     /**
-     * @return \DateTimeInterface|null
+     * @return DateTimeInterface|null
      */
-    public function getEventDate(): ?\DateTimeInterface
+    public function getEventDate(): ?DateTimeInterface
     {
         return $this->eventDate;
     }
 
     /**
-     * @param \DateTimeInterface $eventDate
+     * @param DateTimeInterface $eventDate
+     *
      * @return Event
      */
-    public function setEventDate(\DateTimeInterface $eventDate): self
+    public function setEventDate(DateTimeInterface $eventDate): self
     {
         $this->eventDate = $eventDate;
+
         return $this;
     }
 
@@ -191,11 +205,13 @@ class Event
 
     /**
      * @param float $price
+     *
      * @return Event
      */
     public function setPrice(float $price): self
     {
         $this->price = $price;
+
         return $this;
     }
     /**
@@ -208,11 +224,13 @@ class Event
 
     /**
      * @param string $place
+     *
      * @return Event
      */
     public function setPlace(string $place): self
     {
         $this->place = $place;
+
         return $this;
     }
 
@@ -226,11 +244,13 @@ class Event
 
     /**
      * @param string $eventSize
+     *
      * @return Event
      */
     public function setEventSize(string $eventSize): self
     {
         $this->eventSize = $eventSize;
+
         return $this;
     }
     /**
@@ -243,6 +263,7 @@ class Event
 
     /**
      * @param Comment $comment
+     *
      * @return Event
      */
     public function addComment(Comment $comment): self
@@ -251,11 +272,13 @@ class Event
             $this->comments[] = $comment;
             $comment->setEvent($this);
         }
+
         return $this;
     }
 
     /**
      * @param Comment $comment
+     *
      * @return Event
      */
     public function removeComment(Comment $comment): self
@@ -267,6 +290,7 @@ class Event
                 $comment->setEvent(null);
             }
         }
+
         return $this;
     }
     /**
@@ -279,6 +303,7 @@ class Event
 
     /**
      * @param Interest $interest
+     *
      * @return Event
      */
     public function addInterest(Interest $interest): self
@@ -287,11 +312,13 @@ class Event
             $this->interests[] = $interest;
             $interest->setEvent($this);
         }
+
         return $this;
     }
 
     /**
      * @param Interest $interest
+     *
      * @return Event
      */
     public function removeInterest(Interest $interest): self
@@ -303,6 +330,7 @@ class Event
                 $interest->setEvent(null);
             }
         }
+
         return $this;
     }
     /**
@@ -315,6 +343,7 @@ class Event
 
     /**
      * @param Grade $grade
+     *
      * @return Event
      */
     public function addGrade(Grade $grade): self
@@ -323,11 +352,13 @@ class Event
             $this->grades[] = $grade;
             $grade->setEvent($this);
         }
+
         return $this;
     }
 
     /**
      * @param Grade $grade
+     *
      * @return Event
      */
     public function removeGrade(Grade $grade): self
@@ -339,6 +370,7 @@ class Event
                 $grade->setEvent(null);
             }
         }
+
         return $this;
     }
     /**
@@ -351,11 +383,13 @@ class Event
 
     /**
      * @param Category|null $category
+     *
      * @return Event
      */
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
         return $this;
     }
     /**
@@ -368,6 +402,7 @@ class Event
 
     /**
      * @param Group $group
+     *
      * @return Event
      */
     public function addGroup(Group $group): self
@@ -397,11 +432,19 @@ class Event
 
         return $this;
     }
+
+    /**
+     * @return User|null
+     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
+    /**
+     * @param User|null $user
+     * @return Event
+     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -409,11 +452,19 @@ class Event
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     *
+     * @return Event
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -421,11 +472,19 @@ class Event
         return $this;
     }
 
+    /**
+     * @return Photo|null
+     */
     public function getPhoto(): ?Photo
     {
         return $this->photo;
     }
 
+    /**
+     * @param Photo $photo
+     *
+     * @return Event
+     */
     public function setPhoto(Photo $photo): self
     {
         $this->photo = $photo;

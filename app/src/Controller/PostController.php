@@ -5,9 +5,11 @@
 
 namespace App\Controller;
 
-use DateTime;use App\Entity\Post;
+use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\PostRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -25,11 +27,11 @@ class PostController extends AbstractController
     /**
      * Index action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Repository\PostRepository $repository Repository
-     * @param \Knp\Component\Pager\PaginatorInterface $paginator Paginator
+     * @param Request            $request    HTTP request
+     * @param PostRepository     $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/",
@@ -53,9 +55,9 @@ class PostController extends AbstractController
     /**
      * View action.
      *
-     * @param \App\Entity\Post $post Post entity
+     * @param Post $post Post entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}",
@@ -63,7 +65,6 @@ class PostController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-
     public function view(Post $post): Response
     {
         return $this->render(
@@ -75,9 +76,15 @@ class PostController extends AbstractController
     /**
      * Edit action.
      *
-     * @param \App\Entity\Post $post Post entity
+     * @param Request        $request
+     * @param Post           $post       Post entity
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param PostRepository $repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/edit",
@@ -110,14 +117,14 @@ class PostController extends AbstractController
     /**
      * Delete action.
      *
-     * @param \Symfony\Component\HttpFoundation\Request $request HTTP request
-     * @param \App\Entity\Post $post Post entity
-     * @param \App\Repository\PostRepository $repository Post repository
+     * @param Request        $request    HTTP request
+     * @param Post           $post       Post entity
+     * @param PostRepository $repository Post repository
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      *
      * @Route(
      *     "/{id}/delete",

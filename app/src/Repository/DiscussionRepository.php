@@ -37,12 +37,12 @@ class DiscussionRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('d.updatedAt', 'DESC');
     }
     /**
      * Query discussions by owner.
@@ -56,7 +56,7 @@ class DiscussionRepository extends ServiceEntityRepository
         $queryBuilder = $this->queryAll();
 
         if (!is_null($user)) {
-            $queryBuilder->andWhere('i.author= :author')
+            $queryBuilder->andWhere('d.author= :author')
                 -> setParameter('author', $user);
         }
 
@@ -67,24 +67,23 @@ class DiscussionRepository extends ServiceEntityRepository
      *
      * @param Event|null $event Event entity
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryByEvent(Event $event = null) : QueryBuilder
     {
         $queryBuilder = $this->queryAll();
 
         if (!is_null($event)) {
-            $queryBuilder->andWhere('t.event = :event')
+            $queryBuilder->andWhere('d.event = :event')
                 ->setParameter('event', $event);
         }
-        $typeQuery = $queryBuilder -> getType();
 
         return $queryBuilder;
     }
     /**
      *Query discussions by owner and event.
      *
-     * @param User $user User Entity
+     * @param User       $user  User Entity
      * @param Event|null $event
      *
      * @return QueryBuilder Query builder
@@ -94,11 +93,11 @@ class DiscussionRepository extends ServiceEntityRepository
         $queryBuilder = $this->queryAll();
 
         if (!is_null($user)) {
-            $queryBuilder->andWhere('i.author= :author')
+            $queryBuilder->andWhere('d.author= :author')
                 -> setParameter('author', $user);
         }
         if (!is_null($event)) {
-            $queryBuilder->andWhere('i.event= :event')
+            $queryBuilder->andWhere('d.event= :event')
                 -> setParameter('event', $event);
         }
 
@@ -135,13 +134,13 @@ class DiscussionRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('d');
     }
 
     // /**

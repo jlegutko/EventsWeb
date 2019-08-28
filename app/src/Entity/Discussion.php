@@ -1,8 +1,14 @@
 <?php
+/**
+ * Discussion entity.
+ */
 namespace App\Entity;
+
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+
 /**
  * @ORM\Entity(repositoryClass="App\Repository\DiscussionRepository")
  * @ORM\Table(
@@ -42,51 +48,102 @@ class Discussion
      */
     private $groups;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="discussion", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="discussion", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $posts;
+    /**
+     * Discussion constructor.
+     */
     public function __construct()
     {
         $this->posts = new ArrayCollection();
     }
+
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
+
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
+
+    /**
+     * @param string $name
+     *
+     * @return Discussion
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
-    public function getCreatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+
+    /**
+     * @param DateTimeInterface $createdAt
+     *
+     * @return Discussion
+     */
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
+
         return $this;
     }
-    public function getUpdatedAt(): ?\DateTimeInterface
+
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
+
+    /**
+     * @param DateTimeInterface $updatedAt
+     *
+     * @return Discussion
+     */
+    public function setUpdatedAt(DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
+
+    /**
+     * @return Group|null
+     */
     public function getGroups(): ?Group
     {
         return $this->groups;
     }
+
+    /**
+     * @param Group|null $groups
+     *
+     * @return Discussion
+     */
     public function setGroups(?Group $groups): self
     {
         $this->groups = $groups;
+
         return $this;
     }
     /**
@@ -96,14 +153,27 @@ class Discussion
     {
         return $this->posts;
     }
+
+    /**
+     * @param Post $post
+     *
+     * @return Discussion
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
             $this->posts[] = $post;
             $post->setDiscussion($this);
         }
+
         return $this;
     }
+
+    /**
+     * @param Post $post
+     *
+     * @return Discussion
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->contains($post)) {
@@ -113,6 +183,7 @@ class Discussion
                 $post->setDiscussion(null);
             }
         }
+
         return $this;
     }
 }

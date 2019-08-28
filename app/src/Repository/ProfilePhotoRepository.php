@@ -25,7 +25,7 @@ class ProfilePhotoRepository extends ServiceEntityRepository
     /**
      * ProfilePhotoRepository constructor.
      *
-     * @param \Symfony\Bridge\Doctrine\RegistryInterface $registry Registry
+     * @param RegistryInterface $registry Registry
      */
     public function __construct(RegistryInterface $registry)
     {
@@ -35,12 +35,12 @@ class ProfilePhotoRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('pp.updatedAt', 'DESC');
     }
 
     /**
@@ -74,13 +74,13 @@ class ProfilePhotoRepository extends ServiceEntityRepository
     /**
      * Get or create new query builder.
      *
-     * @param \Doctrine\ORM\QueryBuilder|null $queryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder Query builder
      *
-     * @return \Doctrine\ORM\QueryBuilder Query builder
+     * @return QueryBuilder Query builder
      */
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
-        return $queryBuilder ?: $this->createQueryBuilder('t');
+        return $queryBuilder ?: $this->createQueryBuilder('pp');
     }
 
     // /**
