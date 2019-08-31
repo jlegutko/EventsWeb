@@ -3,6 +3,7 @@
  * Login form authenticator.
  */
 namespace App\Security;
+
 use App\Entity\User;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -18,6 +19,7 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
+
 /**
  * Class LoginFormAuthenticator.
  */
@@ -98,6 +100,7 @@ class LoginFormAuthentication extends AbstractFormLoginAuthenticator
             Security::LAST_USERNAME,
             $credentials['email']
         );
+
         return $credentials;
     }
     /**
@@ -114,6 +117,7 @@ class LoginFormAuthentication extends AbstractFormLoginAuthenticator
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
+
         return $this->userRepository->findOneBy(
             ['email' => $credentials['email']]
         );
@@ -144,7 +148,8 @@ class LoginFormAuthentication extends AbstractFormLoginAuthenticator
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }
-        return new RedirectResponse($this->router->generate('category_new'));
+
+        return new RedirectResponse($this->router->generate('search_index'));
     }
     /**
      * Return the URL to the login page.

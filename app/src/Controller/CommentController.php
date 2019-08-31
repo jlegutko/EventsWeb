@@ -11,6 +11,7 @@ use App\Repository\CommentRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -37,6 +38,9 @@ class CommentController extends AbstractController
      *     "/",
      *     name="comment_index",
      * )
+     * @isGranted(
+     *     "ROLE_ADMIN",
+     *     )
      */
     public function index(Request $request, CommentRepository $repository, PaginatorInterface $paginator): Response
     {
@@ -89,6 +93,11 @@ class CommentController extends AbstractController
      *     name="comment_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="comment",
+     * )
+
      */
     public function edit(Request $request, Comment $comment, CommentRepository $repository): Response
     {
@@ -128,6 +137,10 @@ class CommentController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="comment_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="comment",
      * )
      */
     public function delete(Request $request, Comment $comment, CommentRepository $repository): Response

@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class CategoryController.
@@ -88,6 +89,9 @@ class CategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="category_new",
      * )
+     * @isGranted(
+     *    "ROLE_ADMIN",
+     *     )
      */
     public function new(Request $request, CategoryRepository $repository): Response
     {
@@ -129,6 +133,9 @@ class CategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="category_edit",
      * )
+     * @isGranted(
+     *     "ROLE_ADMIN",
+     *     )
      */
     public function edit(Request $request, Category $category, CategoryRepository $repository): Response
     {
@@ -170,6 +177,9 @@ class CategoryController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="category_delete",
      * )
+     * @isGranted(
+     *     "ROLE_ADMIN",
+     *     )
      */
     public function delete(Request $request, Category $category, CategoryRepository $repository): Response
     {

@@ -1,0 +1,57 @@
+html, body {
+    margin:0;
+    padding:0;
+    height:100%;
+}
+.container{
+  flex-grow:1;
+}
+.form-control-borderless {
+    border: none !important;
+    outline: none;
+    box-shadow: none;
+}
+
+.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+.footer {
+    height: 50px;
+    background-color: #444444;
+    color: #AAAAAA;
+}
+.copyright{
+    color: #AAAAAA;
+}
+#page-content {
+    flex: 1 0 auto;
+}
+.divider-text {
+    position: relative;
+    text-align: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.divider-text span {
+    padding: 7px;
+    font-size: 12px;
+    position: relative;
+    z-index: 2;
+}
+.divider-text:after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    top: 55%;
+    left: 0;
+    z-index: 1;
+}
+form label{
+    font-size: 0.9rem;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+}

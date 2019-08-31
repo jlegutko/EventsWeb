@@ -2,6 +2,7 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
+            <!--registration and login page-->
             <trans-unit id="title.login">
                 <source>title.login</source>
                 <target>Sign in</target>
@@ -14,13 +15,25 @@
                 <source>label.password</source>
                 <target>Password</target>
             </trans-unit>
+            <trans-unit id="label.repeat.password">
+                <source>label.repeat.password</source>
+                <target>Repeat password</target>
+            </trans-unit>
+            <trans-unit id="label.firstName">
+                <source>label.firstName</source>
+                <target>Username</target>
+            </trans-unit>
             <trans-unit id="action.login">
                 <source>action.login</source>
                 <target>Log in</target>
             </trans-unit>
-            <trans-unit id="label.events_page">
-                <source>label.events_page</source>
-                <target>Events</target>
+            <trans-unit id="title.user_new">
+                <source>title.user_new</source>
+                <target>Registration</target>
+            </trans-unit>
+            <trans-unit id="action.save">
+                <source>action.save</source>
+                <target>Save</target>
             </trans-unit>
             <!--transalations from base.html.twig-->
             <trans-unit id="title.logo">
@@ -39,16 +52,56 @@
                 <source>label.login_page</source>
                 <target>sign in</target>
             </trans-unit>
+            <trans-unit id="label.events_page">
+                <source>label.events_page</source>
+                <target>Events</target>
+            </trans-unit>
+            <trans-unit id="label.main_page">
+                <source>label.main_page</source>
+                <target>homepage</target>
+            </trans-unit>
+            <trans-unit id="label.about">
+                <source>label.about</source>
+                <target>about</target>
+            </trans-unit>
+            <trans-unit id="label.footer">
+                <source>label.footer</source>
+                <target>Copyright Ⓒ Jadwiga Legutko | EPI ZTP 2019</target>
+            </trans-unit>
+            <trans-unit id="label.category_index">
+                <source>label.category_index</source>
+                <target>categories</target>
+            </trans-unit>
+            <trans-unit id="label.group_index">
+                <source>label.group_index</source>
+                <target>groups</target>
+            </trans-unit>
+            <trans-unit id="label.user_view">
+                <source>label.user_view</source>
+                <target>my profile</target>
+            </trans-unit>
+            <trans-unit id="label.logout">
+                <source>label.logout</source>
+                <target>logout</target>
+            </trans-unit>
             <!--search/index page-->
             <trans-unit id="description.title">
                 <source>description.title</source>
-                <target>Welcome on whatsnew in PL website!</target>
+                <target>Welcome on whatsnewPL website!</target>
             </trans-unit>
             <trans-unit id="description.description">
                 <source>description.description</source>
                 <target>On our page you can find the events from all over the Poland. Join to our community to add
                     comments and grades for your favourite events. You can also add the best events to your interests.
-                    Use our search below to find what you're looking for :) </target>
+                    Use our search below to find the event you're looking for :) </target>
+            </trans-unit>
+            <trans-unit id="label.search_action">
+                <source>label.search_action</source>
+                <target>Search</target>
+            </trans-unit>
+            <trans-unit id="label.search_placeholder">
+                <source>label.search_placeholder</source>
+                <target>Type the name of the event...</target>
             </trans-unit>
         </body>
     </file>

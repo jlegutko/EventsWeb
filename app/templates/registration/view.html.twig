@@ -22,6 +22,24 @@
             <dt>{{ 'label.Firstname'|trans }}</dt>
             <dd>{{  user.Firstname }}</dd>
         </dl>
+        {% if user.interests is defined and user.interests|length %}
+            {% for interest in user.interests %}
+                <div>
+                    <a href="{{ url('event_view', {id: interest.event.id}) }}">
+                        {{ interest.event.name }}
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% if user.members is defined and user.members|length %}
+            {% for member in user.members %}
+                <div>
+                    <a href="{{ url('group_view', {id: interest.group.id}) }}">
+                        {{ interest.group.name }}
+                    </a>
+                </div>
+            {% endfor %}
+        {% endif %}
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}

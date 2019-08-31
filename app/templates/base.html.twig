@@ -2,64 +2,117 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}Welcome on whatsnewPL!{% endblock %}</title>
     {% block stylesheets %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     {% endblock %}
 </head>
-<body>
-    <main class="wrapper">
-        <div class="container">
-            {% include 'default/_flash_messages.html.twig' %}
-            <header class="header">
-                <section class="container clearfix">
-                    <a class="logo logo-title float-left">
-                        {{ 'title.logo'|trans}}
-                    </a>
-                    <nav class="navigation">
-                        <ul class="navigation-list float-right">
-                            <li class="navigation-item">
-                                <a class ="navigation-link" href = "{{ url('event_index') }}" title = "{{ 'label.events_page'|trans }}" {% if app.request.attributes.get('_route') == 'event_index' %} class="active" {% endif %}>
-                                    {{ 'label.event_index'|trans }}
+<body class="d-flex flex-column">
+    <main id="page-content">
+        <header class="header">
+            <nav class="navbar navbar-expand-sm   navbar-light bg-light">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                    <div class="navbar-header ml-lg-3 mr-3">
+                        <a class="navbar-brand" href="{{ url('search_index') }}" title = "{{ 'label.main_page'|trans }}" {% if app.request.attributes.get('_route') == 'event_index' %} class="active" {% endif %}">whatsnewPL</a>
+                    </div>
+                    <ul class="navbar-nav mr-auto mt-2 mb-2 ml-lg-5">
+                        <li class="nav-item mr-lg-4 {% if app.request.attributes.get('_route') == 'search_index' %} active {% endif %}">
+                            <a class="nav-link" href = "{{ url('search_index') }}" title = "{{ 'label.main_page'|trans }}">
+                                {{ 'label.main_page'|trans }}
+                            </a>
+                        </li>
+                        <li class="nav-item mr-lg-4 {% if app.request.attributes.get('_route') == 'event_index' %} active {% endif %}">
+                            <a class="nav-link" href = "{{ url('event_index') }}" title = "{{ 'label.events_page'|trans }}">
+                                {{ 'label.event_index'|trans }}
+                            </a>
+                        </li>
+                        <li class="nav-item mr-lg-4 {% if app.request.attributes.get('_route') == 'about' %} active {% endif %}">
+                            <a class="nav-link" href = "{{ url('event_index') }}" title = "{{ 'label.about'|trans }}">
+                                {{ 'label.about'|trans }}
+                            </a>
+                        </li>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" >
+                                    {{ 'label.user_index'|trans }}
                                 </a>
                             </li>
-                            {% if is_granted('ROLE_USER') %}
-                                <li class="nav_element">
-                                    <a class ="navigation-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" {% if app.request.attributes.get('_route') == 'user_index' %} class="active" {% endif %}>
-                                        {{ 'label.user_index'|trans }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                            {% if is_granted('ROLE_ADMIN') %}
-                                <li class="nav_element">
-                                    <a class ="navigation-link" href = "{{ url('comment_index') }}" title = "{{ 'label.comment_index'|trans }}" {% if app.request.attributes.get('_route') == 'comment_index' %} class="active" {% endif %}>
-                                        {{ 'label.comment_index'|trans }}
-                                    </a>
-                                </li>
-                                <li class="nav_element">
-                                    <a class ="navigation-link" href = "{{ url('grade_index') }}" title = "{{ 'label.grade_index'|trans }}" {% if app.request.attributes.get('_route') == 'grade_index' %} class="active" {% endif %}>
-                                        {{ 'label.grade_index'|trans }}
-                                    </a>
-                                </li>
-                            {% endif %}
-                            <li class="navigation-item">
-                                <a class ="navigation-link" href = "{{ url('user_new') }}" title = "{{ 'label.registration'|trans }}" {% if app.request.attributes.get('_route') == 'user_new' %} class="active" {% endif %}>
-                                    {{ 'label.registration'|trans }}
+                            <li {% if app.request.attributes.get('_route') == 'category_index' %} class="active" {% endif %}>
+                                <a class="nav-link" href = "{{ url('category_index') }}" title = "{{ 'label.category_index'|trans }}" >
+                                    {{ 'label.category_index'|trans }}
                                 </a>
                             </li>
-                            <li class="navigation-item">
-                                <a class ="navigation-link" href = "{{ url('security_login') }}" title = "{{ 'label.login_page'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-                                    {{ 'label.login_page'|trans }}
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'comment_index' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('comment_index') }}" title = "{{ 'label.comment_index'|trans }}" >
+                                    {{ 'label.comment_index'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'grade_index' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('grade_index') }}" title = "{{ 'label.grade_index'|trans }}" >
+                                    {{ 'label.grade_index'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
+                                <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
+                                    {{ 'label.group_index'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') %}
+                            <li class="nav-item {% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
+                                <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
+                                    {{ 'label.group_index'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'user_view' %} active {% endif %}">
+                                <a class="nav-link" href="{{ url('user_view', {id: app.user.id}) }}" title="{{ 'label.user_view'|trans }}">
+                                    {{ 'label.user_view'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    {% if not is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
+                        <ul class="navbar-nav ml-auto mt-2 mb-2 mr-lg-5 navbar-right">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_new' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('user_new') }}" title = "{{ 'label.registration'|trans }}">
+                                    <i class="material-icons md-18 mr-lg-1">person</i> {{ 'label.registration'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item{% if app.request.attributes.get('_route') == 'security_login' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('security_login') }}" title = "{{ 'label.login_page'|trans }}">
+                                    <span class="material-icons md-18 mr-lg-1">input</span>  {{ 'label.login_page'|trans }}
                                 </a>
                             </li>
                         </ul>
-                    </nav>
-                </section>
-            </header>
+                    {% endif %}
+                    {% if is_granted('ROLE_USER') %}
+                    <ul class="navbar-nav ml-auto mt-2 mb-2 mr-lg-5 navbar-right">
+                        <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'security_logout' %} active {% endif %}">
+                            <a class="nav-link" href = "{{ url('security_logout') }}" title = "{{ 'label.logout'|trans }}">
+                                <i class="material-icons">exit_to_app</i> {{ 'label.logout'|trans }}
+                            </a>
+                        </li>
+                    </ul>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+        <div class="alert">
+            {% include 'default/_flash_messages.html.twig' %}
         </div>
+        {% block body %}
+        {% endblock %}
     </main>
-{% block body %}
-{% endblock %}
+    <footer id="sticky-footer" class="footer pt-lg-3">
+        <div class="text-center">
+            {{ 'label.footer'|trans }}
+        </div>
+    </footer>
 {% block javascripts %}
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>

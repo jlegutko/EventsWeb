@@ -102,7 +102,6 @@ class ProfilePhoto implements Serializable
      *
      * @ORM\OneToOne(
      *     targetEntity="App\Entity\User",
-     *     inversedBy="profile_photo",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )

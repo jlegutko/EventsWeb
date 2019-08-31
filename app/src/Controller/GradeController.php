@@ -10,6 +10,7 @@ use App\Repository\GradeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,9 @@ class GradeController extends AbstractController
      *     "/",
      *     name="grade_index",
      * )
+     * @isGranted(
+     *     "ROLE_ADMIN",
+     *     )
      */
     public function index(Request $request, GradeRepository $repository, PaginatorInterface $paginator): Response
     {
@@ -89,6 +93,10 @@ class GradeController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="grade_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="grade",
      * )
      */
     public function delete(Request $request, Grade $grade, GradeRepository $repository): Response

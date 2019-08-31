@@ -1,19 +1,32 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div class="container container-bg">
+    <div class="container-fluid mt-5">
         <div class="container container-sm">
-            <article class="description">
-                <h3 class="h2-bold">{{ 'description.title'|trans }}</h3>
+            <article class="description mb-5">
+                <h3 class="h2-bold mb-4">{{ 'description.title'|trans }}</h3>
                 <p class="desc-bg">{{ 'description.description'|trans }}</p>
             </article>
-            <form class="form-search" method="post" class="search" action="{{ url('search_index')}}">
-                <div class="row">
-                    <div class="column column-50 column-offset-25">
-                        <input autocomplete="off" id="search" name="search" placeholder="{{ 'label.search_placeholder'|trans }}" type="text" required="required"/>
-                        <button type = "submit">{{ 'action.search'|trans}}</button>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-md-10 col-lg-8">
+                        <form class="card card-sm" method="post" action="{{ url('search_index')}}">
+                            <div class="card-body row no-gutters align-items-center">
+                                <div class="col-auto">
+                                    <i class="mt-1 material-icons md-24">search</i>
+                                </div>
+                                <!--end of col-->
+                                <div class="col">
+                                    <input class="form-control form-control-lg form-control-borderless" type="search" autocomplete="off" id="search" name="search" placeholder="{{ 'label.search_placeholder'|trans }}" required="required"/>
+                                </div>
+                                <!--end of col-->
+                                <div class="col-auto">
+                                    <button class="btn btn-lg btn-success" type="submit">{{ 'label.search_action'|trans }}</button>
+                                </div>
+                                <!--end of col-->
+                            </div>
+                        </form>
                     </div>
+                    <!--end of col-->
                 </div>
-            </form>
-          </div>
-    </div>
+            </div>
 {% endblock %}

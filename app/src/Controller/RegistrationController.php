@@ -42,6 +42,9 @@ class RegistrationController extends AbstractController
      *     "/users",
      *     name="user_index",
      * )
+     * @isGranted(
+     *     "ROLE_ADMIN",
+     *     )
      */
     public function index(Request $request, UserRepository $repository, PaginatorInterface $paginator): Response
     {
@@ -97,6 +100,10 @@ class RegistrationController extends AbstractController
      */
     public function new(Request $request, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_USER')) {
+            return $this->redirectToRoute('user_view', ['id' => $this->getUser()->getId()]);
+        }
+
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
@@ -110,7 +117,8 @@ class RegistrationController extends AbstractController
             $repository->save($user);
             $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('security_login');
+
         }
 
         return $this->render(
@@ -136,6 +144,11 @@ class RegistrationController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_edit",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+
      */
     public function edit(Request $request, User $user, UserRepository $repository): Response
     {
@@ -177,8 +190,13 @@ class RegistrationController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_change_pswd",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+
      */
-    public function changePswd(Request $request, User $user, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function changePassword(Request $request, User $user, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
         $form = $this->createForm(ChangePasswordType::class, $user, ['method' => 'put']);
         $form->handleRequest($request);
