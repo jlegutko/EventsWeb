@@ -85,6 +85,11 @@
                             </li>
                         {% endif %}
                         {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'event_new' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('event_new') }}" title = "{{ 'label.event_new'|trans }}">
+                                    <i class="material-icons md-18 mr-lg-1">library_add</i> {{ 'label.event_new'|trans }}
+                                </a>
+                            </li>
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_view' %} active {% endif %}">
                                 <a class="nav-link" href="{{ url('user_view', {id: app.user.id}) }}" title="{{ 'label.user_view'|trans }}">
                                     <i class="material-icons md-18 mr-lg-1">person</i> {{ 'label.user_view'|trans }}

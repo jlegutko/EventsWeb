@@ -3,6 +3,10 @@
     <file source-language="en" datatype="plaintext" original="file.ext">
         <body>
             <!--registration and login page-->
+            <trans-unit id="action.back_to_list">
+                <source>action.back_to_list</source>
+                <target>Back</target>
+            </trans-unit>
             <trans-unit id="title.login">
                 <source>title.login</source>
                 <target>Sign in</target>
@@ -43,6 +47,10 @@
             <trans-unit id="label.event_index">
                 <source>label.event_index</source>
                 <target>events</target>
+            </trans-unit>
+            <trans-unit id="label.event_new">
+                <source>label.event_new</source>
+                <target>add an event</target>
             </trans-unit>
             <trans-unit id="label.registration">
                 <source>label.registration</source>
@@ -143,6 +151,91 @@
             <trans-unit id="title.user_view">
                 <source>title.user_view</source>
                 <target>User profile</target>
+            </trans-unit>
+            <trans-unit id="label.interested_user_events">
+                <source>label.interested_user_events</source>
+                <target>FAVOURITES</target>
+            </trans-unit>
+            <trans-unit id="title.interested_events">
+                <source>title.interested_events</source>
+                <target>Interesting events</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_event">
+                <source>label.go_to_event</source>
+                <target>go to the event >></target>
+            </trans-unit>
+            <trans-unit id="label.remove_from_interest">
+                <source>label.remove_from_interest</source>
+                <target>remove from favourites</target>
+            </trans-unit>
+            <trans-unit id="title.my_events">
+                <source>title.my_events</source>
+                <target>My events</target>
+            </trans-unit>
+            <trans-unit id="label.my_events">
+                <source>label.my_events</source>
+                <target>MY EVENTS</target>
+            </trans-unit>
+            <trans-unit id="title.my_groups">
+                <source>title.my_groups</source>
+                <target>My groups</target>
+            </trans-unit>
+            <trans-unit id="label.my_groups">
+                <source>label.my_groups</source>
+                <target>MY GROUPS</target>
+            </trans-unit>
+            <!--form new event-->
+            <trans-unit id="title.event_new">
+                <source>title.event_new</source>
+                <target>Add a new event</target>
+            </trans-unit>
+            <trans-unit id="label.event_name">
+                <source>label.event_name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="label.event_date">
+                <source>label.event_date</source>
+                <target>Beginning date</target>
+            </trans-unit>
+            <trans-unit id="label.event_price">
+                <source>label.event_price</source>
+                <target>Price</target>
+            </trans-unit>
+            <trans-unit id="label.event_place">
+                <source>label.event_place</source>
+                <target>Place</target>
+            </trans-unit>
+            <trans-unit id="label.event_size">
+                <source>label.event_size</source>
+                <target>Event size</target>
+            </trans-unit>
+            <trans-unit id="label.event_category">
+                <source>label.event_category</source>
+                <target>Category</target>
+            </trans-unit>
+            <trans-unit id="label.event_description">
+                <source>label.event_description</source>
+                <target>Description</target>
+            </trans-unit>
+            <!--change pswd-->
+            <trans-unit id="title.user_change_pswd">
+                <source>title.user_change_pswd</source>
+                <target>Change the password</target>
+            </trans-unit>
+            <!--user edit-->
+            <trans-unit id="title.user_edit">
+                <source>title.user_edit</source>
+                <target>Edit your profile</target>
+            </trans-unit>
+            <!--user delete-->
+            <trans-unit id="title.user_delete">
+                <source>title.user_delete</source>
+                <target>Do you want to remove your profile?</target>
+            </trans-unit>
+            <!--event list-->
+            <trans-unit id="title.event_list">
+                <source>title.event_list</source>
+                <target>Events list</target>
             </trans-unit>
         </body>
     </file>
