@@ -103,6 +103,47 @@
                 <source>label.search_placeholder</source>
                 <target>Type the name of the event...</target>
             </trans-unit>
+            <!--user profile-->
+            <trans-unit id="label.user_interested">
+                <source>label.user_interested</source>
+                <target>interesting events</target>
+            </trans-unit>
+            <trans-unit id="label.user_groups">
+                <source>label.user_groups</source>
+                <target>my groups</target>
+            </trans-unit>
+            <trans-unit id="label.user_events">
+                <source>label.user_events</source>
+                <target>my events</target>
+            </trans-unit>
+            <trans-unit id="label.user_update_photo">
+                <source>label.user_update_photo</source>
+                <target>update a photo</target>
+            </trans-unit>
+            <trans-unit id="label.user_add_photo">
+                <source>label.user_add_photo</source>
+                <target>add a new photo</target>
+            </trans-unit>
+            <trans-unit id="label.user_edit">
+                <source>label.user_edit</source>
+                <target>edit a profile</target>
+            </trans-unit>
+            <trans-unit id="label.user_change_pswd">
+                <source>label.user_change_pswd</source>
+                <target>change the password</target>
+            </trans-unit>
+            <trans-unit id="label.user_delete">
+                <source>label.user_delete</source>
+                <target>remove your profile</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_group">
+                <source>label.go_to_group</source>
+                <target>go to group >></target>
+            </trans-unit>
+            <trans-unit id="title.user_view">
+                <source>title.user_view</source>
+                <target>User profile</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

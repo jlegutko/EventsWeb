@@ -362,4 +362,92 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+    /**
+     * Shows interested events by user.
+
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/events",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_interested",
+     * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+     */
+    public function showInterested(User $user): Response
+    {
+        return $this->render(
+            'registration/interested_events.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+    /**
+     * Shows events made by user.
+
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/my_events",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_events",
+     * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+     */
+    public function showMyEvents(User $user): Response
+    {
+        return $this->render(
+            'registration/my_events.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+    /**
+     * Shows groups with user.
+
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/my_groups",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_groups",
+     * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+     */
+    public function showGroups(User $user): Response
+    {
+        return $this->render(
+            'registration/my_groups.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+
 }

@@ -159,7 +159,7 @@ class User implements UserInterface
      */
     private $members;
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $profilePhoto;
 

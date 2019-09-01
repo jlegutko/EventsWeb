@@ -37,47 +37,42 @@
                             </a>
                         </li>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" >
                                     {{ 'label.user_index'|trans }}
                                 </a>
                             </li>
-                            <li {% if app.request.attributes.get('_route') == 'category_index' %} class="active" {% endif %}>
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'category_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('category_index') }}" title = "{{ 'label.category_index'|trans }}" >
                                     {{ 'label.category_index'|trans }}
                                 </a>
                             </li>
-                            <li class="nav-item{% if app.request.attributes.get('_route') == 'comment_index' %} active {% endif %}">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'comment_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('comment_index') }}" title = "{{ 'label.comment_index'|trans }}" >
                                     {{ 'label.comment_index'|trans }}
                                 </a>
                             </li>
-                            <li class="nav-item{% if app.request.attributes.get('_route') == 'grade_index' %} active {% endif %}">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'grade_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('grade_index') }}" title = "{{ 'label.grade_index'|trans }}" >
                                     {{ 'label.grade_index'|trans }}
                                 </a>
                             </li>
-                            <li class="nav-item{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
                                 <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
                                     {{ 'label.group_index'|trans }}
                                 </a>
                             </li>
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
-                            <li class="nav-item {% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
                                 <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
                                     {{ 'label.group_index'|trans }}
                                 </a>
                             </li>
-                            <li class="nav-item{% if app.request.attributes.get('_route') == 'user_view' %} active {% endif %}">
-                                <a class="nav-link" href="{{ url('user_view', {id: app.user.id}) }}" title="{{ 'label.user_view'|trans }}">
-                                    {{ 'label.user_view'|trans }}
-                                </a>
-                            </li>
                         {% endif %}
                     </ul>
-                    {% if not is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
-                        <ul class="navbar-nav ml-auto mt-2 mb-2 mr-lg-5 navbar-right">
+                    <ul class="navbar-nav ml-auto mt-2 mb-2 mr-lg-5 navbar-right">
+                        {% if not is_granted('ROLE_USER') and not is_granted('ROLE_ADMIN') %}
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_new' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('user_new') }}" title = "{{ 'label.registration'|trans }}">
                                     <i class="material-icons md-18 mr-lg-1">person</i> {{ 'label.registration'|trans }}
@@ -88,17 +83,20 @@
                                     <span class="material-icons md-18 mr-lg-1">input</span>  {{ 'label.login_page'|trans }}
                                 </a>
                             </li>
-                        </ul>
-                    {% endif %}
-                    {% if is_granted('ROLE_USER') %}
-                    <ul class="navbar-nav ml-auto mt-2 mb-2 mr-lg-5 navbar-right">
-                        <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'security_logout' %} active {% endif %}">
-                            <a class="nav-link" href = "{{ url('security_logout') }}" title = "{{ 'label.logout'|trans }}">
-                                <i class="material-icons">exit_to_app</i> {{ 'label.logout'|trans }}
-                            </a>
-                        </li>
+                        {% endif %}
+                        {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_view' %} active {% endif %}">
+                                <a class="nav-link" href="{{ url('user_view', {id: app.user.id}) }}" title="{{ 'label.user_view'|trans }}">
+                                    <i class="material-icons md-18 mr-lg-1">person</i> {{ 'label.user_view'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'security_logout' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('security_logout') }}" title = "{{ 'label.logout'|trans }}">
+                                    <i class="material-icons md-18 mr-lg-1">exit_to_app</i> {{ 'label.logout'|trans }}
+                                </a>
+                            </li>
+                        {% endif %}
                     </ul>
-                    {% endif %}
                 </div>
             </nav>
         </header>

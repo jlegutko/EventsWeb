@@ -55,3 +55,142 @@ form label{
     flex-wrap: wrap;
     margin-bottom: 0.25rem;
 }
+.details li {
+    list-style: none;
+}
+.list-group a{
+    text-decoration: none;
+    color: #666666;
+}
+.list-group a:hover{
+    color: #313131;
+}
+.post-slide{
+    margin-right: 15px;
+    background-color:#fff !important;
+    width: 80%;
+}
+.post-slide .post-img {
+    float: left;
+    width:25%;
+    position: relative;
+    margin-right: 30px;
+}
+.post-slide .post-img img{
+    width: 100%;
+    height: auto;
+}
+.post-slide .post-date{
+    background: #ec3c6a;
+    color:#fff;
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: block;
+    padding: 2% 3%;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+    transition:all 0.50s ease;
+}
+.post-slide .date{
+    display: block;
+    font-size:20px;
+    font-weight: 700;
+}
+.post-slide .month{
+    display: block;
+    font-size:11px;
+    text-transform: uppercase;
+}
+.post-slide {
+    height: 20%;
+    border-top: 3px solid #38cfd8;
+}
+.post-slide:hover{
+    border-top-color:#ec3c6a;
+}
+.post-slide .post-title {
+    margin:12px 0 10px 0;
+}
+.post-slide .post-title{
+    font-size:22px;
+    color:#333;
+    text-transform:uppercase;
+}
+.post-slide .post-title-small{
+    font-size:18px;
+    text-transform: capitalize;
+    color:#333;
+    line-height: 2.7rem;
+
+}
+.col-lg-8 a:hover{
+    text-decoration:none;
+    font-weight: bold;
+}
+.post-slide .post-bar{
+    padding:0;
+    list-style:none;
+    text-transform:uppercase;
+    position: relative;
+    margin-bottom: 20px;
+}
+.post-slide .post-bar:after,
+.post-slide .post-bar:before{
+    border: 1px solid #38cfd8;
+    bottom: -10px;
+    content: "";
+    display: block;
+    position: absolute;
+    right: 36%;
+    width: 25px;
+}
+.post-slide .post-bar:before{
+    border: 1px solid #ec3c6a;
+    right: 32%;
+}
+.post-slide .post-bar li{
+    color:#555;
+    font-size:10px;
+    margin-right:10px;
+    display:inline-block;
+}
+.post-slide .post-bar li a{
+    font-size: 13px;
+    text-decoration:none;
+    text-transform:uppercase;
+    color:#ec3c6a;
+}
+.post-slide .post-bar li a:hover{
+    color:#ec3c6a;
+}
+.post-slide .post-bar li i{
+    color:#777;
+    margin-right:5px;
+}
+.table{
+    background: #FFFFFF;
+    width: 80%;
+}
+td a{
+    color: #ec3c6a;
+}
+td a:hover{
+    color: #38cfd8;
+    text-decoration: none;
+    font-weight: normal;
+}
+.my-profile{
+    height: 100%;
+}
+.post-more a{
+    margin-right: 20%;
+    color: #ec3c6a;
+}
+.jumbotron{
+    padding: 2rem 1rem !important;
+}
+.list-h{
+    margin-left: 9rem;
+}
