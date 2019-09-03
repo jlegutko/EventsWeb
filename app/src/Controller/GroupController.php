@@ -6,9 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\Group;
-use App\Entity\Discussion;
-use App\Repository\DiscussionRepository;
-use App\Form\DiscussionType;
+use App\Entity\Post;
+use App\Repository\PostRepository;
+use App\Form\PostType;
 use App\Entity\Member;
 use App\Repository\MemberRepository;
 use App\Form\GroupType;
@@ -205,11 +205,11 @@ class GroupController extends AbstractController
     }
 
     /**
-     * Add a new discussion action.
+     * Add a new post action.
      *
      * @param Request              $request    HTTP request
      * @param Group                $group
-     * @param DiscussionRepository $repository Discussion repository
+     * @param PostRepository $repository Post repository
      *
      * @return Response HTTP response
      *
@@ -217,23 +217,23 @@ class GroupController extends AbstractController
      * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{id}/newdiscussion",
+     *     "/{id}/newpost",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="group_new_discussion",
+     *     name="group_new_post",
      * )
      */
-    public function newDiscussion(Request $request, Group $group, DiscussionRepository $repository): Response
+    public function newPost(Request $request, Group $group, PostRepository $repository): Response
     {
-        $discussion = new Discussion();
-        $form = $this->createForm(DiscussionType::class, $discussion);
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $discussion->setCreatedAt(new DateTime());
-            $discussion->setUpdatedAt(new DateTime());
-            $discussion->setGroups($group);
-            $repository->save($discussion);
+            $post->setCreatedAt(new DateTime());
+            $post->setUpdatedAt(new DateTime());
+            $post->setCommunity($group);
+            $repository->save($post);
 
             $this->addFlash('success', 'message.created_successfully');
 
@@ -241,7 +241,7 @@ class GroupController extends AbstractController
         }
 
         return $this->render(
-            'group/new_discussion.html.twig',
+            'group/new_post.html.twig',
             ['form' => $form->createView(),
                 'group' => $group,
             ]

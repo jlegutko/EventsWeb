@@ -41,15 +41,16 @@ class Post
      */
     private $updatedAt;
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="posts")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $discussion;
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="posts")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="posts")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $community;
 
     /**
      * @return int|null
@@ -118,27 +119,6 @@ class Post
 
         return $this;
     }
-
-    /**
-     * @return Discussion|null
-     */
-    public function getDiscussion(): ?Discussion
-    {
-        return $this->discussion;
-    }
-
-    /**
-     * @param Discussion|null $discussion
-     *
-     * @return Post
-     */
-    public function setDiscussion(?Discussion $discussion): self
-    {
-        $this->discussion = $discussion;
-
-        return $this;
-    }
-
     /**
      * @return User|null
      */
@@ -155,6 +135,18 @@ class Post
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getCommunity(): ?Group
+    {
+        return $this->community;
+    }
+
+    public function setCommunity(?Group $community): self
+    {
+        $this->community = $community;
 
         return $this;
     }

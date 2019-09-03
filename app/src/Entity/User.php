@@ -170,6 +170,11 @@ class User implements UserInterface
     private $profilePhoto;
 
     /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Group", mappedBy="author", cascade={"persist", "remove"})
+     */
+    private $community;
+
+    /**
      * User constructor.
      */
     public function __construct()
@@ -583,6 +588,23 @@ class User implements UserInterface
         // set the owning side of the relation if necessary
         if ($this !== $profilePhoto->getUser()) {
             $profilePhoto->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getCommunity(): ?Group
+    {
+        return $this->community;
+    }
+
+    public function setCommunity(Group $community): self
+    {
+        $this->community = $community;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $community->getAuthor()) {
+            $community->setAuthor($this);
         }
 
         return $this;

@@ -43,10 +43,6 @@ class Event
      */
     private $updatedAt;
     /**
-     * @ORM\Column(type="datetime")
-     */
-    private $eventDate;
-    /**
      * @ORM\Column(type="float")
      */
     private $price;
@@ -54,10 +50,6 @@ class Event
      * @ORM\Column(type="string", length=255)
      */
     private $place;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $eventSize;
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="event", orphanRemoval=true)
      */
@@ -95,6 +87,21 @@ class Event
      * @ORM\OneToOne(targetEntity="App\Entity\Photo", mappedBy="event", cascade={"persist", "remove"})
      */
     private $photo;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $end_date;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $start_date;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $size;
 
     /**
      * Event constructor.
@@ -174,27 +181,6 @@ class Event
 
         return $this;
     }
-
-    /**
-     * @return DateTimeInterface|null
-     */
-    public function getEventDate(): ?DateTimeInterface
-    {
-        return $this->eventDate;
-    }
-
-    /**
-     * @param DateTimeInterface $eventDate
-     *
-     * @return Event
-     */
-    public function setEventDate(DateTimeInterface $eventDate): self
-    {
-        $this->eventDate = $eventDate;
-
-        return $this;
-    }
-
     /**
      * @return float|null
      */
@@ -230,26 +216,6 @@ class Event
     public function setPlace(string $place): self
     {
         $this->place = $place;
-
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getEventSize(): ?string
-    {
-        return $this->eventSize;
-    }
-
-    /**
-     * @param string $eventSize
-     *
-     * @return Event
-     */
-    public function setEventSize(string $eventSize): self
-    {
-        $this->eventSize = $eventSize;
 
         return $this;
     }
@@ -493,6 +459,42 @@ class Event
         if ($this !== $photo->getEvent()) {
             $photo->setEvent($this);
         }
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTimeInterface
+    {
+        return $this->end_date;
+    }
+
+    public function setEndDate(\DateTimeInterface $end_date): self
+    {
+        $this->end_date = $end_date;
+
+        return $this;
+    }
+
+    public function getStartDate(): ?\DateTimeInterface
+    {
+        return $this->start_date;
+    }
+
+    public function setStartDate(\DateTimeInterface $start_date): self
+    {
+        $this->start_date = $start_date;
+
+        return $this;
+    }
+
+    public function getSize(): ?string
+    {
+        return $this->size;
+    }
+
+    public function setSize(string $size): self
+    {
+        $this->size = $size;
 
         return $this;
     }

@@ -48,14 +48,20 @@ class Group
      */
     private $event;
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="groups", orphanRemoval=true, cascade={"persist", "remove"})
-     */
-    private $discussions;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="community", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $members;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Post", mappedBy="community", orphanRemoval=true)
+     */
+    private $posts;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="community", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $author;
 
     /**
      * Group constructor.
@@ -64,6 +70,7 @@ class Group
     {
         $this->discussions = new ArrayCollection();
         $this->members = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     /**
@@ -154,47 +161,6 @@ class Group
         return $this;
     }
     /**
-     * @return Collection|Discussion[]
-     */
-    public function getDiscussions(): Collection
-    {
-        return $this->discussions;
-    }
-
-    /**
-     * @param Discussion $discussion
-     *
-     * @return Group
-     */
-    public function addDiscussion(Discussion $discussion): self
-    {
-        if (!$this->discussions->contains($discussion)) {
-            $this->discussions[] = $discussion;
-            $discussion->setGroups($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Discussion $discussion
-     *
-     * @return Group
-     */
-    public function removeDiscussion(Discussion $discussion): self
-    {
-        if ($this->discussions->contains($discussion)) {
-            $this->discussions->removeElement($discussion);
-            // set the owning side to null (unless already changed)
-            if ($discussion->getGroups() === $this) {
-                $discussion->setGroups(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Member[]
      */
     public function getMembers(): Collection
@@ -231,6 +197,49 @@ class Group
                 $member->setCommunity(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Post[]
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): self
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts[] = $post;
+            $post->setCommunity($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Post $post): self
+    {
+        if ($this->posts->contains($post)) {
+            $this->posts->removeElement($post);
+            // set the owning side to null (unless already changed)
+            if ($post->getCommunity() === $this) {
+                $post->setCommunity(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(User $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }
