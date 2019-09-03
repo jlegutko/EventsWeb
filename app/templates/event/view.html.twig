@@ -9,158 +9,212 @@
     {% if event is defined and event|length %}
 
 
-        <div class="container">
+        <div class="container mb-3">
             <div class="tile">
                 <div class="wrapper">
                     <div class="banner-img">
-                        <img src="http://via.placeholder.com/640x360" alt="Image 1">
+                        {% if photo is defined and photo|length %}
+                            <div>
+                                <a href="{{ url('photo_view', {id: photo.id}) }}">
+                                    <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}" width="auto" heigt="360">
+                                </a>
+                            </div>
+                        {% else %}
+                            <img src="http://via.placeholder.com/640x360" alt="Image 1">
+                        {% endif %}
                     </div>
                     <div class="dates">
-                        <div class="header">Event Title</div>
+                        <div class="col-12"><i class="material-icons mr-2">event_note</i>{{ event.name }}</div>
+                        <div class="col-4 float-lg-right">
+                            {% if photo is defined and photo|length %}
+                                <a href = "{{ url('photo_edit', {id: photo.id}) }}" title = "{{ 'label.photo_edit'|trans }}"><i class="material-icons mr-2">insert_photo</i></a>
+                                <a href = "{{ url('photo_delete', {id: photo.id}) }}" title = "{{ 'label.photo_delete'|trans }}"><i class="material-icons mr-2">delete_sweep</i></a>
+                            {% else %}
+                                <a href = "{{ url('event_new_photo', {id: event.id}) }}" title = "{{ 'label.event_new_photo'|trans }}"><i class="material-icons mr-2">add_photo_alternate</i></a>
+                            {% endif %}
+                            <a href = "{{ url('event_edit', {id: event.id}) }}" title = "{{ 'label.event_edit'|trans }}"><i class="material-icons mr-2">edit</i></a>
+                            <a href="{{ url('event_new_group', {id: event.id}) }}" title = "{{ 'label.event_group_new'|trans }}"><i class="material-icons mr-2">group_add</i></a>
+                            <a href = "{{ url('event_delete', {id: event.id}) }}" title = "{{ 'label.event_delete'|trans }}"><i class="material-icons mr-2">event_busy</i></a>
+                        </div>
                     </div>
                     <div class="dates">
-                        <div class="start">
-                            <strong>STARTS</strong> 12:30 JAN 2015
+                        <div class="ends">
+                            <strong>STARTS</strong> {{  event.eventDate|date("m/d/Y") }}
                             <span></span>
                         </div>
                         <div class="ends">
-                            <strong>ENDS</strong> 14:30 JAN 2015
+                            <strong>ENDS</strong> {{  event.eventDate|date("m/d/Y") }}
                         </div>
                     </div>
                     <div class="dates">
-                        <div class="start">
-                            <strong>STARTS</strong> 12:30 JAN 2015
+                        <div class="ends">
+                            <strong>PLACE</strong> {{  event.place }}
                             <span></span>
                         </div>
                         <div class="ends">
-                            <strong>ENDS</strong> 14:30 JAN 2015
+                            <strong>SIZE</strong> {{  event.Eventsize }}
                         </div>
                     </div>
                     <div class="dates">
-                        <div class="header">Event Description</div>
+                        <div class="ends">
+                            <strong>PRICE</strong> {{  event.price }}
+                            <span></span>
+                        </div>
+                        <div class="ends">
+                            <strong>AVERAGE</strong><i class="material-icons mr-2">star</i> {% set sum = 0 %}
+                            {% set average = 0 %}
+                            {% if all_grades|length %}
+                                {% for grade in all_grades %}
+                                    {% set sum = sum + grade.grade %}
+                                {% endfor %}
+                                {% set average = sum / all_grades|length %}
+                                {{ average }}
+                            {% else %}
+                                {{ sum }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="dates">
+                        <p class="event_desc">
+                            {{ event.description }}
+                        </p>
                     </div>
                     <div class="stats">
 
-                        <div>
-                            <strong>INVITED</strong> 3098
+                        <div class="stats-div">
+                            <strong>GROUPS CONNECTED WITH EVENT >></strong> 3
                         </div>
 
-                        <div>
-                            <strong>JOINED</strong> 562
+                                {% set have_own_grade = 0 %}
+                                {% set other_grade = 0 %}
+                                {% if check|length %}
+                                    {% for check_one in check %}
+                                        {% if null != app.user and check_one.user.id == app.user.id %}
+                                            {% set have_own_grade = 1 %}
+                                            <div class="stats-div">
+                                                <strong>YOUR GRADE <a href="{{ path('grade_delete', {'id': check_one.id}) }}"><i class="material-icons float-right mr-5">delete_forever</i></a></strong>
+                                                {{ check_one.grade }}
+                                            </div>
+                                        {% else %}
+                                            {% if null != app.user and check_one.user.id != app.user.id %}
+                                                {% set other_grade = 1 %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if (have_own_grade == 1 and other_grade == 0) or (have_own_grade == 1 and other_grade == 1) %}
+                                {% endif %}
+                                {% if (have_own_grade == 0 and other_grade == 1) or (have_own_grade == 0 and other_grade == 0) %}
+                                    <div class="stats-div">
+                                        {{ form_start(event.formGrade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+                                        {% if false == event.formGrade.vars.valid %}
+                                            {% include 'default/_single_flash_message.html.twig' with {
+                                                type: 'danger',
+                                                message: 'message.form_error'|trans,
+                                            }%}
+                                        {% endif %}
+                                        {{ form_widget(event.formGrade) }}
+
+                                            <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
+                                                {{ 'button.new_grade'|trans }}
+                                            </button>
+
+                                        {{ form_end(event.formGrade) }}
+                                    </div>
+                                {% endif %}
+
+                        <div class="stats-div">
+                            {% set favourite = 0 %}
+                            {% for interest in event.interests %}
+                                {% if null != app.user and interest.user.id == app.user.id%}
+                                    {% set favourite = 1 %}
+                                {% endif %}
+                            {% endfor %}
+                            {% if favourite == 0 %}
+                                <strong>ADD EVENT TO FAVOURITES</strong>
+                                <a class="add_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
+                                    <i class="material-icons mr-24">playlist_add</i>
+                                </a>
+                            {% else %}
+                                <strong>REMOVE EVENT FROM FAVOURITES</strong>
+                                <a class="remove_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.remove_interest'|trans }}">
+                                    <i class="material-icons mr-24">remove_circle</i>
+                                </a>
+                            {% endif %}
                         </div>
-
-                        <div>
-                            <strong>DECLINED</strong> 182
-                        </div>
-
-                    </div>
-
-                    <div class="stats">
-
-                        <div>
-                            <strong>INVITED</strong> 3098
-                        </div>
-
-                        <div>
-                            <strong>JOINED</strong> 562
-                        </div>
-
-                        <div>
-                            <strong>DECLINED</strong> 182
-                        </div>
-
-                    </div>
-
-                    <div class="footer">
-                        <a href="#" class="Cbtn Cbtn-primary">View</a>
-                        <a href="#" class="Cbtn Cbtn-danger">Delete</a>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-        <dl class="dl-horizontal">
-            <dt>{{ 'label.event_name'|trans }}</dt>
-            <dd>{{  event.name }}</dd>
-            <dt>{{ 'label.event_date'|trans }}</dt>
-            <dd>{{  event.eventDate|date("m/d/Y") }}</dd>
-            <dt>{{ 'label.event_price'|trans }}</dt>
-            <dd>{{  event.price }}</dd>
-            <dt>{{ 'label.event_place'|trans }}</dt>
-            <dd>{{  event.place }}</dd>
-            <dt>{{ 'label.event_size'|trans }}</dt>
-            <dd>{{  event.Eventsize }}</dd>
-        </dl>
-        <a href = "{{ url('event_edit', {id: event.id}) }}" title = "{{ 'label.event_edit'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-            <h3>{{ 'label.event_edit'|trans }}</h3>
-        </a>
-        <a href = "{{ url('event_delete', {id: event.id}) }}" title = "{{ 'label.event_delete'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-            <h3>{{ 'label.event_delete'|trans }}</h3>
-        </a>
-        {% if photo is defined and photo|length %}
-            <a href = "{{ url('photo_edit', {id: photo.id}) }}" title = "{{ 'label.photo_edit'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-                <h3>{{ 'label.photo_edit'|trans }}</h3>
-            </a>
-            <a href = "{{ url('photo_delete', {id: photo.id}) }}" title = "{{ 'label.photo_delete'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-                <h3>{{ 'label.photo_delete'|trans }}</h3>
-            </a>
-        {% else %}
-            <a href = "{{ url('event_new_photo', {id: event.id}) }}" title = "{{ 'label.event_new_photo'|trans }}" {% if app.request.attributes.get('_route') == 'security_login' %} class="active" {% endif %}>
-                <h3>{{ 'label.event_new_photo'|trans }}</h3>
-            </a>
-        {% endif %}
-        {% if photo is defined and photo|length %}
-            <div>
-                <a href="{{ url('photo_view', {id: photo.id}) }}">
-                    <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}">
-                </a>
+        <div class="container mb-3">
+            <h3 class="line_h mb-1">
+                <i class="material-icons mr-1">
+                    comment
+                </i>{{ 'label.comments'|trans }}
+            </h3>
+            <div class="post-comment-form col-lg-12">
+                {{ form_start(event.form, { method: 'post', action: url('event_new_comment', {'id': event.id}) }) }}
+                {% if false == event.form.vars.valid %}
+                    {% include 'default/_single_flash_message.html.twig' with {
+                        type: 'danger',
+                        message: 'message.form_error'|trans,
+                    }%}
+                {% endif %}
+                {{ form_widget(event.form) }}
+                <div class="form-group row float-right mr-1">
+                    <button type="submit" title="{{ 'action.new_comment'|trans }}" class="btn btn-success">
+                       {{ 'button.submit_comment'|trans }}
+                    </button>
+                </div>
+                {{ form_end(event.form) }}
             </div>
-        {% endif %}
+            {% if event.comments|length %}
+                {% for comment in event.comments %}
+                <div class="media comment-box">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                            <h4 class="media-heading">{{ comment.owner.firstName }}<span class="float-right">{{ comment.createdAt|date()|localizeddate('short', 'short') }}</span>
+                            {% if null != app.user %}
+                                {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                    <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
+                                {% endif %}
+                                {% if comment.event.user.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                    <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
+                                {% endif %}
+                            {% endif %}
+                            </h4>
+                            <p>{{ comment.content }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <h3>{{ 'label.no_comments'|trans }}</h3>
+            {% endif %}
+        </div>
+{#
+
+
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}
         </p>
     {% endif %}
-    <div class="event-interest">
-        {% set favourite = 0 %}
-        {% for interest in event.interests %}
-            {% if null != app.user and interest.user.id == app.user.id%}
-                {% set favourite = 1 %}
-            {% endif %}
+
+<div class="all-groups">
+    {% if event.groups|length %}
+        {% for group in event.groups %}
+            <a class="group" href="{{ url('group_view', {id: group.id}) }}" title ="{{ 'action.view'|trans }}">
+                {{ group.name }}
+            </a>
         {% endfor %}
-        {% if favourite == 0 %}
-            <a class="add_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.interest'|trans }}">
-                {{ 'label.event_interested'|trans }}
-            </a>
-        {% else %}
-            <a class="remove_interest" href="{{ url('event_interest', {id: event.id}) }}" title ="{{ 'action.remove_interest'|trans }}">
-                {{ 'label.remove_interest'|trans }}
-            </a>
-        {% endif %}
-    </div>
-    <div class="all-groups">
-        {% if event.groups|length %}
-            {% for group in event.groups %}
-                <a class="group" href="{{ url('group_view', {id: group.id}) }}" title ="{{ 'action.view'|trans }}">
-                    {{ group.name }}
-                </a>
-            {% endfor %}
-        {% endif %}
-    </div>
-    <div class="grades-average">
-        {% set sum = 0 %}
-        {% set average = 0 %}
-        {% if all_grades|length %}
-            {% for grade in all_grades %}
-                {% set sum = sum + grade.grade %}
-            {% endfor %}
-            {% set average = sum / all_grades|length %}
-            {{ average }}
-        {% endif %}
-    </div>
-    <div class="post-grade-form">
+    {% endif %}
+</div>
+
+<div class="post-grade-form">
     {% set have_own_grade = 0 %}
     {% set other_grade = 0 %}
     {% if check|length %}
@@ -176,83 +230,86 @@
         {% endfor %}
     {% endif %}
     {% if (have_own_grade == 1 and other_grade == 0) or (have_own_grade == 1 and other_grade == 1) %}
-        {{ form_start(event.form_grade, { method: 'put', action: url('grade_edit', {'id': event.id}) }) }}
-        {% if false == event.form_grade.vars.valid %}
+        {{ form_start(event.formGrade, { method: 'put', action: url('grade_edit', {'id': event.id}) }) }}
+        {% if false == event.formGrade.vars.valid %}
             {% include 'default/_single_flash_message.html.twig' with {
                 type: 'danger',
                 message: 'message.form_error'|trans,
             }%}
         {% endif %}
-        {{ form_widget(event.form_grade) }}
+        {{ form_widget(event.formGrade) }}
         <div class="form-group row float-sm-right">
             <button type="submit" title="{{ 'action.update_grade'|trans }}" class="btn btn-primary">
                 {{ 'button.update_grade'|trans }}
             </button>
         </div>
-        {{ form_end(event.form_grade) }}
+        {{ form_end(event.formGrade) }}
     {% endif %}
     {% if have_own_grade == 0 and other_grade == 1 %}
-        {{ form_start(event.form_grade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
-        {% if false == event.form_grade.vars.valid %}
+        {{ form_start(event.formGrade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+        {% if false == event.formGrade.vars.valid %}
             {% include 'default/_single_flash_message.html.twig' with {
                 type: 'danger',
                 message: 'message.form_error'|trans,
             }%}
         {% endif %}
-        {{ form_widget(event.form_grade) }}
+        {{ form_widget(event.formGrade) }}
         <div class="form-group row float-sm-right">
             <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
                 {{ 'button.new_grade'|trans }}
             </button>
         </div>
-        {{ form_end(event.form_grade) }}
+        {{ form_end(event.formGrade) }}
     {% endif %}
-    </div>
-    <div class = "event-comments">
-        {% if event.comments|length %}
-            <h3>{{ 'label.comments'|trans }} ({{ event.comments|length }})</h3>
-            {% for comment in event.comments %}
-                <div class="comment-container" id="comment-{{ comment.id }}">
-                    <div class="comment">
-                        <div>
-                            <b class="comment-owner">{{ comment.owner.firstName }}</b><span class="comment-text">{{ comment.content}}</span>
-                        </div>
-                        <div>
+</div>
+<div class = "event-comments">
+    {% if event.comments|length %}
+        <h3>{{ 'label.comments'|trans }} ({{ event.comments|length }})</h3>
+        {% for comment in event.comments %}
+            <div class="comment-container" id="comment-{{ comment.id }}">
+                <div class="comment">
+                    <div>
+                        <b class="comment-owner">{{ comment.owner.firstName }}</b><span class="comment-text">{{ comment.content}}</span>
+                    </div>
+                    <div>
                             <span class="date">{{ comment.createdAt|date()|localizeddate('short', 'short') }}
                                 {% if comment.createdAt != comment.updatedAt %} ({{ 'label.comment_edited'|trans }})
                                 {% endif %}</span>
-                            {% if null != app.user %}
-                                {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
-                                    <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}">{{ 'action.edit'|trans }}</a>
-                                {% endif %}
-                                {% if comment.event.user.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
-                                    <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}">{{ 'action.delete'|trans }}</a>
-                                {% endif %}
+                        {% if null != app.user %}
+                            {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}">{{ 'action.edit'|trans }}</a>
                             {% endif %}
-                        </div>
+                            {% if comment.event.user.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}">{{ 'action.delete'|trans }}</a>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
-             {% endfor %}
-        {% else %}
-            <h3>{{ 'label.no_comments'|trans }}</h3>
-        {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <h3>{{ 'label.no_comments'|trans }}</h3>
+    {% endif %}
+</div>
+<div class="post-comment-form">
+    {{ form_start(event.form, { method: 'post', action: url('event_new_comment', {'id': event.id}) }) }}
+    {% if false == event.form.vars.valid %}
+        {% include 'default/_single_flash_message.html.twig' with {
+            type: 'danger',
+            message: 'message.form_error'|trans,
+        }%}
+    {% endif %}
+    {{ form_widget(event.form) }}
+    <div class="form-group row float-sm-right">
+        <button type="submit" title="{{ 'action.new_comment'|trans }}" class="btn btn-primary">
+            {{ 'button.submit_comment'|trans }}
+        </button>
     </div>
-    <div class="post-comment-form">
-        {{ form_start(event.form, { method: 'post', action: url('event_new_comment', {'id': event.id}) }) }}
-        {% if false == event.form.vars.valid %}
-            {% include 'default/_single_flash_message.html.twig' with {
-                type: 'danger',
-                message: 'message.form_error'|trans,
-            }%}
-        {% endif %}
-        {{ form_widget(event.form) }}
-        <div class="form-group row float-sm-right">
-            <button type="submit" title="{{ 'action.new_comment'|trans }}" class="btn btn-primary">
-                {{ 'button.submit_comment'|trans }}
-            </button>
-        </div>
-        {{ form_end(event.form) }}
-    </div>
+    {{ form_end(event.form) }}
+</div>
+#}
+
+    {% endif %}
 
 {% endblock %}
 

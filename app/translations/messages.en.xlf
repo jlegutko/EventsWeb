@@ -237,6 +237,18 @@
                 <source>title.event_list</source>
                 <target>Events list</target>
             </trans-unit>
+            <trans-unit id="label.comment">
+                <source>label.comment</source>
+                <target>Add a new comment</target>
+            </trans-unit>
+            <trans-unit id="button.submit_comment">
+                <source>button.submit_comment</source>
+                <target>ADD COMMENT</target>
+            </trans-unit>
+            <trans-unit id="button.new_grade">
+                <source>button.new_grade</source>
+                <target>SAVE</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

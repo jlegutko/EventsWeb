@@ -2,16 +2,13 @@
 /**
  * ProfilePhoto repository.
  */
-
 namespace App\Repository;
-
 use App\Entity\ProfilePhoto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Bridge\Doctrine\RegistryInterface;
-
 /**
  * Class ProfilePhotoRepository.
  *
@@ -31,7 +28,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ProfilePhoto::class);
     }
-
     /**
      * Query all records.
      *
@@ -42,7 +38,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
         return $this->getOrCreateQueryBuilder()
             ->orderBy('pp.updatedAt', 'DESC');
     }
-
     /**
      * Save record.
      *
@@ -56,7 +51,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
         $this->_em->persist($profilePhoto);
         $this->_em->flush($profilePhoto);
     }
-
     /**
      * Delete record.
      *
@@ -70,7 +64,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
         $this->_em->remove($profilePhoto);
         $this->_em->flush($profilePhoto);
     }
-
     /**
      * Get or create new query builder.
      *
@@ -82,7 +75,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?: $this->createQueryBuilder('pp');
     }
-
     // /**
     //  * @return ProfilePhoto[] Returns an array of ProfilePhoto objects
     //  */
@@ -99,7 +91,6 @@ class ProfilePhotoRepository extends ServiceEntityRepository
         ;
     }
     */
-
     /*
     public function findOneBySomeField($value): ?ProfilePhoto
     {

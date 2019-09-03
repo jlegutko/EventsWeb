@@ -2,16 +2,13 @@
 /**
  * ProfilePhoto type.
  */
-
 namespace App\Form;
-
 use App\Entity\ProfilePhoto;
 use App\Form\EventListener\DefaultPhotoFileEventSubscriber;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 /**
  * Class ProfilePhotoType.
  */
@@ -31,7 +28,6 @@ class ProfilePhotoType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $photo = $builder->getData();
-
         $builder->add(
             'file',
             FileType::class,
@@ -40,10 +36,8 @@ class ProfilePhotoType extends AbstractType
                 'required' => $photo->getFile() ? false : true,
             ]
         );
-
         $builder->addEventSubscriber(new DefaultPhotoFileEventSubscriber());
     }
-
     /**
      * Configures the options for this type.
      *
@@ -53,7 +47,6 @@ class ProfilePhotoType extends AbstractType
     {
         $resolver->setDefaults(['data_class' => ProfilePhoto::class]);
     }
-
     /**
      * Returns the prefix of the template block name for this type.
      *

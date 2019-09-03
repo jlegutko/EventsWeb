@@ -2,9 +2,7 @@
 /**
  * ProfilePhoto upload listener.
  */
-
 namespace App\EventListener;
-
 use App\Entity\ProfilePhoto;
 use App\Service\FileUploader;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -12,7 +10,6 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 /**
  * Class ProfilePhotoUploadListener.
  */
@@ -24,7 +21,6 @@ class ProfilePhotoUploadListener
      * @var \App\Service\FileUploader|null
      */
     protected $uploaderService = null;
-
     /**
      * ProfilePhotoUploadListener constructor.
      *
@@ -34,7 +30,6 @@ class ProfilePhotoUploadListener
     {
         $this->uploaderService = $fileUploader;
     }
-
     /**
      * Pre persist.
      *
@@ -45,10 +40,8 @@ class ProfilePhotoUploadListener
     public function prePersist(LifecycleEventArgs $args): void
     {
         $entity = $args->getEntity();
-
         $this->uploadFile($entity);
     }
-
     /**
      * Pre update.
      *
@@ -59,10 +52,8 @@ class ProfilePhotoUploadListener
     public function preUpdate(PreUpdateEventArgs $args): void
     {
         $entity = $args->getEntity();
-
         $this->uploadFile($entity);
     }
-
     /**
      * Upload file.
      *
@@ -75,7 +66,6 @@ class ProfilePhotoUploadListener
         if (!$entity instanceof ProfilePhoto) {
             return;
         }
-
         $file = $entity->getFile();
         if ($file instanceof UploadedFile) {
             $filename = $this->uploaderService->upload($file);
@@ -92,11 +82,9 @@ class ProfilePhotoUploadListener
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         if (!$entity instanceof ProfilePhoto) {
             return;
         }
-
         if ($fileName = $entity->getFile()) {
             $entity->setFile(
                 new File(
@@ -113,10 +101,8 @@ class ProfilePhotoUploadListener
     public function preRemove(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-
         $this->removeFile($entity);
     }
-
     /**
      * Remove file from disk.
      *
@@ -127,7 +113,6 @@ class ProfilePhotoUploadListener
         if (!$entity instanceof ProfilePhoto) {
             return;
         }
-
         $file = $entity->getFile();
         if ($file instanceof File) {
             $filesystem = new Filesystem();

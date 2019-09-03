@@ -113,7 +113,7 @@ class EventController extends AbstractController
                 'grade' => $grade,
                 'user' => $user,
                 'check' => $check,
-                'all_grades' => $allGrades, ]
+                'all_grades' => $allGrades]
         ) : $this->render(
             'event/view.html.twig',
             ['event' => $event,
@@ -121,7 +121,7 @@ class EventController extends AbstractController
                 'grade' => $grade,
                 'user' => $user,
                 'check' => $check,
-                'all_grades' => $allGrades, ]
+                'all_grades' => $allGrades,]
         );
     }
 
@@ -312,7 +312,7 @@ class EventController extends AbstractController
      *     "/{id}/newgrade",
      *     methods={"GET", "POST"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="event_newGrade",
+     *     name="event_new_grade",
      * )
      */
     public function newGrade(Request $request, Event $event, GradeRepository $repository): Response
@@ -345,6 +345,7 @@ class EventController extends AbstractController
             'event/new_grade.html.twig',
             ['form' => $form->createView(),
                 'event' => $event,
+                'grade' => $grade
             ]
         );
     }
@@ -368,7 +369,6 @@ class EventController extends AbstractController
      *     name="grade_edit",
      *     requirements={"id": "[1-9]\d*"},
      * )
-     */
     public function editGrade(Request $request, Grade $grade, Event $event, GradeRepository $repository): Response
     {
         if ($this->getUser() === null) {
@@ -398,6 +398,7 @@ class EventController extends AbstractController
             ]
         );
     }
+     */
     /**
      * Interest action.
      *

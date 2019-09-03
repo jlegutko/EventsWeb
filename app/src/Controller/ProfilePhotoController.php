@@ -2,9 +2,7 @@
 /**
  * ProfilePhoto controller.
  */
-
 namespace App\Controller;
-
 use App\Entity\ProfilePhoto;
 use App\Form\ProfilePhotoType;
 use App\Repository\ProfilePhotoRepository;
@@ -18,7 +16,6 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 /**
  * Class ProfilePhotoController.
  *
@@ -27,7 +24,6 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProfilePhotoController extends AbstractController
 {
     private $uploaderService = null;
-
     /**
      * ProfilePhotoController constructor.
      * @param FileUploader $uploaderService
@@ -79,27 +75,21 @@ class ProfilePhotoController extends AbstractController
     public function edit(Request $request, ProfilePhoto $profilePhoto, ProfilePhotoRepository $repository, Filesystem $filesystem): Response
     {
         $originalProfilePhoto = clone $profilePhoto;
-
         $form = $this->createForm(ProfilePhotoType::class, $profilePhoto, ['method' => 'PUT']);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $formData = $form->getData();
-
             if ($formData->getFile() instanceof UploadedFile) {
                 $repository->save($profilePhoto);
                 $file = $originalProfilePhoto->getFile();
                 $filesystem->remove($file->getPathname());
             }
-
             $this->addFlash('success', 'message.updated_successfully');
-
             return $this->redirectToRoute(
                 'profile_photo_view',
                 ['id' => $profilePhoto->getId()]
             );
         }
-
         return $this->render(
             'profile_photo/edit.html.twig',
             [
@@ -131,18 +121,14 @@ class ProfilePhotoController extends AbstractController
     {
         $form = $this->createForm(FormType::class, $profilePhoto, ['method' => 'DELETE']);
         $form->handleRequest($request);
-
         if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
             $form->submit($request->request->get($form->getName()));
         }
-
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->delete($profilePhoto);
             $this->addFlash('success', 'message.deleted_successfully');
-
             return $this->redirectToRoute('event_index');
         }
-
         return $this->render(
             'profile_photo/delete.html.twig',
             [

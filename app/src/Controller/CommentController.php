@@ -109,7 +109,7 @@ class CommentController extends AbstractController
 
             $this->addFlash('success', 'message.updated_successfully');
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('event_index');
         }
 
         return $this->render(
@@ -156,7 +156,7 @@ class CommentController extends AbstractController
             $repository->delete($comment);
             $this->addFlash('success', 'message.deleted_successfully');
 
-            return $this->redirectToRoute('comment_index');
+            return $this->redirectToRoute('event_index');
         }
 
         return $this->render(

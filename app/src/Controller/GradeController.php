@@ -5,7 +5,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Grade;
+use App\Form\GradeType;
 use App\Repository\GradeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -54,7 +56,6 @@ class GradeController extends AbstractController
             ['pagination' => $pagination]
         );
     }
-
     /**
      * View action.
      *
@@ -112,7 +113,7 @@ class GradeController extends AbstractController
             $repository->delete($grade);
             $this->addFlash('success', 'message.deleted_successfully');
 
-            return $this->redirectToRoute('grade_index');
+            return $this->redirectToRoute('event_index');
         }
 
         return $this->render(

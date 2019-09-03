@@ -158,15 +158,16 @@ class User implements UserInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Member", mappedBy="member", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $members;
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
-     */
-    private $profilePhoto;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Interest", mappedBy="user", orphanRemoval=true, cascade={"persist", "remove"})
      */
     private $interests;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\ProfilePhoto", mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $profilePhoto;
 
     /**
      * User constructor.
@@ -529,32 +530,6 @@ class User implements UserInterface
 
         return $this;
     }
-
-    /**
-     * @return ProfilePhoto|null
-     */
-    public function getProfilePhoto(): ?ProfilePhoto
-    {
-        return $this->profilePhoto;
-    }
-
-    /**
-     * @param ProfilePhoto $profilePhoto
-     *
-     * @return User
-     */
-    public function setProfilePhoto(ProfilePhoto $profilePhoto): self
-    {
-        $this->profilePhoto = $profilePhoto;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $profilePhoto->getUser()) {
-            $profilePhoto->setUser($this);
-        }
-
-        return $this;
-    }
-
     /**
      * @return Collection|Interest[]
      */
@@ -591,6 +566,23 @@ class User implements UserInterface
             if ($interest->getUser() === $this) {
                 $interest->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getProfilePhoto(): ?ProfilePhoto
+    {
+        return $this->profilePhoto;
+    }
+
+    public function setProfilePhoto(ProfilePhoto $profilePhoto): self
+    {
+        $this->profilePhoto = $profilePhoto;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $profilePhoto->getUser()) {
+            $profilePhoto->setUser($this);
         }
 
         return $this;
