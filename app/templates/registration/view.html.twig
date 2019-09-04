@@ -10,7 +10,7 @@
             <div class="col-md-4 col-xs-12 col-sm-6 col-lg-4">
                 <div class="col-sm-10">
                     {% if app.user.profilePhoto.file is defined and app.user.profilePhoto.file|length %}
-                        <img class="avatar img-circle img-thumbnail img-fluid" alt="avatar" src="{{ asset('uploads/photos/'~ app.user.profilePhoto.file.filename) }}">
+                        <a href="{{ url('profile_photo_view', {id: user.profilePhoto.id}) }}"><img class="avatar img-circle img-thumbnail img-fluid" alt="avatar" src="{{ asset('uploads/photos/'~ app.user.profilePhoto.file.filename) }}"></a>
                     {% else %}
                         <img src="{{ asset('files/photo-profile.png') }}" class="avatar img-circle img-thumbnail img-fluid" alt="avatar">
                     {% endif %}

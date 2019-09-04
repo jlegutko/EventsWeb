@@ -1,19 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.profile_photo_view' }}
+    {{ 'title.profile_photo_view'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.profile_photo_view' }}</h1>
-    {% if profile_photo is defined and profile_photo|length %}
-        <div>
-            <img src="{{ asset('uploads/photos/'~ profile_photo.file.filename) }}">
-        </div>
-    {% else %}
-        {% include 'default/_single_flash_message.html.twig' with {
-            type: 'warning',
-            message: 'message.item_not_found'|trans
-        } %}
-    {% endif %}
+    <div class="container-fluid">
+        <h3 class="list-h mt-5"><i class="material-icons mr-3">photo</i>{{ 'title.profile_photo_view'|trans }}</h3>
+        {% if profile_photo is defined and profile_photo|length %}
+                <img class="list-h mt-5"src="{{ asset('uploads/photos/'~ profile_photo.file.filename) }}">
+        {% else %}
+            {% include 'default/_single_flash_message.html.twig' with {
+                type: 'warning',
+                message: 'message.item_not_found'|trans
+            } %}
+        {% endif %}
+    </div>
 {% endblock %}

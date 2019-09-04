@@ -338,6 +338,158 @@
                 <source>label.event_by_price</source>
                 <target>By price:</target>
             </trans-unit>
+            <trans-unit id="message.item_not_found">
+                <source>label.message.item_not_found</source>
+                <target>Item was not found :(</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_view">
+                <source>title.profile_photo_view</source>
+                <target>User profile photo</target>
+            </trans-unit>
+            <trans-unit id="title.photo_view">
+                <source>title.photo_view</source>
+                <target>Photo of event</target>
+            </trans-unit>
+            <trans-unit id="label.photo_edit">
+                <source>label.photo_edit</source>
+                <target>Edit photo</target>
+            </trans-unit>
+            <trans-unit id="label.photo_delete">
+                <source>label.photo_delete</source>
+                <target>Delete photo</target>
+            </trans-unit>
+            <trans-unit id="label.event_edit">
+                <source>label.event_edit</source>
+                <target>Edit event</target>
+            </trans-unit>
+            <trans-unit id="label.event_group_new">
+                <source>label.event_group_new</source>
+                <target>Add new group</target>
+            </trans-unit>
+            <trans-unit id="label.event_delete">
+                <source>label.event_delete</source>
+                <target>Delete event</target>
+            </trans-unit>
+            <trans-unit id="label.grade">
+                <source>label.grade</source>
+                <target>Event grade</target>
+            </trans-unit>
+            <trans-unit id="action.new_grade">
+                <source>action.new_grade</source>
+                <target>Add new grade</target>
+            </trans-unit>
+            <trans-unit id="action.interest">
+                <source>action.interest</source>
+                <target>Add to favourites</target>
+            </trans-unit>
+            <trans-unit id="label.comments">
+                <source>label.comments</source>
+                <target>Comments</target>
+            </trans-unit>
+            <trans-unit id="action.new_comment">
+                <source>action.new_comment</source>
+                <target>Add new comment</target>
+            </trans-unit>
+            <trans-unit id="label.no_comments">
+                <source>label.no_comments</source>
+                <target>No comments added to this event</target>
+            </trans-unit>
+            <trans-unit id="Year">
+                <source>Year</source>
+                <target>Year</target>
+            </trans-unit>
+            <trans-unit id="Month">
+                <source>Month</source>
+                <target>Month</target>
+            </trans-unit>
+            <trans-unit id="Day">
+                <source>Day</source>
+                <target>Day</target>
+            </trans-unit>
+            <trans-unit id="Hour">
+                <source>Hour</source>
+                <target>Hour</target>
+            </trans-unit>
+            <trans-unit id="Minute">
+                <source>Minute</source>
+                <target>Minute</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_edit ">
+                <source>title.profile_photo_edit </source>
+                <target>Edit profile photo</target>
+            </trans-unit>
+            <trans-unit id="label.profile_photo">
+                <source>label.profile_photo</source>
+                <target>Choose a photo</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_edit">
+                <source>title.profile_photo_edit</source>
+                <target>Edit profile photo</target>
+            </trans-unit>
+            <trans-unit id="title.photo_edit ">
+                <source>title.photo_edit</source>
+                <target>Edit event photo</target>
+            </trans-unit>
+            <trans-unit id="label.photo">
+                <source>label.photo</source>
+                <target>Choose a photo</target>
+            </trans-unit>
+            <trans-unit id="title.photo_delete">
+                <source>title.photo_delete</source>
+                <target>Do you want to delete an event photo?</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_delete">
+                <source>title.profile_photo_delete</source>
+                <target>Do you want to delete your profile photo?</target>
+            </trans-unit>
+            <trans-unit id="title.user_add_photo">
+                <source>title.user_add_photo</source>
+                <target>Add a new profile photo</target>
+            </trans-unit>
+            <trans-unit id="title.event_edit">
+                <source>title.event_edit</source>
+                <target>Edit an event</target>
+            </trans-unit>
+            <trans-unit id="title.event_add_group">
+                <source>title.event_add_group</source>
+                <target>Add new group to event</target>
+            </trans-unit>
+            <trans-unit id="title.event_delete">
+                <source>title.event_delete</source>
+                <target>Do you want to delete an event?</target>
+            </trans-unit>
+            <trans-unit id="title.event_add_photo">
+                <source>title.event_add_photo</source>
+                <target>Add photo to event</target>
+            </trans-unit>
+            <trans-unit id="action.remove_interest">
+                <source>action.remove_interest</source>
+                <target>Remove from favourites</target>
+            </trans-unit>
+            <trans-unit id="title.group_list">
+                <source>title.group_list</source>
+                <target>Group list</target>
+            </trans-unit>
+            <trans-unit id="action.member">
+                <source>action.member</source>
+                <target>Join to group</target>
+            </trans-unit>
+            <trans-unit id="action.remove_member">
+                <source>action.remove_member</source>
+                <target>Withdraw from group</target>
+            </trans-unit>
+            <trans-unit id="action.new_post">
+                <source>action.new_post</source>
+                <target>Post</target>
+            </trans-unit>
+            <trans-unit id="label.event_id">
+                <source>label.event_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="action.view">
+                <source>action.view</source>
+                <target>Go to group >></target>
+            </trans-unit>
         </body>
     </file>
 </xliff>
