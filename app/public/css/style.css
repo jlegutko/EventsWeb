@@ -370,4 +370,57 @@ div.footer a.Cbtn-danger:hover{
     margin-right: auto;
     margin-left: auto;
 }
+.img-small{
+    width: 40px;
+    height: 40px;
+}
+.a-small{
+    font-size: 14px;
+}
+#post .row{
+    margin-left: 0;
+    margin-top: 2rem;
+}
+/* CSS Test end */
 
+.post-box img {
+    width: 50px;
+    height: 50px;
+}
+.post-box .media-left {
+    padding-right: 10px;
+    width: 65px;
+}
+.post-box .media-body p {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+.post-box .media-body .media p {
+    margin-bottom: 0;
+}
+.post-box .media-heading {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    padding: 7px 10px;
+    position: relative;
+    margin-bottom: -1px;
+    font-size: 16px;
+}
+.post-details{
+    margin-top: 0.5rem;
+    font-size: 16px;
+    margin-right: 0.75rem;
+}
+.media-heading i{
+    font-size: 20px;
+    margin-top: 0.5rem;
+    margin-right: 0.75rem;
+}
+.div_list{
+    margin-left: 15rem;
+    font-size: 16px;
+}
+.h_list{
+    margin-left: 15rem;
+    font-size: 24px;
+}

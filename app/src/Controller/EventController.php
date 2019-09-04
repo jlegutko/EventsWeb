@@ -27,6 +27,7 @@ use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -518,6 +519,7 @@ class EventController extends AbstractController
             $group->setCreatedAt(new DateTime());
             $group->setUpdatedAt(new DateTime());
             $group->setEvent($event);
+            $group->setAuthor($this->getUser());
             $repository->save($group);
 
             $this->addFlash('success', 'message.created_successfully');
@@ -529,6 +531,60 @@ class EventController extends AbstractController
             'event/new_group.html.twig',
             ['form' => $form->createView(),
              'event' => $event,
+            ]
+        );
+    }
+    /**
+     * Shows events made by user.
+
+     *
+     * @param \App\Entity\User $user User entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/my_events",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_events",
+     * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+     */
+    public function showMyEvents(User $user): Response
+    {
+        return $this->render(
+            'registration/my_events.html.twig',
+            [
+                'user' => $user,
+            ]
+        );
+    }
+    /**
+     * Shows groups connected with event.
+
+     *
+     * @param Event $event Event entity
+     *
+     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     *
+     * @Route(
+     *     "/{id}/groups",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_groups",
+     * )
+     *
+     */
+    public function eventGroups(Event $event): Response
+    {
+        return $this->render(
+            'event/groups.html.twig',
+            [
+                'event' => $event,
             ]
         );
     }

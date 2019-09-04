@@ -39,11 +39,11 @@
                     </div>
                     <div class="dates">
                         <div class="ends">
-                            <strong>STARTS</strong> {{  event.eventDate|date("m/d/Y") }}
+                            <strong>STARTS</strong> {{  event.startDate|date("m/d/Y") }}
                             <span></span>
                         </div>
                         <div class="ends">
-                            <strong>ENDS</strong> {{  event.eventDate|date("m/d/Y") }}
+                            <strong>ENDS</strong> {{  event.endDate|date("m/d/Y") }}
                         </div>
                     </div>
                     <div class="dates">
@@ -52,7 +52,7 @@
                             <span></span>
                         </div>
                         <div class="ends">
-                            <strong>SIZE</strong> {{  event.Eventsize }}
+                            <strong>SIZE</strong> {{  event.size }}
                         </div>
                     </div>
                     <div class="dates">
@@ -82,7 +82,11 @@
                     <div class="stats">
 
                         <div class="stats-div">
-                            <strong>GROUPS CONNECTED WITH EVENT >></strong> 3
+                            {% if event.groups is defined and event.groups|length %}
+                                <a href="{{ path('event_groups', {'id': event.id}) }}"><strong>GROUPS CONNECTED WITH EVENT >></strong> {{ event.groups|length }}</a>
+                            {% else %}
+                                <strong>GROUPS CONNECTED WITH EVENT >></strong> 0</a>
+                            {% endif %}
                         </div>
 
                                 {% set have_own_grade = 0 %}

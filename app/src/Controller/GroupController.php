@@ -61,6 +61,7 @@ class GroupController extends AbstractController
     /**
      * View action.
      *
+     * @param Request         $request    HTTP request
      * @param Group $group Group entity
      *
      * @return Response HTTP response
@@ -71,11 +72,17 @@ class GroupController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      * )
      */
-    public function view(Group $group): Response
+    public function view(Group $group, Request $request): Response
     {
+        $post = new Post();
+        $form = $this->createForm(PostType::class, $post);
+        $form->handleRequest($request);
+
         return $this->render(
             'group/view.html.twig',
-            ['group' => $group]
+            ['group' => $group,
+                'form' => $form->createView(),
+                ]
         );
     }
 
@@ -232,6 +239,7 @@ class GroupController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setCreatedAt(new DateTime());
             $post->setUpdatedAt(new DateTime());
+            $post->setUser($this->getUser());
             $post->setCommunity($group);
             $repository->save($post);
 

@@ -4,11 +4,10 @@
  */
 namespace App\Entity;
 
-use DateTime;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -29,16 +28,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     fields={"file"}
  * )
  */
-class Photo
+class Photo implements \Serializable
 {
-    /**
-     * Use constants to define configuration options that rarely change instead
-     * of specifying them in app/config/config.yml.
-     * See http://symfony.com/doc/current/best_practices/configuration.html#constants-vs-configuration-options
-     *
-     * @constant int NUMBER_OF_ITEMS
-     */
-    const NUMBER_OF_ITEMS = 10;
     /**
      * Primary key.
      *
@@ -53,7 +44,7 @@ class Photo
     /**
      * Created at.
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -66,7 +57,7 @@ class Photo
     /**
      * Updated at.
      *
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(type="datetime")
      *
@@ -95,7 +86,12 @@ class Photo
     private $file;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Event", inversedBy="photo")
+     * Event.
+     *
+     * @ORM\OneToOne(
+     *     targetEntity="App\Entity\Event",
+     *     inversedBy="photo"
+     * )
      * @ORM\JoinColumn(nullable=false)
      */
     private $event;
@@ -113,9 +109,9 @@ class Photo
     /**
      * Getter for Created at.
      *
-     * @return DateTimeInterface|null Created at
+     * @return \DateTimeInterface|null Created at
      */
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -123,9 +119,9 @@ class Photo
     /**
      * Setter for Created at.
      *
-     * @param DateTimeInterface $createdAt Created at
+     * @param \DateTimeInterface $createdAt Created at
      */
-    public function setCreatedAt(DateTimeInterface $createdAt): void
+    public function setCreatedAt(\DateTimeInterface $createdAt): void
     {
         $this->createdAt = $createdAt;
     }
@@ -133,9 +129,9 @@ class Photo
     /**
      * Getter for Updated at.
      *
-     * @return DateTimeInterface|null Updated at
+     * @return \DateTimeInterface|null Updated at
      */
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -143,9 +139,9 @@ class Photo
     /**
      * Setter for Updated at.
      *
-     * @param DateTimeInterface $updatedAt Updated at
+     * @param \DateTimeInterface $updatedAt Updated at
      */
-    public function setUpdatedAt(DateTimeInterface $updatedAt): void
+    public function setUpdatedAt(\DateTimeInterface $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -163,15 +159,19 @@ class Photo
     /**
      * Setter for File name.
      *
-     * @param string $file File
+     * @param mixed|null $file File
+     *
+     * @throws \Exception
      */
-    public function setFile($file): void
+    public function setFile($file = null): void
     {
         $this->file = $file;
     }
 
     /**
-     * @return Event|null
+     * Getter for Event.
+     *
+     * @return \App\Entity\Event|null Event entity
      */
     public function getEvent(): ?Event
     {
@@ -179,14 +179,39 @@ class Photo
     }
 
     /**
-     * @param Event $event
+     * Setter for Event.
      *
-     * @return Photo
+     * @param \App\Entity\Event $event Event entity
      */
-    public function setEvent(Event $event): self
+    public function setEvent(Event $event): void
     {
         $this->event = $event;
+    }
 
-        return $this;
+    /**
+     * @see \Serializable::serialize()
+     *
+     * @return string Serialized object
+     */
+    public function serialize(): string
+    {
+        $file = $this->getFile();
+
+        return serialize(
+            [
+                $this->id,
+                ($file instanceof File) ? $file->getFilename() : $file,
+            ]
+        );
+    }
+
+    /**
+     * @see \Serializable::unserialize()
+     *
+     * @param string $serialized Serialized object
+     */
+    public function unserialize($serialized): void
+    {
+        list($this->id) = unserialize($serialized);
     }
 }

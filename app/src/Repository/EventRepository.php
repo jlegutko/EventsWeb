@@ -101,18 +101,52 @@ class EventRepository extends ServiceEntityRepository
     }
 
     /**
-     * Find events with string in date.
+     * Find events with string in start date.
      *
      * @param string $search
      *
      * @return QueryBuilder Query builder
      */
-    public function findByDatePart(string $search): QueryBuilder
+    public function findByStartDatePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('e.eventDate LIKE :search')
+            ->where('e.startDate LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, e.eventDate), e.eventDate')
+            ->orderBy('LOCATE(:pos, e.startDate), e.startDate')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
+    /**
+     * Find events with string in end date.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByEndDatePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('e.startDate LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, e.endDate), e.endDate')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
+    /**
+     * Find events with string in place.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByPlacePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('e.place LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, e.place), e.place')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }
@@ -127,9 +161,9 @@ class EventRepository extends ServiceEntityRepository
     public function findBySizePart(string $search): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->where('e.eventSize LIKE :search')
+            ->where('e.size LIKE :search')
             ->setParameter('search', '%'.$search.'%')
-            ->orderBy('LOCATE(:pos, e.eventSize), e.eventSize')
+            ->orderBy('LOCATE(:pos, e.size), e.size')
             ->setParameter('pos', $search)
             ->setMaxResults(30);
     }

@@ -249,6 +249,95 @@
                 <source>button.new_grade</source>
                 <target>SAVE</target>
             </trans-unit>
+            <trans-unit id="label.remove_member">
+                <source>label.remove_member</source>
+                <target>not member</target>
+            </trans-unit>
+            <trans-unit id="label.group_member">
+                <source>label.group_member</source>
+                <target>member</target>
+            </trans-unit>
+            <trans-unit id="button.submit_post">
+                <source>button.submit_post</source>
+                <target>POST >></target>
+            </trans-unit>
+            <trans-unit id="label.post">
+                <source>label.post</source>
+                <target>Post something</target>
+            </trans-unit>
+            <!--search-->
+            <trans-unit id="label.no_results">
+                <source>label.no_results</source>
+                <target>Sorry, no results found for your request :(</target>
+            </trans-unit>
+            <trans-unit id="title.search_results">
+                <source>title.search_results</source>
+                <target>Results of your search</target>
+            </trans-unit>
+            <trans-unit id="title.search_event_results">
+                <source>title.search_event_results</source>
+                <target>Results found in events</target>
+            </trans-unit>
+            <trans-unit id="title.search_users_results">
+                <source>title.search_users_results</source>
+                <target>Results found in users:</target>
+            </trans-unit>
+            <trans-unit id="title.search_categories_results">
+                <source>title.search_categories_results</source>
+                <target>Results found in categories:</target>
+            </trans-unit>
+            <trans-unit id="title.search_groups_results">
+                <source>title.search_groups_results</source>
+                <target>Results found in groups:</target>
+            </trans-unit>
+            <trans-unit id="label.group_id">
+                <source>label.group_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.group_name">
+                <source>label.group_name</source>
+                <target>Group name</target>
+            </trans-unit>
+            <trans-unit id="label.group_action_search">
+                <source>label.group_action_search</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit id="label.user_name">
+                <source>label.user_name</source>
+                <target>Username</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_profile">
+                <source>label.go_to_profile</source>
+                <target>go to profile >></target>
+            </trans-unit>
+            <trans-unit id="label.category_name">
+                <source>label.category_name</source>
+                <target>Category name</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_name">
+                <source>label.event_by_name</source>
+                <target>By name:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_sdate">
+                <source>label.event_by_sdate</source>
+                <target>By start date:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_edate">
+                <source>label.event_by_edate</source>
+                <target>By end date:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_size">
+                <source>label.event_by_size</source>
+                <target>By size:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_place">
+                <source>label.event_by_place</source>
+                <target>By place:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_price">
+                <source>label.event_by_price</source>
+                <target>By price:</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

@@ -144,6 +144,23 @@ class GroupRepository extends ServiceEntityRepository
         return $queryBuilder ?: $this->createQueryBuilder('gr');
     }
 
+    /**
+     * Find groups with string in name.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByGroupNamePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('gr.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, gr.name), gr.name')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
+    }
+
     // /**
     //  * @return Group[] Returns an array of Group objects
     //  */

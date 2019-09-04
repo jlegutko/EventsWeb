@@ -40,7 +40,7 @@ class CategoryRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
-            ->orderBy('t.updatedAt', 'DESC');
+            ->orderBy('c.updatedAt', 'DESC');
     }
 
     /**
@@ -81,6 +81,23 @@ class CategoryRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?: $this->createQueryBuilder('c');
+    }
+
+    /**
+     * Find categories with string in name.
+     *
+     * @param string $search
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function findByCategoryNamePart(string $search): QueryBuilder
+    {
+        return $this->getOrCreateQueryBuilder()
+            ->where('c.name LIKE :search')
+            ->setParameter('search', '%'.$search.'%')
+            ->orderBy('LOCATE(:pos, c.name), c.name')
+            ->setParameter('pos', $search)
+            ->setMaxResults(30);
     }
 
     // /**

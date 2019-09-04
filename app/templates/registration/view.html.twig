@@ -42,8 +42,8 @@
                                 <div class="post-img">
                                         <img src="http://bestjquery.com/tutorial/news-slider/demo19/images/img-1.jpg" alt="">
                                         <div class="post-date">
-                                            <span class="date">{{ interest.event.eventDate|date("d") }}</span>
-                                            <span class="month">{{ interest.event.eventDate|date("m/Y") }}</span>
+                                            <span class="date">{{ interest.event.startDate|date("d") }}</span>
+                                            <span class="month">{{ interest.event.startDate|date("m/Y") }}</span>
                                         </div>
                                 </div>
                                 <h3 class="post-title">{{ interest.event.name }}</h3>
@@ -61,8 +61,8 @@
                                 <div class="post-img">
                                     <img src="http://bestjquery.com/tutorial/news-slider/demo19/images/img-1.jpg" alt="">
                                     <div class="post-date">
-                                        <span class="date">{{ event.eventDate|date("d") }}</span>
-                                        <span class="month">{{ event.eventDate|date("m/Y") }}</span>
+                                        <span class="date">{{ event.startDate|date("d") }}</span>
+                                        <span class="month">{{ event.startDate|date("m/Y") }}</span>
                                     </div>
                                 </div>
                                 <h3 class="post-title">{{ event.name }}</h3>

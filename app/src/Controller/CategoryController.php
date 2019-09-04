@@ -89,9 +89,6 @@ class CategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="category_new",
      * )
-     * @isGranted(
-     *    "ROLE_ADMIN",
-     *     )
      */
     public function new(Request $request, CategoryRepository $repository): Response
     {

@@ -29,7 +29,7 @@
                     {% for event in pagination %}
                         <tr>
                             <th scope="row">{{ event.id }}</th>
-                            <td>{{ event.name}}, {{ event.place }}, {{ event.eventDate|date("d/m/y") }}</td>
+                            <td>{{ event.name}}, {{ event.place }}, {{ event.startDate|date("d/m/y") }} - {{ event.endDate|date("d/m/y") }}</td>
                             <td><a href="{{ url('event_view', {id: event.id}) }}">{{ 'label.go_to_event'|trans }}</a></td>
                         </tr>
                     {% endfor %}

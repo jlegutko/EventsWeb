@@ -5,46 +5,92 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.group_list'|trans({'%id%': group.id}) }}</h1>
-    {% if group is defined and group|length %}
-        <dl class="dl-horizontal">
-            <dt>{{ 'label.group_id'|trans }}</dt>
-            <dd>{{ group.id }}</dd>
-            <dt>{{ 'label.group_name'|trans }}</dt>
-            <dd>{{  group.name }}</dd>
-            <div class="group-member">
-                {% set favourite = 0 %}
-                {% for member in group.members %}
-                    {% if null != app.user and member.member.id == app.user.id%}
-                        {% set favourite = 1 %}
+    <div class="container mb-3">
+        <div class="tile">
+            <div class="wrapper">
+                <h2 class="ml-5 mt-4"><i class="material-icons mr-2">group</i>{{ group.name }}
+                    <a class="add_member ml-5 a-small" href="{{ url('group_edit', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                        <i class="material-icons mr-2">edit</i></a>
+                    <a class="add_member a-small" href="{{ url('group_delete', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                        <i class="material-icons mr-2">delete_forever</i></a>
+                    {% set favourite = 0 %}
+                    {% for member in group.members %}
+                        {% if null != app.user and member.member.id == app.user.id%}
+                            {% set favourite = 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if favourite == 0 %}
+                        <a class="add_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                            <i class="material-icons mr-2">person_add</i>{{ 'label.group_member'|trans }}
+                        </a>
+                    {% else %}
+                        <a class="remove_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.remove_member'|trans }}">
+                            <i class="material-icons mr-2">person_add_disabled</i>{{ 'label.remove_member'|trans }}
+                        </a>
                     {% endif %}
-                {% endfor %}
-                {% if favourite == 0 %}
-                    <a class="add_member" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
-                        {{ 'label.group_member'|trans }}
-                    </a>
-                {% else %}
-                    <a class="remove_member" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.remove_member'|trans }}">
-                    {{ 'label.remove_member'|trans }}
-                    </a>
-                {% endif %}
+                </h2>
+                    {% if group is defined and group|length %}
+                        <table class="table table-bordered ml-auto mr-auto mt-5">
+                            <tbody>
+                                <tr>
+                                    <th >wydarzenie</th>
+                                    <th ><i class="material-icons mr-2">event</i>{{ group.event.name }}</th>
+                                </tr>
+                                <tr>
+                                    <th scope="row">autor</th>
+                                    <td> <div class="media-left">
+                                        </div><img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." class="img-thumbnail img-small mr-2"> {{ group.author.firstName }}</td>
+                                </tr>
+                                <tr>
+                                    <th >członkowie</th>
+                                    <td>{% for member in group.members %} <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." class="img-thumbnail img-small mr-2"> {{ member.member.firstName }}, {% endfor %}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h3 class="ml-5 mt-5"><i class="material-icons mr-2">sms</i>DISCUSSION</h3>
+                        <div class="post-post-form col-lg-10 ml-5">
+                            {{ form_start(form, { method: 'post', action: url('group_new_post', {'id': group.id}) }) }}
+                            {% if false == form.vars.valid %}
+                                {% include 'default/_single_flash_message.html.twig' with {
+                                    type: 'danger',
+                                    message: 'message.form_error'|trans,
+                                }%}
+                            {% endif %}
+                            {{ form_widget(form) }}
+                            <div class="form-group row float-right">
+                                <button type="submit" title="{{ 'action.new_post'|trans }}" class="btn btn-success mr-3 mb-4">
+                                    <i class="material-icons mr-2">post_add</i>{{ 'button.submit_post'|trans }}
+                                </button>
+                            </div>
+                            {{ form_end(form) }}
+                        </div>
+                        {% if group.posts|length %}
+                            {% for post in group.posts %}
+                                <div class="media post-box col-10 ml-auto mr-auto">
+                                    <div class="media-body mb-3 mt-1">
+                                        <h4 class="media-heading"><img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">{{ post.user.firstName }}<span class="float-right post-details">{{ post.createdAt|date()|localizeddate('short', 'short') }}</span>
+                                            {% if null != app.user %}
+                                                {% if post.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                                    <a class="inline-action" href="{{ url('post_edit', {id: post.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
+                                                {% endif %}
+                                                {% if post.user.id == app.user.id or post.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                                                    <a class="inline-action" href="{{ url('post_delete', {id: post.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
+                                                {% endif %}
+                                            {% endif %}
+                                        </h4>
+                                        <p class="pr-2">{{ post.content }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <h3>{{ 'label.no_posts'|trans }}</h3>
+                        {% endif %}
+                    {% else %}
+                        <p>
+                            {{ 'message.item_not_found'|trans }}
+                        </p>
+                    {% endif %}
             </div>
-            <div class="new-discussion">
-                <a class="discussion-new" href="{{ url('group_new_discussion', {id: group.id}) }}" title ="{{ 'action.new_discussion'|trans }}">
-                    {{ 'label.discussion_new'|trans  }}
-                </a>
-            </div>
-            <div class="group-discussions">
-                {% for discussion in group.discussions %}
-                    <a class="discussion-view" href="{{ url('discussion_view', {id: discussion.id}) }}" title ="{{ 'action.discussion'|trans }}">
-                        {{ discussion.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        </dl>
-    {% else %}
-        <p>
-            {{ 'message.item_not_found'|trans }}
-        </p>
-    {% endif %}
+        </div>
+    </div>
 {% endblock %}

@@ -8,10 +8,10 @@ namespace App\Form;
 use App\Entity\Event;
 use App\Entity\Category;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -43,8 +43,17 @@ class EventType extends AbstractType
             ]
         );
         $builder->add(
-            'event_date',
-            DateType::class,
+            'startDate',
+            DateTimeType::class,
+            [
+                'label' => 'label.event_date',
+                'required' => true,
+                'format' => 'yyyy-MM-dd',
+            ]
+        );
+        $builder->add(
+            'endDate',
+            DateTimeType::class,
             [
                 'label' => 'label.event_date',
                 'required' => true,
@@ -69,7 +78,7 @@ class EventType extends AbstractType
             ]
         );
         $builder->add(
-            'event_size',
+            'size',
             TextType::class,
             [
                 'label' => 'label.event_size',
