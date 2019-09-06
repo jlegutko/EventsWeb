@@ -65,7 +65,7 @@ class EventType extends AbstractType
             MoneyType::class,
             [
                 'label' => 'label.event_price',
-                'currency' => 'zł',
+                'currency' => 'PLN',
             ]
         );
         $builder->add(

@@ -226,7 +226,7 @@
             <!--user delete-->
             <trans-unit id="title.user_delete">
                 <source>title.user_delete</source>
-                <target>Do you want to remove your profile?</target>
+                <target>Do you want to remove the profile?</target>
             </trans-unit>
             <!--event list-->
             <trans-unit id="title.event_list">
@@ -621,6 +621,115 @@
             <trans-unit id="title.group_edit">
                 <source>title.group_edit</source>
                 <target>Edit a group</target>
+            </trans-unit>
+            <trans-unit id="message.to_homepage">
+                <source>message.to_homepage</source>
+                <target>The requested page couldn't be located. Checkout for any URL
+                    misspelling or go to the homepage.</target>
+            </trans-unit>
+            <trans-unit id="message.error_occured">
+                <source>message.error_occured</source>
+                <target>Page not found</target>
+            </trans-unit>
+            <trans-unit id="title.category_new">
+                <source>title.category_new</source>
+                <target>Add a new category</target>
+            </trans-unit>
+            <trans-unit id="title.category_edit">
+                <source>title.category_edit</source>
+                <target>Edit category</target>
+            </trans-unit>
+            <trans-unit id="event.label.connected_groups">
+                <source>event.label.connected_groups</source>
+                <target>GROUPS CONNECTED WITH EVENT >></target>
+            </trans-unit>
+            <trans-unit id="event.label.start_date">
+                <source>event.label.start_date</source>
+                <target>STARTS</target>
+            </trans-unit>
+            <trans-unit id="event.label.end_date">
+                <source>event.label.end_date</source>
+                <target>ENDS</target>
+            </trans-unit>
+            <trans-unit id="event.label.place">
+                <source>event.label.place</source>
+                <target>PLACE</target>
+            </trans-unit>
+            <trans-unit id="event.label.size">
+                <source>event.label.size</source>
+                <target>SIZE</target>
+            </trans-unit>
+            <trans-unit id="event.label.price">
+                <source>event.label.price</source>
+                <target>PRICE</target>
+            </trans-unit>
+            <trans-unit id="event.label.average">
+                <source>event.label.average</source>
+                <target>AVERAGE</target>
+            </trans-unit>
+            <trans-unit id="event.label.your_grade">
+                <source>event.label.your_grade</source>
+                <target>YOUR GRADE</target>
+            </trans-unit>
+            <trans-unit id="event.label.add_to_fav">
+                <source>event.label.add_to_fav</source>
+                <target>ADD EVENT TO FAVOURITES</target>
+            </trans-unit>
+            <trans-unit id="event.label.rem_from_fav">
+                <source>event.label.rem_from_fav</source>
+                <target>REMOVE FROM FAVOURITES</target>
+            </trans-unit>
+            <trans-unit id="label.no_posts">
+                <source>label.no_posts</source>
+                <target>No posts added</target>
+            </trans-unit>
+            <trans-unit id="label.event_groups">
+                <source>label.event_groups</source>
+                <target>Groups connected with event</target>
+            </trans-unit>
+            <trans-unit id="label.event_group_name">
+                <source>label.event_group_name</source>
+                <target>Event name</target>
+            </trans-unit>
+            <trans-unit id="label.group_author">
+                <source>label.group_author</source>
+                <target>Author</target>
+            </trans-unit>
+            <trans-unit id="label.group_members">
+                <source>label.group_members</source>
+                <target>Members</target>
+            </trans-unit>
+            <trans-unit id="label.group_discussion">
+                <source>label.group_discussion</source>
+                <target>DISCUSSION</target>
+            </trans-unit>
+            <trans-unit id="label.see_more">
+                <source>label.see_more</source>
+                <target>see more >></target>
+            </trans-unit>
+            <trans-unit id="label.admin">
+                <source>label.admin</source>
+                <target>admin panel</target>
+            </trans-unit>
+            <trans-unit id="label.supervisor">
+                <source>label.supervisor</source>
+                <target>Management of:</target>
+            </trans-unit>
+            <trans-unit id="title.user_change_role">
+                <source>title.user_change_role</source>
+                <target>Do you want to change role of user to ADMIN?</target>
+            </trans-unit>
+            <trans-unit id="message.added_successfully">
+                <source>message.added_successfully</source>
+                <target>Successfully added.</target>
+            </trans-unit>
+            <trans-unit id="message.deleted_successfully">
+                <source>message.deleted_successfully</source>
+                <target>Successfully deleted.</target>
+            </trans-unit>
+            <trans-unit id="message.updated_successfully">
+                <source>message.updated_successfully</source>
+                <target>Successfully updated.</target>
             </trans-unit>
         </body>
     </file>

@@ -1,10 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Page not found</h1>
-
-    <p>
-        The requested page couldn't be located. Checkout for any URL
-        misspelling or <a href="{{ path('search_index') }}">return to the homepage</a>.
-    </p>
+    <h1> {{ 'message.error_occured'|trans }}</h1>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <a href="{{ url('login') }}"><h2> {{ 'message.to_homepage'|trans }}</h2></a>
+    {% else %}
+        <a href="{{ url('search_index') }}"><h2> {{ 'message.to_homepage'|trans }}</h2></a>
+    {% endif %}
 {% endblock %}

@@ -58,7 +58,7 @@ class Group
     private $posts;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\User", inversedBy="community", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="groups")
      * @ORM\JoinColumn(nullable=false)
      */
     private $author;
@@ -237,7 +237,7 @@ class Group
         return $this->author;
     }
 
-    public function setAuthor(User $author): self
+    public function setAuthor(?User $author): self
     {
         $this->author = $author;
 

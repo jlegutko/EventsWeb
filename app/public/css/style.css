@@ -424,3 +424,11 @@ div.footer a.Cbtn-danger:hover{
     margin-left: 15rem;
     font-size: 24px;
 }
+.panel-admin a{
+    font-size: 22px;
+    text-transform: uppercase;
+    color: #ec3c6a;
+}
+.panel-admin a:hover{
+    color: #a40000;
+}

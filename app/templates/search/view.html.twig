@@ -145,68 +145,69 @@
             {% endfor %}
             </table>
         {% endif %}
-        {% if users is defined and users|length %}
-            <h3 class="list-h h_list mt-4">{{  'title.search_users_results'|trans }}</h3>
-            <table class="event h_list mt-4 table table-striped table-bordered">
-                <thead>
-                <tr>
-                    <th>{{ 'label.group_id'|trans }}</th>
-                    <th>{{ 'label.user_name'|trans }}</th>
-                    <th>{{ 'label.group_action_search'|trans}}</th>
-                </tr>
-                </thead>
-                {% for user in users %}
-                    <tbody>
-                        <tr>
-                            <th scope="row">{{ user.id }}</th>
-                            <td>{{ user.name}}</td>
-                            <td><a href="{{ url('user_view', {'id': user.id}) }}" title="{{ 'action.view'|trans }}">{{ 'label.go_to_profile'|trans }}</a></td>
-                        </tr>
-                    </tbody>
-                {% endfor %}
-            </table>
-        {% endif %}
-            {% if category is defined and category|length %}
-                <h3 class="list-h h_list mt-5"><i class="material-icons mr-2">category</i>{{  'title.search_categories_results'|trans }}</h3>
+        {% if null != app.user %}
+            {% if users is defined and users|length %}
+                <h3 class="list-h h_list mt-4">{{  'title.search_users_results'|trans }}</h3>
                 <table class="event h_list mt-4 table table-striped table-bordered">
                     <thead>
                     <tr>
                         <th>{{ 'label.group_id'|trans }}</th>
-                        <th>{{ 'label.category_name'|trans }}</th>
-                    </tr>
-                    </thead>
-                    {% for category_one in category %}
-                        <tbody>
-                        <tr>
-                            <th scope="row">{{ category_one.id }}</th>
-                            <td>{{ category_one.name}}</td>
-                        </tr>
-                        </tbody>
-                    {% endfor %}
-                </table>
-            {% endif %}
-            {% if groups is defined and groups|length %}
-                <h3 class="list-h h_list mt-5"><i class="material-icons mr-2">group</i>{{  'title.search_groups_results'|trans }}</h3>
-                <table class="event h_list mt-4 table table-striped table-bordered">
-                    <thead>
-                    <tr>
-                        <th>{{ 'label.group_id'|trans }}</th>
-                        <th>{{ 'label.group_name'|trans }}</th>
+                        <th>{{ 'label.user_name'|trans }}</th>
                         <th>{{ 'label.group_action_search'|trans}}</th>
                     </tr>
                     </thead>
-                    {% for group in groups %}
+                    {% for user in users %}
                         <tbody>
                             <tr>
-                                <th scope="row">{{ group.id }}</th>
-                                <td>{{ group.name}}</td>
-                                <td><a href="{{ url('event_view', {'id': group.id}) }}" title="{{ 'action.view'|trans }}">{{ 'label.go_to_group'|trans }}</a></td>
+                                <th scope="row">{{ user.id }}</th>
+                                <td>{{ user.name}}</td>
+                                <td><a href="{{ url('user_view', {'id': user.id}) }}" title="{{ 'action.view'|trans }}">{{ 'label.go_to_profile'|trans }}</a></td>
                             </tr>
                         </tbody>
                     {% endfor %}
                 </table>
             {% endif %}
-            </div>
+                {% if category is defined and category|length %}
+                    <h3 class="list-h h_list mt-5"><i class="material-icons mr-2">category</i>{{  'title.search_categories_results'|trans }}</h3>
+                    <table class="event h_list mt-4 table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>{{ 'label.group_id'|trans }}</th>
+                            <th>{{ 'label.category_name'|trans }}</th>
+                        </tr>
+                        </thead>
+                        {% for category_one in category %}
+                            <tbody>
+                            <tr>
+                                <th scope="row">{{ category_one.id }}</th>
+                                <td>{{ category_one.name}}</td>
+                            </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+                {% if groups is defined and groups|length %}
+                    <h3 class="list-h h_list mt-5"><i class="material-icons mr-2">group</i>{{  'title.search_groups_results'|trans }}</h3>
+                    <table class="event h_list mt-4 table table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>{{ 'label.group_id'|trans }}</th>
+                            <th>{{ 'label.group_name'|trans }}</th>
+                            <th>{{ 'label.group_action_search'|trans}}</th>
+                        </tr>
+                        </thead>
+                        {% for group in groups %}
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ group.id }}</th>
+                                    <td>{{ group.name}}</td>
+                                    <td><a href="{{ url('event_view', {'id': group.id}) }}" title="{{ 'action.view'|trans }}">{{ 'label.go_to_group'|trans }}</a></td>
+                                </tr>
+                            </tbody>
+                        {% endfor %}
+                    </table>
+                {% endif %}
+        {% endif %}
     </div>
 
 {% endblock %}

@@ -2,6 +2,11 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
     <file source-language="pl" datatype="plaintext" original="file.ext">
         <body>
+            <!--registration and login page-->
+            <trans-unit id="action.back_to_list">
+                <source>action.back_to_list</source>
+                <target>Powrót</target>
+            </trans-unit>
             <trans-unit id="title.login">
                 <source>title.login</source>
                 <target>Logowanie</target>
@@ -14,42 +19,716 @@
                 <source>label.password</source>
                 <target>Hasło</target>
             </trans-unit>
+            <trans-unit id="label.repeat.password">
+                <source>label.repeat.password</source>
+                <target>Powtórz hasło</target>
+            </trans-unit>
+            <trans-unit id="label.firstName">
+                <source>label.firstName</source>
+                <target>Nazwa użytkownika</target>
+            </trans-unit>
             <trans-unit id="action.login">
                 <source>action.login</source>
-                <target>Zaloguj się</target>
+                <target>Zaloguj</target>
             </trans-unit>
-            <trans-unit id="label.events_page">
-                <source>label.events_page</source>
-                <target>Wydarzenia</target>
+            <trans-unit id="title.user_new">
+                <source>title.user_new</source>
+                <target>Zarejestruj</target>
             </trans-unit>
-            <!--translations from base.html.twig-->
+            <trans-unit id="action.save">
+                <source>action.save</source>
+                <target>Zapisz</target>
+            </trans-unit>
+            <!--transalations from base.html.twig-->
+            <trans-unit id="title.logo">
+                <source>title.logo</source>
+                <target>whatsnew</target>
+            </trans-unit>
             <trans-unit id="label.event_index">
                 <source>label.event_index</source>
-                <target>Wydarzenia</target>
+                <target>wydarzenia</target>
             </trans-unit>
-            <trans-unit id="label.user_index">
-                <source>label.user_index</source>
-                <target>Użytkownicy</target>
-            </trans-unit>
-            <trans-unit id="label.comment_index">
-                <source>label.comment_index</source>
-                <target>Komentarze</target>
-            </trans-unit>
-            <trans-unit id="label.grade_index">
-                <source>label.grade_index</source>
-                <target>Oceny</target>
+            <trans-unit id="label.event_new">
+                <source>label.event_new</source>
+                <target>dodaj wydarzenie</target>
             </trans-unit>
             <trans-unit id="label.registration">
                 <source>label.registration</source>
-                <target>Rejestracja</target>
+                <target>rejestracja</target>
             </trans-unit>
             <trans-unit id="label.login_page">
                 <source>label.login_page</source>
-                <target>Logowanie</target>
+                <target>logowanie</target>
+            </trans-unit>
+            <trans-unit id="label.events_page">
+                <source>label.events_page</source>
+                <target>wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.main_page">
+                <source>label.main_page</source>
+                <target>strona główna</target>
+            </trans-unit>
+            <trans-unit id="label.footer">
+                <source>label.footer</source>
+                <target>Copyright Ⓒ Jadwiga Legutko | EPI ZTP 2019</target>
+            </trans-unit>
+            <trans-unit id="label.category_index">
+                <source>label.category_index</source>
+                <target>kategorie</target>
+            </trans-unit>
+            <trans-unit id="label.group_index">
+                <source>label.group_index</source>
+                <target>grupy</target>
+            </trans-unit>
+            <trans-unit id="label.user_view">
+                <source>label.user_view</source>
+                <target>mój profil</target>
+            </trans-unit>
+            <trans-unit id="label.logout">
+                <source>label.logout</source>
+                <target>wyloguj</target>
+            </trans-unit>
+            <!--search/index page-->
+            <trans-unit id="description.title">
+                <source>description.title</source>
+                <target>Witaj na stronie whatsnewPL!</target>
+            </trans-unit>
+            <trans-unit id="description.description">
+                <source>description.description</source>
+                <target>Na naszej stronie znajdziesz wydarzenia z każdego miejsca w Polsce. Dołącz do naszej społeczności,
+                    aby komentować, oceniać i dodawać nowe wydarzenia. Najlepsze z eventów możesz także dodać do swoich ulubionych.
+                    Użyj naszej wyszukiwarki poniżej, aby wyszukać najciekawszych wydarzeń!</target>
+            </trans-unit>
+            <trans-unit id="label.search_action">
+                <source>label.search_action</source>
+                <target>Wyszukaj</target>
+            </trans-unit>
+            <trans-unit id="label.search_placeholder">
+                <source>label.search_placeholder</source>
+                <target>Podaj nazwę wydarzenia...</target>
+            </trans-unit>
+            <!--user profile-->
+            <trans-unit id="label.user_interested">
+                <source>label.user_interested</source>
+                <target>ulubione</target>
+            </trans-unit>
+            <trans-unit id="label.user_groups">
+                <source>label.user_groups</source>
+                <target>moje grupy</target>
+            </trans-unit>
+            <trans-unit id="label.user_events">
+                <source>label.user_events</source>
+                <target>moje wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.user_update_photo">
+                <source>label.user_update_photo</source>
+                <target>zmień zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="label.user_add_photo">
+                <source>label.user_add_photo</source>
+                <target>dodaj zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="label.user_edit">
+                <source>label.user_edit</source>
+                <target>edytuj profil</target>
+            </trans-unit>
+            <trans-unit id="label.user_change_pswd">
+                <source>label.user_change_pswd</source>
+                <target>zmień hasło</target>
+            </trans-unit>
+            <trans-unit id="label.user_delete">
+                <source>label.user_delete</source>
+                <target>usuń profil</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_group">
+                <source>label.go_to_group</source>
+                <target>zobacz grupę >></target>
+            </trans-unit>
+            <trans-unit id="title.user_view">
+                <source>title.user_view</source>
+                <target>Profil użytkownika</target>
+            </trans-unit>
+            <trans-unit id="label.interested_user_events">
+                <source>label.interested_user_events</source>
+                <target>ULUBIONE</target>
+            </trans-unit>
+            <trans-unit id="title.interested_events">
+                <source>title.interested_events</source>
+                <target>Interesujące wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_event">
+                <source>label.go_to_event</source>
+                <target>zobacz wydarzenie >></target>
+            </trans-unit>
+            <trans-unit id="label.remove_from_interest">
+                <source>label.remove_from_interest</source>
+                <target>usuń z ulubionych</target>
+            </trans-unit>
+            <trans-unit id="title.my_events">
+                <source>title.my_events</source>
+                <target>Moje wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.my_events">
+                <source>label.my_events</source>
+                <target>MOJE WYDARZENIA</target>
+            </trans-unit>
+            <trans-unit id="title.my_groups">
+                <source>title.my_groups</source>
+                <target>Moje grupy</target>
+            </trans-unit>
+            <trans-unit id="label.my_groups">
+                <source>label.my_groups</source>
+                <target>MOJE GRUPY</target>
+            </trans-unit>
+            <!--form new event-->
+            <trans-unit id="title.event_new">
+                <source>title.event_new</source>
+                <target>Dodaj wydarzenie</target>
+            </trans-unit>
+            <trans-unit id="label.event_name">
+                <source>label.event_name</source>
+                <target>Nazwa</target>
+            </trans-unit>
+            <trans-unit id="label.event_date">
+                <source>label.event_date</source>
+                <target>Data rozpoczęcia</target>
+            </trans-unit>
+            <trans-unit id="label.event_price">
+                <source>label.event_price</source>
+                <target>Cena</target>
+            </trans-unit>
+            <trans-unit id="label.event_place">
+                <source>label.event_place</source>
+                <target>Miejsce</target>
+            </trans-unit>
+            <trans-unit id="label.event_size">
+                <source>label.event_size</source>
+                <target>Wielkość wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.event_category">
+                <source>label.event_category</source>
+                <target>Kategoria</target>
+            </trans-unit>
+            <trans-unit id="label.event_description">
+                <source>label.event_description</source>
+                <target>Opis</target>
+            </trans-unit>
+            <!--change pswd-->
+            <trans-unit id="title.user_change_pswd">
+                <source>title.user_change_pswd</source>
+                <target>Zmień hasło</target>
+            </trans-unit>
+            <!--user edit-->
+            <trans-unit id="title.user_edit">
+                <source>title.user_edit</source>
+                <target>Edytuj profil</target>
+            </trans-unit>
+            <!--user delete-->
+            <trans-unit id="title.user_delete">
+                <source>title.user_delete</source>
+                <target>Czy chcesz usunąć profil?</target>
+            </trans-unit>
+            <!--event list-->
+            <trans-unit id="title.event_list">
+                <source>title.event_list</source>
+                <target>Lista wydarzeń</target>
+            </trans-unit>
+            <trans-unit id="label.comment">
+                <source>label.comment</source>
+                <target>Dodaj komentarz</target>
+            </trans-unit>
+            <trans-unit id="button.submit_comment">
+                <source>button.submit_comment</source>
+                <target>DODAJ</target>
+            </trans-unit>
+            <trans-unit id="button.new_grade">
+                <source>button.new_grade</source>
+                <target>ZAPISZ</target>
+            </trans-unit>
+            <trans-unit id="label.remove_member">
+                <source>label.remove_member</source>
+                <target>opuść grupę</target>
+            </trans-unit>
+            <trans-unit id="label.group_member">
+                <source>label.group_member</source>
+                <target>dołącz</target>
+            </trans-unit>
+            <trans-unit id="button.submit_post">
+                <source>button.submit_post</source>
+                <target>DODAJ >></target>
+            </trans-unit>
+            <trans-unit id="label.post">
+                <source>label.post</source>
+                <target>Napisz coś</target>
+            </trans-unit>
+            <!--search-->
+            <trans-unit id="label.no_results">
+                <source>label.no_results</source>
+                <target>Nie znaleźliśmy wyników pasujących do Twojego wyszukania :(</target>
             </trans-unit>
             <trans-unit id="title.search_results">
                 <source>title.search_results</source>
-                <target>Wyniki wyszukiwania</target>
+                <target>Wyniki wyszukiwania frazy</target>
+            </trans-unit>
+            <trans-unit id="title.search_event_results">
+                <source>title.search_event_results</source>
+                <target>Wyniki wyszukiwania w wydarzeniach</target>
+            </trans-unit>
+            <trans-unit id="title.search_users_results">
+                <source>title.search_users_results</source>
+                <target>Wyniki wyszukiwania w użytkownikach:</target>
+            </trans-unit>
+            <trans-unit id="title.search_categories_results">
+                <source>title.search_categories_results</source>
+                <target>Wyniki wyszukiwania w kategoriach:</target>
+            </trans-unit>
+            <trans-unit id="title.search_groups_results">
+                <source>title.search_groups_results</source>
+                <target>Wyniki wyszukiwania w grupach:</target>
+            </trans-unit>
+            <trans-unit id="label.group_id">
+                <source>label.group_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.group_name">
+                <source>label.group_name</source>
+                <target>Nazwa grupy</target>
+            </trans-unit>
+            <trans-unit id="label.group_action_search">
+                <source>label.group_action_search</source>
+                <target>Akcja</target>
+            </trans-unit>
+            <trans-unit id="label.user_name">
+                <source>label.user_name</source>
+                <target>Nazwa użytkownika</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_profile">
+                <source>label.go_to_profile</source>
+                <target>zobacz profil >></target>
+            </trans-unit>
+            <trans-unit id="label.category_name">
+                <source>label.category_name</source>
+                <target>Nazwa kategorii</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_name">
+                <source>label.event_by_name</source>
+                <target>Wg nazwy:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_sdate">
+                <source>label.event_by_sdate</source>
+                <target>Wg daty rozpoczęcia:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_edate">
+                <source>label.event_by_edate</source>
+                <target>Wg daty zakończenia:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_size">
+                <source>label.event_by_size</source>
+                <target>Wg wielkości:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_place">
+                <source>label.event_by_place</source>
+                <target>Wg miejsca:</target>
+            </trans-unit>
+            <trans-unit id="label.event_by_price">
+                <source>label.event_by_price</source>
+                <target>Wg ceny:</target>
+            </trans-unit>
+            <trans-unit id="message.item_not_found">
+                <source>label.message.item_not_found</source>
+                <target>Nie znaleziono :(</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_view">
+                <source>title.profile_photo_view</source>
+                <target>Zdjęcie użytkownika</target>
+            </trans-unit>
+            <trans-unit id="title.photo_view">
+                <source>title.photo_view</source>
+                <target>Zdjęcie wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.photo_edit">
+                <source>label.photo_edit</source>
+                <target>Zmień zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="label.photo_delete">
+                <source>label.photo_delete</source>
+                <target>Usuń zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="label.event_edit">
+                <source>label.event_edit</source>
+                <target>Edytuj wydarzenie</target>
+            </trans-unit>
+            <trans-unit id="label.event_group_new">
+                <source>label.event_group_new</source>
+                <target>Dodaj grupę</target>
+            </trans-unit>
+            <trans-unit id="label.event_delete">
+                <source>label.event_delete</source>
+                <target>Usuń wydarzenie</target>
+            </trans-unit>
+            <trans-unit id="label.grade">
+                <source>label.grade</source>
+                <target>Ocena wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="action.new_grade">
+                <source>action.new_grade</source>
+                <target>Dodaj ocenę</target>
+            </trans-unit>
+            <trans-unit id="action.interest">
+                <source>action.interest</source>
+                <target>Dodaj do ulubionych</target>
+            </trans-unit>
+            <trans-unit id="label.comments">
+                <source>label.comments</source>
+                <target>komentarze</target>
+            </trans-unit>
+            <trans-unit id="action.new_comment">
+                <source>action.new_comment</source>
+                <target>Dodaj nowy komentarz</target>
+            </trans-unit>
+            <trans-unit id="label.no_comments">
+                <source>label.no_comments</source>
+                <target>Brak komentarzy</target>
+            </trans-unit>
+            <trans-unit id="Year">
+                <source>Year</source>
+                <target>Rok</target>
+            </trans-unit>
+            <trans-unit id="Month">
+                <source>Month</source>
+                <target>Miesiąc</target>
+            </trans-unit>
+            <trans-unit id="Day">
+                <source>Day</source>
+                <target>Dzień</target>
+            </trans-unit>
+            <trans-unit id="Hour">
+                <source>Hour</source>
+                <target>Godzina</target>
+            </trans-unit>
+            <trans-unit id="Minute">
+                <source>Minute</source>
+                <target>Minuta</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_edit ">
+                <source>title.profile_photo_edit </source>
+                <target>Edytuj zdjęcie profilowe</target>
+            </trans-unit>
+            <trans-unit id="label.profile_photo">
+                <source>label.profile_photo</source>
+                <target>Wybierz zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_edit">
+                <source>title.profile_photo_edit</source>
+                <target>Edytuj zdjęcie profilowe</target>
+            </trans-unit>
+            <trans-unit id="title.photo_edit ">
+                <source>title.photo_edit</source>
+                <target>Edytuj zdjęcie wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.photo">
+                <source>label.photo</source>
+                <target>Wybierz zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="title.photo_delete">
+                <source>title.photo_delete</source>
+                <target>Czy chcesz usunąć zdjęcie wydarzenia?</target>
+            </trans-unit>
+            <trans-unit id="title.profile_photo_delete">
+                <source>title.profile_photo_delete</source>
+                <target>Czy chcesz usunąć zdjęcie profilowe?</target>
+            </trans-unit>
+            <trans-unit id="title.user_add_photo">
+                <source>title.user_add_photo</source>
+                <target>Dodaj nowe zdjęcie profilowe</target>
+            </trans-unit>
+            <trans-unit id="title.event_edit">
+                <source>title.event_edit</source>
+                <target>Edytuj wydarzenie</target>
+            </trans-unit>
+            <trans-unit id="title.event_add_group">
+                <source>title.event_add_group</source>
+                <target>Dodaj grupę do wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="title.event_delete">
+                <source>title.event_delete</source>
+                <target>Czy chcesz usunąć wydarzenie?</target>
+            </trans-unit>
+            <trans-unit id="title.event_add_photo">
+                <source>title.event_add_photo</source>
+                <target>Dodaj zdjęcie do wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="action.remove_interest">
+                <source>action.remove_interest</source>
+                <target>Usuń z ulubionych</target>
+            </trans-unit>
+            <trans-unit id="title.group_list">
+                <source>title.group_list</source>
+                <target>Lista grup</target>
+            </trans-unit>
+            <trans-unit id="action.member">
+                <source>action.member</source>
+                <target>Dołącz do grupy</target>
+            </trans-unit>
+            <trans-unit id="action.remove_member">
+                <source>action.remove_member</source>
+                <target>Wypisz się z grupy</target>
+            </trans-unit>
+            <trans-unit id="action.new_post">
+                <source>action.new_post</source>
+                <target>Nowy post</target>
+            </trans-unit>
+            <trans-unit id="label.event_id">
+                <source>label.event_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="action.view">
+                <source>action.view</source>
+                <target>Zobacz grupę >></target>
+            </trans-unit>
+            <trans-unit id="label.user_index">
+                <source>label.user_index</source>
+                <target>użytkownicy</target>
+            </trans-unit>
+            <trans-unit id="label.comment_index">
+                <source>label.comment_index</source>
+                <target>komentarze</target>
+            </trans-unit>
+            <trans-unit id="label.grade_index">
+                <source>label.grade_index</source>
+                <target>oceny</target>
+            </trans-unit>
+            <trans-unit id="label.table_id">
+                <source>label.table_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.table_name">
+                <source>label.table_name</source>
+                <target>Nazwa</target>
+            </trans-unit>
+            <trans-unit id="title.grade_list">
+                <source>title.grade_list</source>
+                <target>Lista ocen</target>
+            </trans-unit>
+            <trans-unit id="label.item_action">
+                <source>label.item_action</source>
+                <target>Akcja</target>
+            </trans-unit>
+            <trans-unit id="label.grade_name">
+                <source>label.grade_name</source>
+                <target>Ocena</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_grade">
+                <source>label.go_to_grade</source>
+                <target>zobacz ocenę >></target>
+            </trans-unit>
+            <trans-unit id="message.empty_list">
+                <source>message.empty_list</source>
+                <target>Lista jest pusta</target>
+            </trans-unit>
+            <trans-unit id="title.category_list">
+                <source>title.category_list</source>
+                <target>Lista kategorii</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_category">
+                <source>label.go_to_category</source>
+                <target>zobacz kategorię >></target>
+            </trans-unit>
+            <trans-unit id="title.user_list">
+                <source>title.user_list</source>
+                <target>Lista użytkowników</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_user">
+                <source>label.go_to_user</source>
+                <target>zobacz profil >></target>
+            </trans-unit>
+            <trans-unit id="title.comment_list">
+                <source>title.comment_list</source>
+                <target>Lista komentarzy</target>
+            </trans-unit>
+            <trans-unit id="label.comment_name">
+                <source>label.comment_name</source>
+                <target>Komentarz</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_comment">
+                <source>label.go_to_comment</source>
+                <target>zobacz komentarz >></target>
+            </trans-unit>
+            <trans-unit id="label.user_delete_photo">
+                <source>label.user_delete_photo</source>
+                <target>usuń zdjęcie profilowe</target>
+            </trans-unit>
+            <trans-unit id="label.post_index">
+                <source>label.post_index</source>
+                <target>posty</target>
+            </trans-unit>
+            <trans-unit id="title.post_list">
+                <source>title.post_list</source>
+                <target>Lista postów</target>
+            </trans-unit>
+            <trans-unit id="label.post_name">
+                <source>label.post_name</source>
+                <target>Post</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_post">
+                <source>label.go_to_post</source>
+                <target>zobacz >></target>
+            </trans-unit>
+            <trans-unit id="title.post_view">
+                <source>title.post_view</source>
+                <target>Numer postu</target>
+            </trans-unit>
+            <trans-unit id="title.comment_view">
+                <source>title.comment_view</source>
+                <target>Numer komentarza</target>
+            </trans-unit>
+            <trans-unit id="title.grade_view">
+                <source>title.grade_view</source>
+                <target>Numer oceny</target>
+            </trans-unit>
+            <trans-unit id="label.grade_author">
+                <source>label.grade_author</source>
+                <target>Ocenę wystawił: </target>
+            </trans-unit>
+            <trans-unit id="label.grade_grade">
+                <source>label.grade_grade</source>
+                <target>Ocena: </target>
+            </trans-unit>
+            <trans-unit id="title.category_view">
+                <source>title.category_view</source>
+                <target>Numer kategorii</target>
+            </trans-unit>
+            <trans-unit id="label.category_category">
+                <source>label.category_category</source>
+                <target>Nazwa kategorii: </target>
+            </trans-unit>
+            <trans-unit id="title.category_delete">
+                <source>title.category_delete</source>
+                <target>Czy chcesz usunąć kategorię?</target>
+            </trans-unit>
+            <trans-unit id="label.event_new_photo">
+                <source>label.event_new_photo</source>
+                <target>Dodaj zdjęcie</target>
+            </trans-unit>
+            <trans-unit id="title.group_delete">
+                <source>title.group_delete</source>
+                <target>Czy chcesz usunąć grupę?</target>
+            </trans-unit>
+            <trans-unit id="title.grade_delete">
+                <source>title.grade_delete</source>
+                <target>Czy chcesz usunąć ocenę?</target>
+            </trans-unit>
+            <trans-unit id="title.group_edit">
+                <source>title.group_edit</source>
+                <target>Edytuj grupę</target>
+            </trans-unit>
+            <trans-unit id="message.to_homepage">
+                <source>message.to_homepage</source>
+                <target>Nie odnaleziono podanej ścieżki. Sprawdź czy została ona poprawnie wprowadzona lub wróć do strony głównej. </target>
+            </trans-unit>
+            <trans-unit id="message.error_occured">
+                <source>message.error_occured</source>
+                <target>Nie znaleziono strony</target>
+            </trans-unit>
+            <trans-unit id="title.category_new">
+                <source>title.category_new</source>
+                <target>Dodaj kategorię</target>
+            </trans-unit>
+            <trans-unit id="title.category_edit">
+                <source>title.category_edit</source>
+                <target>Edytuj kategorię</target>
+            </trans-unit>
+            <trans-unit id="event.label.connected_groups">
+                <source>event.label.connected_groups</source>
+                <target>GRUPY POWIĄZANE Z WYDARZENIEM >></target>
+            </trans-unit>
+            <trans-unit id="event.label.start_date">
+                <source>event.label.start_date</source>
+                <target>ROZPOCZĘCIE</target>
+            </trans-unit>
+            <trans-unit id="event.label.end_date">
+                <source>event.label.end_date</source>
+                <target>ZAKOŃCZENIE</target>
+            </trans-unit>
+            <trans-unit id="event.label.place">
+                <source>event.label.place</source>
+                <target>MIEJSCE</target>
+            </trans-unit>
+            <trans-unit id="event.label.size">
+                <source>event.label.size</source>
+                <target>WIELKOŚĆ</target>
+            </trans-unit>
+            <trans-unit id="event.label.price">
+                <source>event.label.price</source>
+                <target>CENA</target>
+            </trans-unit>
+            <trans-unit id="event.label.average">
+                <source>event.label.average</source>
+                <target>ŚREDNIA</target>
+            </trans-unit>
+            <trans-unit id="event.label.your_grade">
+                <source>event.label.your_grade</source>
+                <target>TWOJA OCENA</target>
+            </trans-unit>
+            <trans-unit id="event.label.add_to_fav">
+                <source>event.label.add_to_fav</source>
+                <target>DODAJ DO ULUBIONYCH</target>
+            </trans-unit>
+            <trans-unit id="event.label.rem_from_fav">
+                <source>event.label.rem_from_fav</source>
+                <target>USUŃ Z ULUBIONYCH</target>
+            </trans-unit>
+            <trans-unit id="label.no_posts">
+                <source>label.no_posts</source>
+                <target>Brak postów</target>
+            </trans-unit>
+            <trans-unit id="label.event_groups">
+                <source>label.event_groups</source>
+                <target>Grupy związane z wydarzeniem</target>
+            </trans-unit>
+            <trans-unit id="label.event_group_name">
+                <source>label.event_group_name</source>
+                <target>Nazwa wydarzenia</target>
+            </trans-unit>
+            <trans-unit id="label.group_author">
+                <source>label.group_author</source>
+                <target>Założyciel</target>
+            </trans-unit>
+            <trans-unit id="label.group_members">
+                <source>label.group_members</source>
+                <target>Członkowie</target>
+            </trans-unit>
+            <trans-unit id="label.group_discussion">
+                <source>label.group_discussion</source>
+                <target>DYSKUSJA</target>
+            </trans-unit>
+            <trans-unit id="label.see_more">
+                <source>label.see_more</source>
+                <target>zobacz więcej >></target>
+            </trans-unit>
+            <trans-unit id="label.admin">
+                <source>label.admin</source>
+                <target>panel admina</target>
+            </trans-unit>
+            <trans-unit id="label.supervisor">
+                <source>label.supervisor</source>
+                <target>Zarządzaj:</target>
+            </trans-unit>
+            <trans-unit id="title.user_change_role">
+                <source>title.user_change_role</source>
+                <target>Czy zmienić rolę użytkownika na ADMIN?</target>
+            </trans-unit>
+            <trans-unit id="message.added_successfully">
+                <source>message.added_successfully</source>
+                <target>Treść została poprawnie dodana.</target>
+            </trans-unit>
+            <trans-unit id="message.deleted_successfully">
+                <source>message.deleted_successfully</source>
+                <target>Treść została poprawnie usunięta.</target>
+            </trans-unit>
+            <trans-unit id="message.updated_successfully">
+                <source>message.updated_successfully</source>
+                <target>Treść została poprawnie dodana.</target>
             </trans-unit>
         </body>
     </file>

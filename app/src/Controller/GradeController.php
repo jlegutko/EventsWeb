@@ -39,12 +39,12 @@ class GradeController extends AbstractController
      *     "/",
      *     name="grade_index",
      * )
-     * @isGranted(
-     *     "ROLE_ADMIN",
-     *     )
      */
     public function index(Request $request, GradeRepository $repository, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -71,6 +71,9 @@ class GradeController extends AbstractController
      */
     public function view(Grade $grade): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         return $this->render(
             'grade/view.html.twig',
             ['grade' => $grade]

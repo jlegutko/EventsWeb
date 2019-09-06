@@ -38,12 +38,12 @@ class CommentController extends AbstractController
      *     "/",
      *     name="comment_index",
      * )
-     * @isGranted(
-     *     "ROLE_ADMIN",
-     *     )
      */
     public function index(Request $request, CommentRepository $repository, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -70,6 +70,10 @@ class CommentController extends AbstractController
      */
     public function view(Comment $comment): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+
         return $this->render(
             'comment/view.html.twig',
             ['comment' => $comment]

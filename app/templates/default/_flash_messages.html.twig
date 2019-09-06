@@ -1,7 +1,19 @@
-{#
-    Single flash message template.
-    parameters:
-        - type: Message type according to Bootstrap alert types,
-        - message: Message content,
-#}
-{# Bootstrap alert, see http://getbootstrap.com/components/#alerts #}
+{% if app.session.flashBag.peekAll is not empty %}
+
+    {% for message in app.flashes('success') %}
+        <div data-closable class="alert-box callout success">
+            <i class="fa fa-check"></i> {{ message|trans }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+        <div data-closable class="alert-box callout alert">
+            <i class="fa fa-ban"></i> {{ message|trans }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('warning') %}
+        <div data-closable class="alert-box callout warning">
+            <i class="fa fa-exclamation-triangle"></i> {{ message|trans }}
+        </div>
+
+    {% endfor %}
+{% endif %}

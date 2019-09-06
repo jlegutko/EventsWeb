@@ -14,8 +14,8 @@
                     <thead>
                     <tr>
                         <th>{{ knp_pagination_sortable(pagination, 'label.table_id'|trans, 'u.id') }}</th>
-                        <th>{{ knp_pagination_sortable(pagination, 'label.user_name'|trans, 'u.name') }}</th>
-                        <th>{{ knp_pagination_sortable(pagination, 'label.item_action'|trans, 'u.date') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'label.user_name'|trans, 'u.firstName') }}</th>
+                        <th>{{ 'label.item_action'|trans }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -23,16 +23,22 @@
                         <tr>
                             <th scope="row">{{ user.id }}</th>
                             <td>{{ user.firstName }}</td>
-                            <td><a href="{{ url('user_view', {id: user.id}) }}">{{ 'label.go_to_user'|trans }}</a></td>
+                            <td>{% if is_granted ('ROLE_ADMIN') %}
+                                    <a class="ml-2" href="{{ url('user_change_role', {id: user.id}) }}"><i class="material-icons">supervisor_account</i></a>
+                                    <a class="ml-2" href="{{ url('user_view', {id: user.id}) }}"><i class="material-icons">visibility</i></a>
+                                    <a class="ml-2" href="{{ url('user_delete', {id: user.id}) }}"><i class="material-icons">delete_forever</i></a>
+                                {% else %}
+                                    <a href="{{ url('user_view', {id: user.id}) }}"><i class="material-icons">{{ 'label.go_to_user'|trans }}</i></a>
+                                {% endif %}
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </div>
-        </div>
-
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
 
     {% else %}

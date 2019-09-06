@@ -1,0 +1,10 @@
+{% include 'default/_form.html.twig' with {
+    page_title: 'title.user_change_role',
+    page_title_param: {'%id%': user.id},
+    attr: {
+        method: 'PUT',
+        action: url('user_change_role', {'id': user.id}),
+    },
+    account: user,
+    role_change: true,
+} %}

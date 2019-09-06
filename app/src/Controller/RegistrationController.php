@@ -31,6 +31,26 @@ use \Exception;
 class RegistrationController extends AbstractController
 {
     /**
+     * Admin panel.
+     *
+     *
+     * @return Response HTTP response
+     *
+     * @Route (
+     *     "/admin",
+     *     name="admin",
+     * )
+     * @isGranted(
+     *      "ROLE_ADMIN",
+     *      )
+     */
+    public function admin(): Response
+    {
+        return $this->render(
+            'registration/admin.html.twig'
+        );
+    }
+    /**
      * Index action.
      *
      * @param Request            $request    HTTP request
@@ -43,12 +63,12 @@ class RegistrationController extends AbstractController
      *     "/users",
      *     name="user_index",
      * )
-     * @isGranted(
-     *     "ROLE_ADMIN",
-     *     )
      */
     public function index(Request $request, UserRepository $repository, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -310,9 +330,7 @@ class RegistrationController extends AbstractController
                 return $this->redirectToRoute('security_login');
             }
 
-            $lastRoute = $request->getSession()->get('last_route');
-
-            return $this->redirectToRoute($lastRoute['name'], $lastRoute['params']);
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render(
@@ -337,7 +355,7 @@ class RegistrationController extends AbstractController
      * @throws OptimisticLockException
      *
      * @Route(
-     *     "/{id}/changerole",
+     *     "/users/{id}/changerole",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_change_role",
@@ -375,9 +393,10 @@ class RegistrationController extends AbstractController
     }
     /**
      * Shows interested events by user.
-
      *
+     * @param Request            $request    HTTP request
      * @param \App\Entity\User $user User entity
+     * @param PaginatorInterface $paginator  Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -393,20 +412,28 @@ class RegistrationController extends AbstractController
      *     subject="user",
      * )
      */
-    public function showInterested(User $user): Response
+    public function showInterested(Request $request, User $user, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $pagination = $paginator->paginate(
+            $user->getInterests(),
+            $request->query->getInt('page', 1),
+            User::NUMBER_OF_ITEMS
+        );
+
         return $this->render(
             'registration/interested_events.html.twig',
-            [
-                'user' => $user,
-            ]
+            ['pagination' => $pagination]
         );
     }
     /**
      * Shows events made by user.
-
-     *
+     * @param Request            $request    HTTP request
      * @param \App\Entity\User $user User entity
+     * @param PaginatorInterface $paginator  Paginator
+     *
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -422,13 +449,20 @@ class RegistrationController extends AbstractController
      *     subject="user",
      * )
      */
-    public function showMyEvents(User $user): Response
+    public function showMyEvents(Request $request, User $user, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $pagination = $paginator->paginate(
+            $user->getEvents(),
+            $request->query->getInt('page', 1),
+            User::NUMBER_OF_ITEMS
+        );
+
         return $this->render(
             'registration/my_events.html.twig',
-            [
-                'user' => $user,
-            ]
+            ['pagination' => $pagination]
         );
     }
     /**
@@ -436,7 +470,8 @@ class RegistrationController extends AbstractController
 
      *
      * @param \App\Entity\User $user User entity
-     *
+     * @param PaginatorInterface $paginator  Paginator
+     * @param Request            $request    HTTP request
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
      * @Route(
@@ -451,13 +486,20 @@ class RegistrationController extends AbstractController
      *     subject="user",
      * )
      */
-    public function showGroups(User $user): Response
+    public function showGroups(Request $request, User $user,  PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $pagination = $paginator->paginate(
+            $user->getMembers(),
+            $request->query->getInt('page', 1),
+            User::NUMBER_OF_ITEMS
+        );
+
         return $this->render(
             'registration/my_groups.html.twig',
-            [
-                'user' => $user,
-            ]
+            ['pagination' => $pagination]
         );
     }
 

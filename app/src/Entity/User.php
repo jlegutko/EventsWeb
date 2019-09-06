@@ -170,9 +170,9 @@ class User implements UserInterface
     private $profilePhoto;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Group", mappedBy="author", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Group", mappedBy="author", orphanRemoval=true)
      */
-    private $community;
+    private $groups;
 
     /**
      * User constructor.
@@ -185,6 +185,7 @@ class User implements UserInterface
         $this->events = new ArrayCollection();
         $this->members = new ArrayCollection();
         $this->interests = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
     /**
      * Getter for the Id.
@@ -593,20 +594,35 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCommunity(): ?Group
+    /**
+     * @return Collection|Group[]
+     */
+    public function getGroups(): Collection
     {
-        return $this->community;
+        return $this->groups;
     }
 
-    public function setCommunity(Group $community): self
+    public function addGroup(Group $group): self
     {
-        $this->community = $community;
-
-        // set the owning side of the relation if necessary
-        if ($this !== $community->getAuthor()) {
-            $community->setAuthor($this);
+        if (!$this->groups->contains($group)) {
+            $this->groups[] = $group;
+            $group->setAuthor($this);
         }
 
         return $this;
     }
+
+    public function removeGroup(Group $group): self
+    {
+        if ($this->groups->contains($group)) {
+            $this->groups->removeElement($group);
+            // set the owning side to null (unless already changed)
+            if ($group->getAuthor() === $this) {
+                $group->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

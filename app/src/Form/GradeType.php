@@ -7,7 +7,7 @@ namespace App\Form;
 
 use App\Entity\Grade;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -31,11 +31,14 @@ class GradeType extends AbstractType
     {
         $builder->add(
             'grade',
-            IntegerType::class,
+            RangeType::class,
             [
                 'label' => 'label.grade',
                 'required' => true,
-                'scale' => 5,
+                'attr' => [
+                    'min' => 0,
+                    'max' => 5,
+                ]
             ]
         );
     }

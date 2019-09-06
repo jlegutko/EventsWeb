@@ -32,11 +32,6 @@
                             </a>
                         </li>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
-                                <a class="nav-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" >
-                                    {{ 'label.user_index'|trans }}
-                                </a>
-                            </li>
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'category_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('category_index') }}" title = "{{ 'label.category_index'|trans }}" >
                                     {{ 'label.category_index'|trans }}
@@ -52,16 +47,21 @@
                                     {{ 'label.grade_index'|trans }}
                                 </a>
                             </li>
-{#                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'post_index' %} active {% endif %}">#}
-{#                                <a class="nav-link" href = "{{ url('post_index') }}" title = "{{ 'label.post_index'|trans }}" >#}
-{#                                    {{ 'label.post_index'|trans }}#}
-{#                                </a>#}
-{#                            </li>#}
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'post_index' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('post_index') }}" title = "{{ 'label.post_index'|trans }}" >
+                                    {{ 'label.post_index'|trans }}
+                                </a>
+                            </li>
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
                                 <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
                                     {{ 'label.group_index'|trans }}
+                                </a>
+                            </li>
+                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
+                                <a class="nav-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" >
+                                    {{ 'label.user_index'|trans }}
                                 </a>
                             </li>
                         {% endif %}
@@ -80,6 +80,13 @@
                             </li>
                         {% endif %}
                         {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')%}
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'admin' %} active {% endif %}">
+                                    <a class="nav-link" href = "{{ url('admin') }}" title = "{{ 'label.admin'|trans }}">
+                                        <i class="material-icons md-18 mr-lg-1">supervisor_account</i> {{ 'label.admin'|trans }}
+                                    </a>
+                                </li>
+                            {% endif %}
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'event_new' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('event_new') }}" title = "{{ 'label.event_new'|trans }}">
                                     <i class="material-icons md-18 mr-lg-1">library_add</i> {{ 'label.event_new'|trans }}

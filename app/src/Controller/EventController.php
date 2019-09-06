@@ -114,7 +114,7 @@ class EventController extends AbstractController
                 'grade' => $grade,
                 'user' => $user,
                 'check' => $check,
-                'all_grades' => $allGrades]
+                'all_grades' => $allGrades, ]
         ) : $this->render(
             'event/view.html.twig',
             ['event' => $event,
@@ -122,7 +122,7 @@ class EventController extends AbstractController
                 'grade' => $grade,
                 'user' => $user,
                 'check' => $check,
-                'all_grades' => $allGrades,]
+                'all_grades' => $allGrades, ]
         );
     }
 
@@ -357,7 +357,7 @@ class EventController extends AbstractController
             'event/new_grade.html.twig',
             ['form' => $form->createView(),
                 'event' => $event,
-                'grade' => $grade
+                'grade' => $grade,
             ]
         );
     }
@@ -584,8 +584,10 @@ class EventController extends AbstractController
     /**
      * Shows groups connected with event.
 
-     *
-     * @param Event $event Event entity
+     * @param Request            $request    HTTP request
+     * @param Event              $event      Event entity
+     * @param EventRepository    $repository Repository
+     * @param PaginatorInterface $paginator  Paginator
      *
      * @return \Symfony\Component\HttpFoundation\Response HTTP response
      *
@@ -597,17 +599,20 @@ class EventController extends AbstractController
      * )
      *
      */
-    public function eventGroups(Event $event): Response
+    public function eventGroups(Request $request, Event $event, EventRepository $repository, PaginatorInterface $paginator): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
         }
+        $pagination = $paginator->paginate(
+            $event->getGroups(),
+            $request->query->getInt('page', 1),
+            Group::NUMBER_OF_ITEMS
+        );
 
         return $this->render(
             'event/groups.html.twig',
-            [
-                'event' => $event,
-            ]
+            ['pagination' => $pagination]
         );
     }
 }

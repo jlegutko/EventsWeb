@@ -9,14 +9,16 @@
     {% if comment is defined and comment|length %}
         <div class="media post-box col-10 ml-auto mr-auto">
             <div class="media-body mb-3 mt-1">
-                <h4 class="media-heading"><img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">{{ comment.owner.firstName }}<span class="float-right comment-details">{{ comment.createdAt|date()|localizeddate('short', 'short') }}</span>
-                    {% if null != app.user %}
-                        {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
-                            <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
-                        {% endif %}
-                        {% if comment.owner.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
-                            <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
-                        {% endif %}
+                <h4 class="media-heading">
+                    {% if comment.owner.profilePhoto.file is defined and comment.owner.profilePhoto.file|length %}
+                        <img src="{{ asset('uploads/photos/'~ comment.owner.profilePhoto.file.filename) }}" class="img-responsive user-photo mr-3 ml-1 mt-1">
+                    {% else %}
+                        <img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    {% endif %}
+                    {{ comment.owner.firstName }}<span class="float-right comment-details">{{ comment.createdAt|date()|localizeddate('short', 'short') }}</span>
+                    {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                        <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
+                        <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
                     {% endif %}
                 </h4>
                 <p class="pr-2">{{ comment.content }}</p>

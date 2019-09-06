@@ -9,66 +9,93 @@
         <div class="tile">
             <div class="wrapper">
                 <h2 class="ml-5 mt-4"><i class="material-icons mr-2">group</i>{{ group.name }}
-                    <a class="add_member ml-5 a-small" href="{{ url('group_edit', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
-                        <i class="material-icons mr-2">edit</i></a>
-                    <a class="add_member a-small" href="{{ url('group_delete', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
-                        <i class="material-icons mr-2">delete_forever</i></a>
-                    {% set favourite = 0 %}
-                    {% for member in group.members %}
-                        {% if null != app.user and member.member.id == app.user.id%}
-                            {% set favourite = 1 %}
+                    {% if null != app.user %}
+                        {% if group.author.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                            <a class="add_member ml-5 a-small" href="{{ url('group_edit', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                                <i class="material-icons mr-2">edit</i></a>
+                            <a class="add_member a-small" href="{{ url('group_delete', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                                <i class="material-icons mr-2">delete_forever</i></a>
                         {% endif %}
-                    {% endfor %}
-                    {% if favourite == 0 %}
-                        <a class="add_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
-                            <i class="material-icons mr-2">person_add</i>{{ 'label.group_member'|trans }}
-                        </a>
-                    {% else %}
-                        <a class="remove_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.remove_member'|trans }}">
-                            <i class="material-icons mr-2">person_add_disabled</i>{{ 'label.remove_member'|trans }}
-                        </a>
+                        {% set favourite = 0 %}
+                        {% for member in group.members %}
+                            {% if null != app.user and member.member.id == app.user.id%}
+                                {% set favourite = 1 %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if favourite == 0 %}
+                            <a class="add_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.member'|trans }}">
+                                <i class="material-icons mr-2">person_add</i>{{ 'label.group_member'|trans }}
+                            </a>
+                        {% else %}
+                            <a class="remove_member float-right mr-5 a-small" href="{{ url('group_member', {id: group.id}) }}" title ="{{ 'action.remove_member'|trans }}">
+                                <i class="material-icons mr-2">person_add_disabled</i>{{ 'label.remove_member'|trans }}
+                            </a>
+                        {% endif %}
                     {% endif %}
                 </h2>
                     {% if group is defined and group|length %}
                         <table class="table table-bordered ml-auto mr-auto mt-5">
                             <tbody>
                                 <tr>
-                                    <th >wydarzenie</th>
+                                    <th >{{ 'label.event_group_name'|trans }}</th>
                                     <th ><i class="material-icons mr-2">event</i>{{ group.event.name }}</th>
                                 </tr>
                                 <tr>
-                                    <th scope="row">autor</th>
+                                    <th scope="row">{{ 'label.group_author'|trans }}</th>
                                     <td> <div class="media-left">
-                                        </div><img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." class="img-thumbnail img-small mr-2"> {{ group.author.firstName }}</td>
+                                        </div>
+                                        {% if group.author.profilePhoto.file is defined and group.author.profilePhoto.file|length %}
+                                            <img src="{{ asset('uploads/photos/'~ group.author.profilePhoto.file.filename) }}" class="mg-thumbnail img-small mr-2" alt="...">
+                                        {% else %}
+                                            <img class="mg-thumbnail img-small mr-2" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." >
+                                        {% endif %}
+                                        {{ group.author.firstName }}</td>
                                 </tr>
                                 <tr>
-                                    <th >członkowie</th>
-                                    <td>{% for member in group.members %} <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." class="img-thumbnail img-small mr-2"> {{ member.member.firstName }}, {% endfor %}</td>
+                                    <th >{{ 'label.group_members'|trans }}</th>
+                                    <td>{% for member in group.members %}
+                                            {% if member.member.profilePhoto.file is defined and member.member.profilePhoto.file|length %}
+                                                <img src="{{ asset('uploads/photos/'~ member.member.profilePhoto.file.filename) }}" class="mg-thumbnail img-small mr-2" alt="...">
+                                            {% else %}
+                                                <img class="mg-thumbnail img-small mr-2" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="..." >
+                                            {% endif %}
+                                            {{ member.member.firstName }},
+                                        {% endfor %}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <h3 class="ml-5 mt-5"><i class="material-icons mr-2">sms</i>DISCUSSION</h3>
-                        <div class="post-post-form col-lg-10 ml-5">
-                            {{ form_start(form, { method: 'post', action: url('group_new_post', {'id': group.id}) }) }}
-                            {% if false == form.vars.valid %}
-                                {% include 'default/_single_flash_message.html.twig' with {
-                                    type: 'danger',
-                                    message: 'message.form_error'|trans,
-                                }%}
+                        <h3 class="ml-5 mt-5"><i class="material-icons mr-2">sms</i>{{ 'label.group_discussion'|trans }}</h3>
+                        {% for member in group.members %}
+                            {% if member.member.id == app.user.id %}
+                                <div class="post-post-form col-lg-10 ml-5">
+                                    {{ form_start(form, { method: 'post', action: url('group_new_post', {'id': group.id}) }) }}
+                                    {% if false == form.vars.valid %}
+                                        {% include 'default/_single_flash_message.html.twig' with {
+                                            type: 'danger',
+                                            message: 'message.form_error'|trans,
+                                        }%}
+                                    {% endif %}
+                                    {{ form_widget(form) }}
+                                    <div class="form-group row float-right">
+                                        <button type="submit" title="{{ 'action.new_post'|trans }}" class="btn btn-success mr-3 mb-4">
+                                            <i class="material-icons mr-2">post_add</i>{{ 'button.submit_post'|trans }}
+                                        </button>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
                             {% endif %}
-                            {{ form_widget(form) }}
-                            <div class="form-group row float-right">
-                                <button type="submit" title="{{ 'action.new_post'|trans }}" class="btn btn-success mr-3 mb-4">
-                                    <i class="material-icons mr-2">post_add</i>{{ 'button.submit_post'|trans }}
-                                </button>
-                            </div>
-                            {{ form_end(form) }}
-                        </div>
+                        {% endfor %}
                         {% if group.posts|length %}
                             {% for post in group.posts %}
                                 <div class="media post-box col-10 ml-auto mr-auto">
                                     <div class="media-body mb-3 mt-1">
-                                        <h4 class="media-heading"><img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">{{ post.user.firstName }}<span class="float-right post-details">{{ post.createdAt|date()|localizeddate('short', 'short') }}</span>
+                                        <h4 class="media-heading">
+                                            {% if post.user.profilePhoto.file is defined and post.user.profilePhoto.file|length %}
+                                                <img src="{{ asset('uploads/photos/'~ post.user.profilePhoto.file.filename) }}" class="img-responsive user-photo mr-3 ml-1 mt-1">
+                                            {% else %}
+                                                <img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                                            {% endif %}
+                                            {{ post.user.firstName }}<span class="float-right post-details">{{ post.createdAt|date()|localizeddate('short', 'short') }}</span>
                                             {% if null != app.user %}
                                                 {% if post.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
                                                     <a class="inline-action" href="{{ url('post_edit', {id: post.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
