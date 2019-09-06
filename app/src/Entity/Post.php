@@ -139,11 +139,19 @@ class Post
         return $this;
     }
 
+    /**
+     * @return Group|null
+     */
     public function getCommunity(): ?Group
     {
         return $this->community;
     }
 
+    /**
+     * @param Group|null $community
+     *
+     * @return Post
+     */
     public function setCommunity(?Group $community): self
     {
         $this->community = $community;

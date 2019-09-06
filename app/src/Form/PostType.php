@@ -62,4 +62,3 @@ class PostType extends AbstractType
         return 'post';
     }
 }
-

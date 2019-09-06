@@ -74,6 +74,7 @@ class PostController extends AbstractController
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
         }
+
         return $this->render(
             'post/view.html.twig',
             ['post' => $post]

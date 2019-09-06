@@ -511,6 +511,7 @@ class EventController extends AbstractController
      *
      * @param Request         $request    HTTP request
      * @param GroupRepository $repository Group repository
+     *
      * @param Event           $event
      *
      * @return Response HTTP response
@@ -554,11 +555,10 @@ class EventController extends AbstractController
     }
     /**
      * Shows events made by user.
-
+ *
+     * @param User $user User entity
      *
-     * @param \App\Entity\User $user User entity
-     *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/my_events",
@@ -583,13 +583,11 @@ class EventController extends AbstractController
     }
     /**
      * Shows groups connected with event.
-
-     * @param Request            $request    HTTP request
-     * @param Event              $event      Event entity
-     * @param EventRepository    $repository Repository
-     * @param PaginatorInterface $paginator  Paginator
+     * @param Request            $request   HTTP request
+     * @param Event              $event     Event entity
+     * @param PaginatorInterface $paginator Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/groups",
@@ -599,7 +597,7 @@ class EventController extends AbstractController
      * )
      *
      */
-    public function eventGroups(Request $request, Event $event, EventRepository $repository, PaginatorInterface $paginator): Response
+    public function eventGroups(Request $request, Event $event, PaginatorInterface $paginator): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');

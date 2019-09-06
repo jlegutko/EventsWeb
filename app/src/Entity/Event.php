@@ -409,6 +409,7 @@ class Event
 
     /**
      * @param User|null $user
+     *
      * @return Event
      */
     public function setUser(?User $user): self
@@ -463,35 +464,59 @@ class Event
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getEndDate(): ? DateTimeInterface
     {
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    /**
+     * @param DateTimeInterface $endDate
+     *
+     * @return Event
+     */
+    public function setEndDate(DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
 
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    /**
+     * @return DateTimeInterface|null
+     */
+    public function getStartDate(): ?DateTimeInterface
     {
         return $this->startDate;
     }
 
-    public function setStartDate(\DateTimeInterface $startDate): self
+    /**
+     * @param DateTimeInterface $startDate
+     *
+     * @return Event
+     */
+    public function setStartDate(DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
 
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getSize(): ?string
     {
         return $this->size;
     }
 
+    /**
+     * @param string $size
+     *
+     * @return Event
+     */
     public function setSize(string $size): self
     {
         $this->size = $size;

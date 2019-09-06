@@ -1,7 +1,7 @@
 {% if is_single_message|default(true) %}
 <div class="x_content bs-example-popovers">
     {% endif %}
-    <div class="alert alert-{{ type }} alert-dismissible" role="alert">
+    <div class="alert alert-{{ type }}" role="alert">
         {% if message|trans is not same as(message) %}
             {{ message|trans }}
         {% else %}

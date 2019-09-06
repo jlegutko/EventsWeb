@@ -82,5 +82,3 @@ class ProfilePhotoVoter extends Voter
         return false;
     }
 }
-
-

@@ -14,7 +14,7 @@
                         {% if photo is defined and photo|length %}
                             <div>
                                 <a href="{{ url('photo_view', {id: photo.id}) }}">
-                                    <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}" width="auto" heigt="360">
+                                    <img src="{{ asset('uploads/photos/'~ photo.file.filename) }}" width="auto" height="360">
                                 </a>
                             </div>
                         {% else %}
@@ -87,7 +87,8 @@
                                 {% if event.groups is defined and event.groups|length %}
                                     <a href="{{ path('event_groups', {'id': event.id}) }}"><strong>{{ 'event.label.connected_groups'|trans }}</strong> {{ event.groups|length }}</a>
                                 {% else %}
-                                    <strong>{{ 'event.label.connected_groups'|trans }}</strong> 0</a>
+                                    <strong>{{ 'event.label.connected_groups'|trans }}</strong> 0
+                                    </a>
                                 {% endif %}
                             </div>
 
@@ -112,20 +113,19 @@
                                     {% endif %}
                                     {% if (have_own_grade == 0 and other_grade == 1) or (have_own_grade == 0 and other_grade == 0) %}
                                         <div class="stats-div">
-                                            {{ form_start(event.formGrade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
-                                            {% if false == event.formGrade.vars.valid %}
-                                                {% include 'default/_single_flash_message.html.twig' with {
-                                                    type: 'danger',
-                                                    message: 'message.form_error'|trans,
-                                                }%}
-                                            {% endif %}
-                                            {{ form_widget(event.formGrade) }}
+                                                {{ form_start(event.formGrade, { method: 'post', action: url('event_new_grade', {'id': event.id}) }) }}
+                                                {% if false == event.formGrade.vars.valid %}
+                                                    {% include 'default/_single_flash_message.html.twig' with {
+                                                        type: 'danger',
+                                                        message: 'message.form_error'|trans,
+                                                    }%}
+                                                {% endif %}
+                                                    {{ form_widget(event.formGrade) }}
 
-                                                <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
-                                                    {{ 'button.new_grade'|trans }}
-                                                </button>
-
-                                            {{ form_end(event.formGrade) }}
+                                                        <button type="submit" title="{{ 'action.new_grade'|trans }}" class="btn btn-primary">
+                                                            {{ 'button.new_grade'|trans }}
+                                                        </button>
+                                                {{ form_end(event.formGrade) }}
                                         </div>
                                     {% endif %}
 

@@ -201,7 +201,7 @@ th, td{
     width: 100%;
     background:#fff;
     border-radius:5px;
-    box-shadow:0px 2px 3px -1px rgba(151, 171, 187, 0.7);
+    box-shadow:0 2px 3px -1px rgba(151, 171, 187, 0.7);
     float:left;
     transform-style: preserve-3d;
     margin: 20px 5px;
@@ -219,7 +219,7 @@ th, td{
 .dates{
     border:1px solid #ebeff2;
     border-radius:5px;
-    padding:20px 0px;
+    padding:20px 0;
     margin:10px 20px;
     font-size:16px;
     color:#5aadef;
@@ -345,7 +345,6 @@ div.footer a.Cbtn-danger:hover{
     height: 12px;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
-    border-width: 1px 0 0 1px;
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     position: absolute;
@@ -431,4 +430,16 @@ div.footer a.Cbtn-danger:hover{
 }
 .panel-admin a:hover{
     color: #a40000;
+}
+#grade{
+    width: 120%;
+}
+.stats-div label{
+    margin-left: auto;
+    margin-right: 6rem;
+}
+.text-center{
+    display: block;
+    margin-right: auto;
+    margin-left: auto;
 }

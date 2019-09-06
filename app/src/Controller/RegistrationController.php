@@ -98,6 +98,7 @@ class RegistrationController extends AbstractController
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
         }
+
         return $this->render(
             'registration/view.html.twig',
             ['user' => $user]
@@ -139,8 +140,10 @@ class RegistrationController extends AbstractController
             $user->setPassword($password);
             $repository->save($user);
             $this->addFlash('success', 'message.created_successfully');
+
             return $this->redirectToRoute('security_login');
         }
+
         return $this->render(
             'registration/new.html.twig',
             ['form' => $form->createView()]
@@ -179,6 +182,7 @@ class RegistrationController extends AbstractController
 
             return $this->redirectToRoute('user_index');
         }
+
         return $this->render(
             'registration/edit.html.twig',
             [
@@ -229,8 +233,10 @@ class RegistrationController extends AbstractController
             $profilePhoto->setUpdatedAt(new DateTime());
             $repository->save($profilePhoto);
             $this->addFlash('success', 'message.created_successfully');
+
             return $this->redirectToRoute('user_view', ['id' => $user->getId()]);
         }
+
         return $this->render(
             'registration/new_profile_photo.html.twig',
             ['form' => $form->createView(),
@@ -394,11 +400,11 @@ class RegistrationController extends AbstractController
     /**
      * Shows interested events by user.
      *
-     * @param Request            $request    HTTP request
-     * @param \App\Entity\User $user User entity
-     * @param PaginatorInterface $paginator  Paginator
+     * @param Request            $request   HTTP request
+     * @param User               $user      User entity
+     * @param PaginatorInterface $paginator Paginator
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/events",
@@ -430,12 +436,12 @@ class RegistrationController extends AbstractController
     }
     /**
      * Shows events made by user.
-     * @param Request            $request    HTTP request
-     * @param \App\Entity\User $user User entity
-     * @param PaginatorInterface $paginator  Paginator
+     * @param Request            $request   HTTP request
+     * @param User               $user      User entity
+     * @param PaginatorInterface $paginator Paginator
      *
      *
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/my_events",
@@ -467,12 +473,14 @@ class RegistrationController extends AbstractController
     }
     /**
      * Shows groups with user.
-
      *
-     * @param \App\Entity\User $user User entity
-     * @param PaginatorInterface $paginator  Paginator
-     * @param Request            $request    HTTP request
-     * @return \Symfony\Component\HttpFoundation\Response HTTP response
+     * @param User               $user      User entity
+     *
+     * @param PaginatorInterface $paginator Paginator
+     *
+     * @param Request            $request   HTTP request
+     *
+     * @return Response HTTP response
      *
      * @Route(
      *     "/{id}/my_groups",
@@ -486,7 +494,7 @@ class RegistrationController extends AbstractController
      *     subject="user",
      * )
      */
-    public function showGroups(Request $request, User $user,  PaginatorInterface $paginator): Response
+    public function showGroups(Request $request, User $user, PaginatorInterface $paginator): Response
     {
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
@@ -502,5 +510,4 @@ class RegistrationController extends AbstractController
             ['pagination' => $pagination]
         );
     }
-
 }

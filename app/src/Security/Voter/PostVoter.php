@@ -82,5 +82,3 @@ class PostVoter extends Voter
         return false;
     }
 }
-
-

@@ -25,7 +25,10 @@
                             <td>{% if is_granted ('ROLE_ADMIN') %}
                                     <a class="ml-2" href="{{ url('category_view', {id: category.id}) }}"><i class="material-icons">visibility</i></a>
                                     <a class="ml-2" href="{{ url('category_edit', {id: category.id}) }}"><i class="material-icons">edit</i></a>
-                                    <a class="ml-2" href="{{ url('category_delete', {id: category.id}) }}"><i class="material-icons">delete_forever</i></a>
+                                    {% if category.events|length and category.events is defined %}
+                                    {% else %}
+                                        <a class="ml-2" href="{{ url('category_delete', {id: category.id}) }}"><i class="material-icons">delete_forever</i></a>
+                                    {% endif %}
                                 {% else %}
                                     <a href="{{ url('category_view', {id: category.id}) }}">{{ 'label.go_to_category'|trans }}</a></td>
                                 {% endif %}
@@ -36,7 +39,7 @@
             </div>
         </div>
 
-        <div class="navigation text-center">
+        <div class="pagination-centered">
             {{ knp_pagination_render(pagination) }}
         </div>
 

@@ -38,7 +38,7 @@ class GradeType extends AbstractType
                 'attr' => [
                     'min' => 0,
                     'max' => 5,
-                ]
+                ],
             ]
         );
     }

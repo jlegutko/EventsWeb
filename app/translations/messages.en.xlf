@@ -731,6 +731,18 @@
                 <source>message.updated_successfully</source>
                 <target>Successfully updated.</target>
             </trans-unit>
+            <trans-unit id="message.created_successfully">
+                <source>message.created_successfully</source>
+                <target>Successfully added.</target>
+            </trans-unit>
+            <trans-unit id="title.error">
+                <source>title.error</source>
+                <target>Error page</target>
+            </trans-unit>
+            <trans-unit id="message.form_error">
+                <source>message.form_error</source>
+                <target>Error page</target>
+            </trans-unit>
         </body>
     </file>
 </xliff>

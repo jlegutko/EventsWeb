@@ -368,7 +368,7 @@
             </trans-unit>
             <trans-unit id="label.grade">
                 <source>label.grade</source>
-                <target>Ocena wydarzenia</target>
+                <target>Ocena</target>
             </trans-unit>
             <trans-unit id="action.new_grade">
                 <source>action.new_grade</source>
@@ -722,6 +722,10 @@
                 <source>message.added_successfully</source>
                 <target>Treść została poprawnie dodana.</target>
             </trans-unit>
+            <trans-unit id="message.created_successfully">
+                <source>message.created_successfully</source>
+                <target>Treść została poprawnie dodana.</target>
+            </trans-unit>
             <trans-unit id="message.deleted_successfully">
                 <source>message.deleted_successfully</source>
                 <target>Treść została poprawnie usunięta.</target>
@@ -729,6 +733,14 @@
             <trans-unit id="message.updated_successfully">
                 <source>message.updated_successfully</source>
                 <target>Treść została poprawnie dodana.</target>
+            </trans-unit>
+            <trans-unit id="title.error">
+                <source>title.error</source>
+                <target>Strona błędu</target>
+            </trans-unit>
+            <trans-unit id="message.form_error">
+                <source>message.form_error</source>
+                <target>Wystąpił błąd.</target>
             </trans-unit>
         </body>
     </file>

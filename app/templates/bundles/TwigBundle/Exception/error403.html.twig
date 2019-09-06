@@ -1,10 +1,25 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="PL">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome on whatsnewPL!{% endblock %}</title>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+{% block title %}
+    {{ 'title.error'|trans }}
+{% endblock %}
 
 {% block body %}
-    <h1> {{ 'message.error_occured'|trans }}</h1>
-    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-        <a href="{{ url('login') }}"><h2> {{ 'message.to_homepage'|trans }}</h2></a>
-    {% else %}
-        <a href="{{ url('search_index') }}"><h2> {{ 'message.to_homepage'|trans }}</h2></a>
-    {% endif %}
+    <h1 class="mr-5">Page not found</h1>
+
+    <p class="mr-5 mt-3">
+        The requested page couldn't be located. Checkout for any URL
+        misspelling or <a href="{{ path('search_index') }}">return to the homepage</a>.
+    </p>
 {% endblock %}
+</body>
+</html>

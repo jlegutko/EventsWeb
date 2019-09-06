@@ -65,8 +65,9 @@ class GroupController extends AbstractController
     /**
      * View action.
      *
-     * @param Request         $request    HTTP request
-     * @param Group $group Group entity
+     * @param Request $request HTTP request
+     *
+     * @param Group   $group   Group entity
      *
      * @return Response HTTP response
      *
@@ -229,9 +230,9 @@ class GroupController extends AbstractController
     /**
      * Add a new post action.
      *
-     * @param Request              $request    HTTP request
-     * @param Group                $group
-     * @param PostRepository $repository Post repository
+     * @param Request          $request          HTTP request
+     * @param Group            $group
+     * @param PostRepository   $repository       Post repository
      * @param MemberRepository $memberRepository Member repository
      *
      * @return Response HTTP response

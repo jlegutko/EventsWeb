@@ -5,9 +5,7 @@
 
 namespace App\Controller;
 
-use App\Entity\Event;
 use App\Entity\Grade;
-use App\Form\GradeType;
 use App\Repository\GradeRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -74,6 +72,7 @@ class GradeController extends AbstractController
         if ($this->getUser() === null) {
             return $this->redirectToRoute('security_login');
         }
+
         return $this->render(
             'grade/view.html.twig',
             ['grade' => $grade]

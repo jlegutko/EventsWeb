@@ -36,11 +36,11 @@
                     </tbody>
                 </table>
             </div>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(pagination) }}
+            </div>
         </div>
 
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
-        </div>
     {% else %}
         <h3 class="list-h mt-5">{{  'title.event_list'|trans }}</h3>
         <div class="list-h mt-4">

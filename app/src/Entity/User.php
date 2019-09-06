@@ -577,11 +577,19 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @return ProfilePhoto|null
+     */
     public function getProfilePhoto(): ?ProfilePhoto
     {
         return $this->profilePhoto;
     }
 
+    /**
+     * @param ProfilePhoto $profilePhoto
+     *
+     * @return User
+     */
     public function setProfilePhoto(ProfilePhoto $profilePhoto): self
     {
         $this->profilePhoto = $profilePhoto;
@@ -602,6 +610,11 @@ class User implements UserInterface
         return $this->groups;
     }
 
+    /**
+     * @param Group $group
+     *
+     * @return User
+     */
     public function addGroup(Group $group): self
     {
         if (!$this->groups->contains($group)) {
@@ -612,6 +625,11 @@ class User implements UserInterface
         return $this;
     }
 
+    /**
+     * @param Group $group
+     *
+     * @return User
+     */
     public function removeGroup(Group $group): self
     {
         if ($this->groups->contains($group)) {
@@ -624,5 +642,4 @@ class User implements UserInterface
 
         return $this;
     }
-
 }

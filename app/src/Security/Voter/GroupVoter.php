@@ -82,5 +82,3 @@ class GroupVoter extends Voter
         return false;
     }
 }
-
-

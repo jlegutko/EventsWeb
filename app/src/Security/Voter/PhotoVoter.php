@@ -82,5 +82,3 @@ class PhotoVoter extends Voter
         return false;
     }
 }
-
-

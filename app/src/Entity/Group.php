@@ -209,6 +209,11 @@ class Group
         return $this->posts;
     }
 
+    /**
+     * @param Post $post
+     *
+     * @return Group
+     */
     public function addPost(Post $post): self
     {
         if (!$this->posts->contains($post)) {
@@ -219,6 +224,11 @@ class Group
         return $this;
     }
 
+    /**
+     * @param Post $post
+     *
+     * @return Group
+     */
     public function removePost(Post $post): self
     {
         if ($this->posts->contains($post)) {
@@ -232,11 +242,19 @@ class Group
         return $this;
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     *
+     * @return Group
+     */
     public function setAuthor(?User $author): self
     {
         $this->author = $author;

@@ -40,16 +40,27 @@ class Member
      */
     private $community;
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return User|null
+     */
     public function getMember(): ?User
     {
         return $this->member;
     }
 
+    /**
+     * @param User|null $member
+     *
+     * @return Member
+     */
     public function setMember(?User $member): self
     {
         $this->member = $member;
@@ -57,11 +68,19 @@ class Member
         return $this;
     }
 
+    /**
+     * @return Group|null
+     */
     public function getCommunity(): ?Group
     {
         return $this->community;
     }
 
+    /**
+     * @param Group|null $community
+     *
+     * @return Member
+     */
     public function setCommunity(?Group $community): self
     {
         $this->community = $community;
