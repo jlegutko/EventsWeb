@@ -11,6 +11,7 @@ use App\Repository\PhotoRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -75,6 +76,10 @@ class PhotoController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="photo_edit",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="photo",
+     * )
      */
     public function edit(Request $request, Photo $photo, PhotoRepository $repository, Filesystem $filesystem): Response
     {
@@ -125,6 +130,10 @@ class PhotoController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="photo_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="photo",
      * )
      */
     public function delete(Request $request, Photo $photo, PhotoRepository $repository): Response

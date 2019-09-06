@@ -145,6 +145,9 @@ class EventController extends AbstractController
      */
     public function new(Request $request, EventRepository $repository): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $event = new Event();
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
@@ -183,6 +186,10 @@ class EventController extends AbstractController
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_edit",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="event",
      * )
      */
     public function edit(Request $request, Event $event, EventRepository $repository): Response
@@ -224,6 +231,10 @@ class EventController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="event",
      * )
      */
     public function delete(Request $request, Event $event, EventRepository $repository): Response
@@ -459,6 +470,10 @@ class EventController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="event_new_photo",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="event",
+     * )
      */
     public function newPhoto(Request $request, Event $event, PhotoRepository $repository): Response
     {
@@ -511,6 +526,9 @@ class EventController extends AbstractController
      */
     public function newGroup(Request $request, Event $event, GroupRepository $repository): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $group = new Group();
         $form = $this->createForm(GroupType::class, $group);
         $form->handleRequest($request);
@@ -581,6 +599,10 @@ class EventController extends AbstractController
      */
     public function eventGroups(Event $event): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+
         return $this->render(
             'event/groups.html.twig',
             [

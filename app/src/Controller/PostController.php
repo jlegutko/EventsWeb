@@ -11,6 +11,7 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,9 @@ class PostController extends AbstractController
      */
     public function index(Request $request, PostRepository $repository, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -67,6 +71,9 @@ class PostController extends AbstractController
      */
     public function view(Post $post): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         return $this->render(
             'post/view.html.twig',
             ['post' => $post]
@@ -90,6 +97,10 @@ class PostController extends AbstractController
      *     "/{id}/edit",
      *     name="post_edit",
      *     requirements={"id": "[1-9]\d*"},
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="post",
      * )
      */
     public function edit(Request $request, Post $post, PostRepository $repository): Response
@@ -131,6 +142,10 @@ class PostController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="post_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="post",
      * )
      */
     public function delete(Request $request, Post $post, PostRepository $repository): Response

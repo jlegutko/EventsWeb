@@ -50,7 +50,7 @@ class SearchController extends AbstractController
      * @param EventRepository    $eventRepository
      * @param UserRepository     $userRepository
      * @param CategoryRepository $categoryRepository
-     * @param GroupRepository     $groupRepository
+     * @param GroupRepository    $groupRepository
      *
      * @return Response HTTP response
      *
@@ -62,6 +62,27 @@ class SearchController extends AbstractController
      */
     public function view(string $search, EventRepository $eventRepository, UserRepository $userRepository, CategoryRepository $categoryRepository, GroupRepository $groupRepository): Response
     {
+        if ($this->getUser() === null) {
+            $eventNameResults = $eventRepository -> findByNamePart($search) -> getQuery() -> getResult();
+            $eventStartDateResults = $eventRepository -> findByStartDatePart($search) -> getQuery() -> getResult();
+            $eventEndDateResults = $eventRepository -> findByEndDatePart($search) -> getQuery() -> getResult();
+            $eventPriceResults = $eventRepository -> findByPricePart($search) -> getQuery() -> getResult();
+            $eventSizeResults = $eventRepository -> findBySizePart($search) -> getQuery() -> getResult();
+            $eventPlaceResults = $eventRepository -> findByPlacePart($search) -> getQuery() -> getResult();
+
+            return $this -> render(
+                'search/view.html.twig',
+                [
+                    'search' => $search,
+                    'events_names' => $eventNameResults,
+                    'events_start_dates' =>  $eventStartDateResults,
+                    'events_end_dates' => $eventEndDateResults,
+                    'events_prices' => $eventPriceResults,
+                    'events_sizes' => $eventSizeResults,
+                    'places' => $eventPlaceResults,
+                ]
+            );
+        }
         $eventNameResults = $eventRepository -> findByNamePart($search) -> getQuery() -> getResult();
         $eventStartDateResults = $eventRepository -> findByStartDatePart($search) -> getQuery() -> getResult();
         $eventEndDateResults = $eventRepository -> findByEndDatePart($search) -> getQuery() -> getResult();

@@ -97,7 +97,6 @@ class CommentController extends AbstractController
      *     "MANAGE",
      *     subject="user",
      * )
-
      */
     public function edit(Request $request, Comment $comment, CommentRepository $repository): Response
     {

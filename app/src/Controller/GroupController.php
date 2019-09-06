@@ -17,6 +17,7 @@ use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,6 +47,9 @@ class GroupController extends AbstractController
      */
     public function index(Request $request, GroupRepository $repository, PaginatorInterface $paginator): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -74,6 +78,9 @@ class GroupController extends AbstractController
      */
     public function view(Group $group, Request $request): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
@@ -103,6 +110,10 @@ class GroupController extends AbstractController
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="group_edit",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="group",
      * )
      */
     public function edit(Request $request, Group $group, GroupRepository $repository): Response
@@ -144,6 +155,10 @@ class GroupController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="group_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="group",
      * )
      */
     public function delete(Request $request, Group $group, GroupRepository $repository): Response
@@ -217,6 +232,7 @@ class GroupController extends AbstractController
      * @param Request              $request    HTTP request
      * @param Group                $group
      * @param PostRepository $repository Post repository
+     * @param MemberRepository $memberRepository Member repository
      *
      * @return Response HTTP response
      *
@@ -230,27 +246,40 @@ class GroupController extends AbstractController
      *     name="group_new_post",
      * )
      */
-    public function newPost(Request $request, Group $group, PostRepository $repository): Response
+    public function newPost(Request $request, Group $group, PostRepository $repository, MemberRepository $memberRepository): Response
     {
-        $post = new Post();
-        $form = $this->createForm(PostType::class, $post);
-        $form->handleRequest($request);
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+        $check = $memberRepository -> findOneBy(['member' => $this->getUser(), 'community' => $group]);
+        if ($check instanceof Member) {
+            $post = new Post();
+            $form = $this->createForm(PostType::class, $post);
+            $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $post->setCreatedAt(new DateTime());
-            $post->setUpdatedAt(new DateTime());
-            $post->setUser($this->getUser());
-            $post->setCommunity($group);
-            $repository->save($post);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $post->setCreatedAt(new DateTime());
+                $post->setUpdatedAt(new DateTime());
+                $post->setUser($this->getUser());
+                $post->setCommunity($group);
+                $repository->save($post);
 
-            $this->addFlash('success', 'message.created_successfully');
+                $this->addFlash('success', 'message.created_successfully');
 
-            return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
+                return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
+            }
+
+            return $this->render(
+                'group/new_post.html.twig',
+                ['form' => $form->createView(),
+                    'group' => $group,
+                ]
+            );
         }
 
         return $this->render(
             'group/new_post.html.twig',
-            ['form' => $form->createView(),
+            [
                 'group' => $group,
             ]
         );

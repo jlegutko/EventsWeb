@@ -3,12 +3,14 @@
  * ProfilePhoto controller.
  */
 namespace App\Controller;
+
 use App\Entity\ProfilePhoto;
 use App\Form\ProfilePhotoType;
 use App\Repository\ProfilePhotoRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -16,6 +18,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
 /**
  * Class ProfilePhotoController.
  *
@@ -47,6 +50,10 @@ class ProfilePhotoController extends AbstractController
      */
     public function view(ProfilePhoto $profilePhoto): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
+
         return $this->render(
             'profile_photo/view.html.twig',
             ['profile_photo' => $profilePhoto]
@@ -71,6 +78,10 @@ class ProfilePhotoController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="profile_photo_edit",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="profilePhoto",
+     * )
      */
     public function edit(Request $request, ProfilePhoto $profilePhoto, ProfilePhotoRepository $repository, Filesystem $filesystem): Response
     {
@@ -85,11 +96,13 @@ class ProfilePhotoController extends AbstractController
                 $filesystem->remove($file->getPathname());
             }
             $this->addFlash('success', 'message.updated_successfully');
+
             return $this->redirectToRoute(
                 'profile_photo_view',
                 ['id' => $profilePhoto->getId()]
             );
         }
+
         return $this->render(
             'profile_photo/edit.html.twig',
             [
@@ -116,6 +129,10 @@ class ProfilePhotoController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="profile_photo_delete",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="profilePhoto",
+     * )
      */
     public function delete(Request $request, ProfilePhoto $profilePhoto, ProfilePhotoRepository $repository): Response
     {
@@ -127,8 +144,10 @@ class ProfilePhotoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->delete($profilePhoto);
             $this->addFlash('success', 'message.deleted_successfully');
+
             return $this->redirectToRoute('event_index');
         }
+
         return $this->render(
             'profile_photo/delete.html.twig',
             [

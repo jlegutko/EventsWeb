@@ -89,6 +89,9 @@ class CategoryController extends AbstractController
      *     methods={"GET", "POST"},
      *     name="category_new",
      * )
+     * @isGranted(
+     *      "ROLE_ADMIN",
+     *      )
      */
     public function new(Request $request, CategoryRepository $repository): Response
     {
@@ -180,6 +183,11 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category, CategoryRepository $repository): Response
     {
+        if ($category->getEvents()->count()) {
+            $this->addFlash('warning', 'message.category_contains_events');
+
+            return $this->redirectToRoute('category_index');
+        }
         $form = $this->createForm(FormType::class, $category, ['method' => 'DELETE']);
         $form->handleRequest($request);
 

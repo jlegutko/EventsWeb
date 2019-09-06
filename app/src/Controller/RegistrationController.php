@@ -18,6 +18,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\ORM\ORMException;
@@ -155,6 +156,7 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $repository->save($user);
             $this->addFlash('success', 'message.updated_successfully');
+
             return $this->redirectToRoute('user_index');
         }
         return $this->render(
@@ -183,11 +185,16 @@ class RegistrationController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="new_profile_photo",
      * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
      */
     public function newPhoto(Request $request, User $user, ProfilePhotoRepository $repository): Response
     {
         if ($user->getProfilePhoto()) {
             $profilePhoto = $user->getProfilePhoto();
+
             return $this->redirectToRoute(
                 'profile_photo_edit',
                 ['id' => $profilePhoto->getId()]
@@ -288,15 +295,24 @@ class RegistrationController extends AbstractController
     {
         $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE']);
         $form->handleRequest($request);
-        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
-            $form->submit($request->request->get($form->getName()));
-        }
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($user);
-            $this->addFlash('success', 'message.deleted_successfully');
-            $this->get('security.token_storage')->setToken(null);
 
-            return $this->redirectToRoute('user_index');
+        if ($request->isMethod('DELETE')) {
+            $currentUserId = $this->getUser()->getId();
+            if ($currentUserId === $user->getId()) {
+                $session = new Session();
+                $session->invalidate();
+            }
+            $repository->delete($user);
+
+            $this->addFlash('success', 'message.deleted_successfully');
+
+            if ($currentUserId === $user->getId()) {
+                return $this->redirectToRoute('security_login');
+            }
+
+            $lastRoute = $request->getSession()->get('last_route');
+
+            return $this->redirectToRoute($lastRoute['name'], $lastRoute['params']);
         }
 
         return $this->render(
@@ -307,6 +323,7 @@ class RegistrationController extends AbstractController
             ]
         );
     }
+
     /**
      * Change user's role.
      *
