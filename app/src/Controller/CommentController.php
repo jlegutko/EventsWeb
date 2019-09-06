@@ -95,7 +95,7 @@ class CommentController extends AbstractController
      * )
      * @IsGranted(
      *     "MANAGE",
-     *     subject="comment",
+     *     subject="user",
      * )
 
      */

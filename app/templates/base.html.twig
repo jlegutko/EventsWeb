@@ -31,11 +31,6 @@
                                 {{ 'label.event_index'|trans }}
                             </a>
                         </li>
-                        <li class="nav-item mr-lg-4 {% if app.request.attributes.get('_route') == 'about' %} active {% endif %}">
-                            <a class="nav-link" href = "{{ url('event_index') }}" title = "{{ 'label.about'|trans }}">
-                                {{ 'label.about'|trans }}
-                            </a>
-                        </li>
                         {% if is_granted('ROLE_ADMIN') %}
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'user_index' %} active {% endif %}">
                                 <a class="nav-link" href = "{{ url('user_index') }}" title = "{{ 'label.user_index'|trans }}" >
@@ -57,11 +52,11 @@
                                     {{ 'label.grade_index'|trans }}
                                 </a>
                             </li>
-                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">
-                                <a class="nav-link" href="{{ url('group_index') }}" title="{{ 'label.group_index'|trans }}">
-                                    {{ 'label.group_index'|trans }}
-                                </a>
-                            </li>
+{#                            <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'post_index' %} active {% endif %}">#}
+{#                                <a class="nav-link" href = "{{ url('post_index') }}" title = "{{ 'label.post_index'|trans }}" >#}
+{#                                    {{ 'label.post_index'|trans }}#}
+{#                                </a>#}
+{#                            </li>#}
                         {% endif %}
                         {% if is_granted('ROLE_USER') %}
                             <li class="nav-item mr-lg-4{% if app.request.attributes.get('_route') == 'group_index' %} active {% endif %}">

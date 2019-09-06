@@ -74,6 +74,9 @@ class RegistrationController extends AbstractController
      */
     public function view(User $user): Response
     {
+        if ($this->getUser() === null) {
+            return $this->redirectToRoute('security_login');
+        }
         return $this->render(
             'registration/view.html.twig',
             ['user' => $user]
@@ -233,7 +236,6 @@ class RegistrationController extends AbstractController
      *     "MANAGE",
      *     subject="user",
      * )
-
      */
     public function changePassword(Request $request, User $user, UserRepository $repository, UserPasswordEncoderInterface $passwordEncoder): Response
     {
@@ -276,6 +278,10 @@ class RegistrationController extends AbstractController
      *     methods={"GET", "DELETE"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_delete",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
      * )
      */
     public function delete(Request $request, User $user, UserRepository $repository): Response

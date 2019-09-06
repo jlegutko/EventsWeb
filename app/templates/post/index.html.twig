@@ -5,43 +5,43 @@
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.post_list'|trans }}</h1>
     {% if pagination is defined and pagination|length %}
 
-        <div class="navigation text-center">
-            {{ knp_pagination_render(pagination) }}
+        <div class="container-fluid">
+            <h3 class="list-h mt-5">{{  'title.post_list'|trans }}</h3>
+            <div class="d-flex justify-content-center mt-5">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>{{ knp_pagination_sortable(pagination, 'label.table_id'|trans, 'u.id') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'label.post_name'|trans, 'u.name') }}</th>
+                        <th>{{ knp_pagination_sortable(pagination, 'label.item_action'|trans, 'u.date') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for post in pagination %}
+                        <tr>
+                            <th scope="row">{{ post.id }}</th>
+                            <td>{{ post.content }}</td>
+                            <td><a href="{{ url('post_view', {id: post.id}) }}">{{ 'label.go_to_post'|trans }}</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th>{{ knp_pagination_sortable(pagination, 'label.post_id'|trans, 'u.id') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.post_topic'|trans, 'u.topic') }}</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for post in pagination %}
-                <tr>
-                    <td>{{ post.id }}</td>
-                    <td>{{ post.topic}}</td>
-                    <td>
-                        <a href="{{ url('post_view', {id: post.id}) }}" title="{{ 'action.view'|trans }}">
-                            {{ 'action.view'|trans }}
-                        </a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
 
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
 
     {% else %}
-        <p>
-            {{ 'message.empty_list'|trans }}
-        </p>
+        <h3 class="list-h mt-5">{{  'title.post_list'|trans }}</h3>
+        <div class="list-h mt-4">
+            <p>
+                {{ 'message.empty_list'|trans }}
+            </p>
+        </div>
     {% endif %}
 
 {% endblock %}

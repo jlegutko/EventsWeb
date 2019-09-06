@@ -1,18 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.comment_list'|trans({'%id%': comment.id}) }}
+    {{ 'title.comment_view'|trans({'%id%': comment.id}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.comment_list'|trans({'%id%': comment.id}) }}</h1>
+    <h3 class="list-h mt-5 mb-4">{{ 'title.comment_view'|trans({'%id%': comment.id}) }} {{ comment.id }}</h3>
     {% if comment is defined and comment|length %}
-        <dl class="dl-horizontal">
-            <dt>{{ 'label.comment_id'|trans }}</dt>
-            <dd>{{ comment.id }}</dd>
-            <dt>{{ 'label.comment_name'|trans }}</dt>
-            <dd>{{  comment.title }}</dd>
-        </dl>
+        <div class="media post-box col-10 ml-auto mr-auto">
+            <div class="media-body mb-3 mt-1">
+                <h4 class="media-heading"><img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">{{ comment.owner.firstName }}<span class="float-right comment-details">{{ comment.createdAt|date()|localizeddate('short', 'short') }}</span>
+                    {% if null != app.user %}
+                        {% if comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                            <a class="inline-action" href="{{ url('comment_edit', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
+                        {% endif %}
+                        {% if comment.owner.id == app.user.id or comment.owner.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                            <a class="inline-action" href="{{ url('comment_delete', {id: comment.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
+                        {% endif %}
+                    {% endif %}
+                </h4>
+                <p class="pr-2">{{ comment.content }}</p>
+            </div>
+        </div>
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}

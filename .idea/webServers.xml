@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="ceeb6aff-2431-47d7-8a3e-c4f376534ca8" name="wierzba.wzks.uj.edu.pl" url="http://wierzba.wzks.uj.edu.pl">
+        <fileTransfer host="wierzba.wzks.uj.edu.pl" port="22" rootFolder="/home/epi/15_legutko" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

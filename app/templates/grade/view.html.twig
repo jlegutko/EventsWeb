@@ -1,18 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.grade_list'|trans({'%id%': grade.id}) }}
+    {{ 'title.grade_view'|trans({'%id%': grade.id}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.grade_list'|trans({'%id%': grade.id}) }}</h1>
+    <h3 class="list-h mt-5 mb-4">{{ 'title.grade_view'|trans({'%id%': grade.id}) }} {{ grade.id }} {% if null != app.user %}
+            {% if grade.user.id == app.user.id or grade.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                <a class="inline-action" href="{{ url('grade_delete', {id: grade.id }) }}"><i class="material-icons ml-5">delete_forever</i></a>
+            {% endif %}
+        {% endif %}</h3>
     {% if grade is defined and grade|length %}
-        <dl class="dl-horizontal">
-            <dt>{{ 'label.grade_id'|trans }}</dt>
-            <dd>{{ grade.id }}</dd>
-            <dt>{{ 'label.grade'|trans }}</dt>
-            <dd>{{  grade.grade }}</dd>
-        </dl>
+
+    <p class="list-h">{{ 'label.grade_author'|trans }}{{ grade.user.firstName }}</p>
+    <p class="list-h">{{ 'label.grade_grade'|trans }}{{ grade.grade }}</p>
+
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}

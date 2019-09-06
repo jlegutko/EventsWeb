@@ -62,15 +62,11 @@
             </trans-unit>
             <trans-unit id="label.events_page">
                 <source>label.events_page</source>
-                <target>Events</target>
+                <target>events</target>
             </trans-unit>
             <trans-unit id="label.main_page">
                 <source>label.main_page</source>
                 <target>homepage</target>
-            </trans-unit>
-            <trans-unit id="label.about">
-                <source>label.about</source>
-                <target>about</target>
             </trans-unit>
             <trans-unit id="label.footer">
                 <source>label.footer</source>
@@ -384,7 +380,7 @@
             </trans-unit>
             <trans-unit id="label.comments">
                 <source>label.comments</source>
-                <target>Comments</target>
+                <target>comments</target>
             </trans-unit>
             <trans-unit id="action.new_comment">
                 <source>action.new_comment</source>
@@ -489,6 +485,142 @@
             <trans-unit id="action.view">
                 <source>action.view</source>
                 <target>Go to group >></target>
+            </trans-unit>
+            <trans-unit id="label.user_index">
+                <source>label.user_index</source>
+                <target>users</target>
+            </trans-unit>
+            <trans-unit id="label.comment_index">
+                <source>label.comment_index</source>
+                <target>comments</target>
+            </trans-unit>
+            <trans-unit id="label.grade_index">
+                <source>label.grade_index</source>
+                <target>grades</target>
+            </trans-unit>
+            <trans-unit id="label.table_id">
+                <source>label.table_id</source>
+                <target>Id</target>
+            </trans-unit>
+            <trans-unit id="label.table_name">
+                <source>label.table_name</source>
+                <target>Name</target>
+            </trans-unit>
+            <trans-unit id="title.grade_list">
+                <source>title.grade_list</source>
+                <target>Grade list</target>
+            </trans-unit>
+            <trans-unit id="label.item_action">
+                <source>label.item_action</source>
+                <target>Action</target>
+            </trans-unit>
+            <trans-unit id="label.grade_name">
+                <source>label.grade_name</source>
+                <target>Grade</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_grade">
+                <source>label.go_to_grade</source>
+                <target>go to grade >></target>
+            </trans-unit>
+            <trans-unit id="message.empty_list">
+                <source>message.empty_list</source>
+                <target>The list is empty</target>
+            </trans-unit>
+            <trans-unit id="title.category_list">
+                <source>title.category_list</source>
+                <target>Category list</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_category">
+                <source>label.go_to_category</source>
+                <target>go to category >></target>
+            </trans-unit>
+            <trans-unit id="title.user_list">
+                <source>title.user_list</source>
+                <target>User list</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_user">
+                <source>label.go_to_user</source>
+                <target>go to user profile >></target>
+            </trans-unit>
+            <trans-unit id="title.comment_list">
+                <source>title.comment_list</source>
+                <target>Comment list</target>
+            </trans-unit>
+            <trans-unit id="label.comment_name">
+                <source>label.comment_name</source>
+                <target>Comment content</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_comment">
+                <source>label.go_to_comment</source>
+                <target>go to comment >></target>
+            </trans-unit>
+            <trans-unit id="label.user_delete_photo">
+                <source>label.user_delete_photo</source>
+                <target>delete profile photo</target>
+            </trans-unit>
+            <trans-unit id="label.post_index">
+                <source>label.post_index</source>
+                <target>posts</target>
+            </trans-unit>
+            <trans-unit id="title.post_list">
+                <source>title.post_list</source>
+                <target>Post list</target>
+            </trans-unit>
+            <trans-unit id="label.post_name">
+                <source>label.post_name</source>
+                <target>Post content</target>
+            </trans-unit>
+            <trans-unit id="label.go_to_post">
+                <source>label.go_to_post</source>
+                <target>see >></target>
+            </trans-unit>
+            <trans-unit id="title.post_view">
+                <source>title.post_view</source>
+                <target>Post number</target>
+            </trans-unit>
+            <trans-unit id="title.comment_view">
+                <source>title.comment_view</source>
+                <target>Comment number</target>
+            </trans-unit>
+            <trans-unit id="title.grade_view">
+                <source>title.grade_view</source>
+                <target>Grade number</target>
+            </trans-unit>
+            <trans-unit id="label.grade_author">
+                <source>label.grade_author</source>
+                <target>Author of grade: </target>
+            </trans-unit>
+            <trans-unit id="label.grade_grade">
+                <source>label.grade_grade</source>
+                <target>Grade: </target>
+            </trans-unit>
+            <trans-unit id="title.category_view">
+                <source>title.category_view</source>
+                <target>Category number</target>
+            </trans-unit>
+            <trans-unit id="label.category_category">
+                <source>label.category_category</source>
+                <target>Category name: </target>
+            </trans-unit>
+            <trans-unit id="title.category_delete">
+                <source>title.category_delete</source>
+                <target>Do you want to remove that category?</target>
+            </trans-unit>
+            <trans-unit id="label.event_new_photo">
+                <source>label.event_new_photo</source>
+                <target>Add a new photo</target>
+            </trans-unit>
+            <trans-unit id="title.group_delete">
+                <source>title.group_delete</source>
+                <target>Do you want to remove the group?</target>
+            </trans-unit>
+            <trans-unit id="title.grade_delete">
+                <source>title.grade_delete</source>
+                <target>Do you want to remove the grade?</target>
+            </trans-unit>
+            <trans-unit id="title.group_edit">
+                <source>title.group_edit</source>
+                <target>Edit a group</target>
             </trans-unit>
         </body>
     </file>

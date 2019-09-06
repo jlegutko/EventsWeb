@@ -23,6 +23,7 @@
                     <ul class="details col-sm-10 mt-2">
                         {% if app.user.profilePhoto.file is defined and app.user.profilePhoto.file|length %}
                             <li class="list-group-item"><a href="{{ url('profile_photo_edit', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">camera_alt</i> {{ 'label.user_update_photo'|trans }}</a></li>
+                            <li class="list-group-item"><a href="{{ url('profile_photo_delete', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">clear</i> {{ 'label.user_delete_photo'|trans }}</a></li>
                         {% else %}
                             <li class="list-group-item"><a href="{{ url('new_profile_photo', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">add_a_photo</i> {{ 'label.user_add_photo'|trans }}</a></li>
                         {% endif %}

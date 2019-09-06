@@ -1,18 +1,27 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.post_list'|trans({'%id%': post.id}) }}
+    {{ 'title.post_view'|trans({'%id%': post.id}) }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.post_list'|trans({'%id%': post.id}) }}</h1>
+   <h3 class="list-h mt-5 mb-4">{{ 'title.post_view'|trans({'%id%': post.id}) }} {{ post.id }}</h3>
     {% if post is defined and post|length %}
-        <dl class="dl-horizontal">
-            <dt>{{ 'label.post_id'|trans }}</dt>
-            <dd>{{ post.id }}</dd>
-            <dt>{{ 'label.post_topic'|trans }}</dt>
-            <dd>{{  post.topic }}</dd>
-        </dl>
+        <div class="media post-box col-10 ml-auto mr-auto">
+            <div class="media-body mb-3 mt-1">
+                <h4 class="media-heading"><img class="img-responsive user-photo mr-3 ml-1 mt-1" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">{{ post.user.firstName }}<span class="float-right post-details">{{ post.createdAt|date()|localizeddate('short', 'short') }}</span>
+                    {% if null != app.user %}
+                        {% if post.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                            <a class="inline-action" href="{{ url('post_edit', {id: post.id }) }}"><i class="material-icons mr-3 float-right">edit</i></a>
+                        {% endif %}
+                        {% if post.user.id == app.user.id or post.user.id == app.user.id or is_granted('ROLE_ADMIN') %}
+                            <a class="inline-action" href="{{ url('post_delete', {id: post.id }) }}"><i class="material-icons mr-3 float-right">delete_forever</i></a>
+                        {% endif %}
+                    {% endif %}
+                </h4>
+                <p class="pr-2">{{ post.content }}</p>
+            </div>
+        </div>
     {% else %}
         <p>
             {{ 'message.item_not_found'|trans }}
