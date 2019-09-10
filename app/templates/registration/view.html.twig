@@ -19,22 +19,24 @@
                     <h2>{{  user.Firstname }}</h2>
                     <p class="mb-4 text-center">{{  user.email }}</p>
                 </div>
-                {% if app.user == user %}
                     <div class="list-group">
                         <ul class="details col-sm-10 mt-2">
-                            {% if app.user.profilePhoto.file is defined and app.user.profilePhoto.file|length %}
-                                <li class="list-group-item"><a href="{{ url('profile_photo_edit', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">camera_alt</i> {{ 'label.user_update_photo'|trans }}</a></li>
-                                <li class="list-group-item"><a href="{{ url('profile_photo_delete', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">clear</i> {{ 'label.user_delete_photo'|trans }}</a></li>
-                            {% else %}
-                                <li class="list-group-item"><a href="{{ url('new_profile_photo', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">add_a_photo</i> {{ 'label.user_add_photo'|trans }}</a></li>
+                            {% if app.user == user %}
+                                {% if app.user.profilePhoto.file is defined and app.user.profilePhoto.file|length %}
+                                    <li class="list-group-item"><a href="{{ url('profile_photo_edit', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">camera_alt</i> {{ 'label.user_update_photo'|trans }}</a></li>
+                                    <li class="list-group-item"><a href="{{ url('profile_photo_delete', {id: user.profilePhoto.id}) }}"><i class="material-icons md-18 mr-lg-1">clear</i> {{ 'label.user_delete_photo'|trans }}</a></li>
+                                {% else %}
+                                    <li class="list-group-item"><a href="{{ url('new_profile_photo', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">add_a_photo</i> {{ 'label.user_add_photo'|trans }}</a></li>
+                                {% endif %}
+                                <li class="list-group-item"><a href="{{ url('event_new') }}"><i class="material-icons md-18 mr-lg-1">library_add</i> {{ 'label.event_new'|trans }}</a></li>
                             {% endif %}
-                            <li class="list-group-item"><a href="{{ url('user_edit', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">edit</i> {{ 'label.user_edit'|trans }}</a></li>
-                            <li class="list-group-item"><a href="{{ url('user_change_pswd', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">lock</i> {{ 'label.user_change_pswd'|trans }}</a></li>
-                            <li class="list-group-item"><a href="{{ url('user_delete', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">delete_forever</i> {{ 'label.user_delete'|trans }}</a></li>
-                            <li class="list-group-item"><a href="{{ url('event_new') }}"><i class="material-icons md-18 mr-lg-1">library_add</i> {{ 'label.event_new'|trans }}</a></li>
+                            {% if app.user == user or is_granted('ROLE_ADMIN')%}
+                                <li class="list-group-item"><a href="{{ url('user_edit', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">edit</i> {{ 'label.user_edit'|trans }}</a></li>
+                                <li class="list-group-item"><a href="{{ url('user_change_pswd', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">lock</i> {{ 'label.user_change_pswd'|trans }}</a></li>
+                                <li class="list-group-item"><a href="{{ url('user_delete', {id: user.id}) }}"><i class="material-icons md-18 mr-lg-1">delete_forever</i> {{ 'label.user_delete'|trans }}</a></li>
+                            {% endif %}
                         </ul>
                     </div>
-                {% endif %}
             </div>
             <div class="my-profile col-md-8 col-xs-12 col-sm-6 col-lg-8 mb-5">
                 <h3><i class="material-icons br-lg-1 mb-4">star</i> {{  'label.user_interested'|trans }}</h3>
@@ -68,8 +70,11 @@
                         <a href="{{ url('event_view', {id: event.id}) }}">
                             <div class="post-slide mb-4">
                                 <div class="post-img">
-
-                                    <img src="http://bestjquery.com/tutorial/news-slider/demo19/images/img-1.jpg" alt="">
+                                    {% if event.photo.file is defined and event.photo.file|length %}
+                                        <img alt="event_pic" src="{{ asset('uploads/photos/'~ event.photo.file.filename) }}">
+                                    {% else %}
+                                        <img src="http://bestjquery.com/tutorial/news-slider/demo19/images/img-1.jpg" alt="">
+                                    {% endif %}
                                     <div class="post-date">
                                         <span class="date">{{ event.startDate|date("d") }}</span>
                                         <span class="month">{{ event.startDate|date("m/Y") }}</span>
@@ -103,11 +108,11 @@
                 {% endif %}
             </div>
         </div>
-        {% else %}
-            <p>
-                {{ 'message.item_not_found'|trans }}
-            </p>
-        {% endif %}
+{% else %}
+    <p>
+        {{ 'message.item_not_found'|trans }}
+    </p>
+{% endif %}
     </div>
 </div>
 {% endblock %}

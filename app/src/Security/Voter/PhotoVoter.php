@@ -5,7 +5,7 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Photo;
+use App\Entity\Event;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\Security;
@@ -44,7 +44,7 @@ class PhotoVoter extends Voter
     protected function supports($attribute, $subject)
     {
         return in_array($attribute, ['MANAGE'])
-            && $subject instanceof Photo;
+            && $subject instanceof Event;
     }
     /**
      * Perform a single access check operation on a given attribute, subject and token.

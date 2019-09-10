@@ -5,9 +5,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Group;
+use App\Entity\Member;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Repository\MemberRepository;
 use App\Repository\PostRepository;
+use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -26,6 +30,61 @@ use Symfony\Component\Routing\Annotation\Route;
 class PostController extends AbstractController
 {
     /**
+     * Add a new post action.
+     *
+     * @param Request          $request          HTTP request
+     * @param Group            $group
+     * @param PostRepository   $repository       Post repository
+     * @param MemberRepository $memberRepository Member repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newpost",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="group_new_post",
+     * )
+     */
+    public function newPost(Request $request, Group $group, PostRepository $repository, MemberRepository $memberRepository): Response
+    {
+        $check = $memberRepository -> findOneBy(['member' => $this->getUser(), 'community' => $group]);
+        if ($check instanceof Member) {
+            $post = new Post();
+            $form = $this->createForm(PostType::class, $post);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $post->setCreatedAt(new DateTime());
+                $post->setUpdatedAt(new DateTime());
+                $post->setUser($this->getUser());
+                $post->setCommunity($group);
+                $repository->save($post);
+
+                $this->addFlash('success', 'message.created_successfully');
+
+                return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
+            }
+
+            return $this->render(
+                'group/new_post.html.twig',
+                ['form' => $form->createView(),
+                    'group' => $group,
+                ]
+            );
+        }
+
+        return $this->render(
+            'group/new_post.html.twig',
+            [
+                'group' => $group,
+            ]
+        );
+    }
+    /**
      * Index action.
      *
      * @param Request            $request    HTTP request
@@ -41,9 +100,6 @@ class PostController extends AbstractController
      */
     public function index(Request $request, PostRepository $repository, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -71,10 +127,6 @@ class PostController extends AbstractController
      */
     public function view(Post $post): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         return $this->render(
             'post/view.html.twig',
             ['post' => $post]

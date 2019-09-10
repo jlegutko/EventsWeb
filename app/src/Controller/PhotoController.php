@@ -6,9 +6,11 @@
 namespace App\Controller;
 
 use App\Entity\Photo;
+use App\Entity\Event;
 use App\Form\PhotoType;
 use App\Repository\PhotoRepository;
 use App\Service\FileUploader;
+use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -38,6 +40,62 @@ class PhotoController extends AbstractController
         $this->uploaderService = $uploaderService;
     }
     /**
+     * Add a new photo action.
+     *
+     * @param Request         $request    HTTP request
+     * @param Event           $event
+     * @param PhotoRepository $repository Photo Repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/event/{id}/new",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_photo",
+     * )
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="event",
+     * )
+     */
+    public function newPhoto(Request $request, Event $event, PhotoRepository $repository): Response
+    {
+        if ($event->getPhoto()) {
+            $photo = $event->getPhoto();
+
+            return $this->redirectToRoute(
+                'photo_edit',
+                ['id' => $photo->getId()]
+            );
+        }
+        $photo = new Photo();
+        $photo->setEvent($event);
+        $form = $this->createForm(PhotoType::class, $photo);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $photo->setEvent($event);
+            $photo->setCreatedAt(new DateTime());
+            $photo->setUpdatedAt(new DateTime());
+            $repository->save($photo);
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_photo.html.twig',
+            ['form' => $form->createView(),
+                'event' => $event,
+            ]
+        );
+    }
+
+    /**
      * View action.
      *
      * @param Photo $photo Photo entity
@@ -57,6 +115,7 @@ class PhotoController extends AbstractController
             ['photo' => $photo]
         );
     }
+
     /**
      * Edit action.
      *
@@ -76,43 +135,45 @@ class PhotoController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="photo_edit",
      * )
-     * @IsGranted(
-     *     "MANAGE",
-     *     subject="photo",
-     * )
      */
     public function edit(Request $request, Photo $photo, PhotoRepository $repository, Filesystem $filesystem): Response
     {
-        $originalPhoto = clone $photo;
+        if ($photo->getEvent()->getUser() === $this->getUser()) {
+            $originalPhoto = clone $photo;
+            $form = $this->createForm(PhotoType::class, $photo, ['method' => 'PUT']);
+            $form->handleRequest($request);
 
-        $form = $this->createForm(PhotoType::class, $photo, ['method' => 'PUT']);
-        $form->handleRequest($request);
+            if ($form->isSubmitted() && $form->isValid()) {
+                $formData = $form->getData();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $formData = $form->getData();
+                if ($formData->getFile() instanceof UploadedFile) {
+                    $repository->save($photo);
+                    $file = $originalPhoto->getFile();
+                    $filesystem->remove($file->getPathname());
+                }
 
-            if ($formData->getFile() instanceof UploadedFile) {
-                $repository->save($photo);
-                $file = $originalPhoto->getFile();
-                $filesystem->remove($file->getPathname());
+                $this->addFlash('success', 'message.updated_successfully');
+
+                return $this->redirectToRoute(
+                    'photo_view',
+                    ['id' => $photo->getId()]
+                );
             }
 
-            $this->addFlash('success', 'message.updated_successfully');
-
+            return $this->render(
+                'photo/edit.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'photo' => $photo,
+                ]
+            );
+        } else {
             return $this->redirectToRoute(
-                'photo_view',
-                ['id' => $photo->getId()]
+                'event_index'
             );
         }
-
-        return $this->render(
-            'photo/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'photo' => $photo,
-            ]
-        );
     }
+
     /**
      * Delete action.
      *
@@ -131,33 +192,36 @@ class PhotoController extends AbstractController
      *     requirements={"id": "[1-9]\d*"},
      *     name="photo_delete",
      * )
-     * @IsGranted(
-     *     "MANAGE",
-     *     subject="photo",
-     * )
+     *
      */
     public function delete(Request $request, Photo $photo, PhotoRepository $repository): Response
     {
-        $form = $this->createForm(FormType::class, $photo, ['method' => 'DELETE']);
-        $form->handleRequest($request);
+        if ($photo->getEvent()->getUser() === $this->getUser()) {
+            $form = $this->createForm(FormType::class, $photo, ['method' => 'DELETE']);
+            $form->handleRequest($request);
 
-        if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
-            $form->submit($request->request->get($form->getName()));
+            if ($request->isMethod('DELETE') && !$form->isSubmitted()) {
+                $form->submit($request->request->get($form->getName()));
+            }
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $repository->delete($photo);
+                $this->addFlash('success', 'message.deleted_successfully');
+
+                return $this->redirectToRoute('event_index');
+            }
+
+            return $this->render(
+                'photo/delete.html.twig',
+                [
+                    'form' => $form->createView(),
+                    'photo' => $photo,
+                ]
+            );
+        } else {
+            return $this->redirectToRoute(
+                'event_index'
+            );
         }
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $repository->delete($photo);
-            $this->addFlash('success', 'message.deleted_successfully');
-
-            return $this->redirectToRoute('event_index');
-        }
-
-        return $this->render(
-            'photo/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'photo' => $photo,
-            ]
-        );
     }
 }

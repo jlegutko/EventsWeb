@@ -335,7 +335,7 @@
                 <target>By price:</target>
             </trans-unit>
             <trans-unit id="message.item_not_found">
-                <source>label.message.item_not_found</source>
+                <source>message.item_not_found</source>
                 <target>Item was not found :(</target>
             </trans-unit>
             <trans-unit id="title.profile_photo_view">
@@ -742,6 +742,18 @@
             <trans-unit id="message.form_error">
                 <source>message.form_error</source>
                 <target>Error page</target>
+            </trans-unit>
+            <trans-unit id="label.event_start_date">
+                <source>label.event_start_date</source>
+                <target>Beginning date</target>
+            </trans-unit>
+            <trans-unit id="label.event_end_date">
+                <source>label.event_end_date</source>
+                <target>End date</target>
+            </trans-unit>
+            <trans-unit id="title.comment_delete">
+                <source>title.comment_delete</source>
+                <target>Delete comment</target>
             </trans-unit>
         </body>
     </file>

@@ -46,7 +46,7 @@ class EventType extends AbstractType
             'startDate',
             DateTimeType::class,
             [
-                'label' => 'label.event_date',
+                'label' => 'label.event_start_date',
                 'required' => true,
                 'format' => 'yyyy-MM-dd',
             ]
@@ -55,7 +55,7 @@ class EventType extends AbstractType
             'endDate',
             DateTimeType::class,
             [
-                'label' => 'label.event_date',
+                'label' => 'label.event_end_date',
                 'required' => true,
                 'format' => 'yyyy-MM-dd',
             ]

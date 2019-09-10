@@ -6,8 +6,10 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\Event;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
+use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -26,6 +28,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommentController extends AbstractController
 {
     /**
+     * Add a new comment action.
+     *
+     * @param Request           $request    HTTP request
+     * @param Event             $event
+     * @param CommentRepository $repository Event Repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newcomment",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_comment",
+     * )
+     */
+    public function newComment(Request $request, Event $event, CommentRepository $repository): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setCreatedAt(new DateTime());
+            $comment->setUpdatedAt(new DateTime());
+            $comment->setOwner($this->getUser());
+            $comment->setEvent($event);
+            $repository->save($comment);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_comment.html.twig',
+            ['form' => $form->createView(),
+                'event' => $event,
+            ]
+        );
+    }
+    /**
      * Index action.
      *
      * @param Request            $request    HTTP request
@@ -41,9 +87,6 @@ class CommentController extends AbstractController
      */
     public function index(Request $request, CommentRepository $repository, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -70,10 +113,6 @@ class CommentController extends AbstractController
      */
     public function view(Comment $comment): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         return $this->render(
             'comment/view.html.twig',
             ['comment' => $comment]

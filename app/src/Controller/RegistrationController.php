@@ -4,12 +4,9 @@
  */
 namespace App\Controller;
 
-use App\Entity\ProfilePhoto;
 use App\Entity\User;
-use App\Form\ProfilePhotoType;
 use App\Form\UserType;
 use App\Form\ChangePasswordType;
-use App\Repository\ProfilePhotoRepository;
 use App\Repository\UserRepository;
 use DateTime;
 use Knp\Component\Pager\PaginatorInterface;
@@ -95,10 +92,6 @@ class RegistrationController extends AbstractController
      */
     public function view(User $user): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         return $this->render(
             'registration/view.html.twig',
             ['user' => $user]
@@ -192,60 +185,6 @@ class RegistrationController extends AbstractController
         );
     }
     /**
-     * Add a new profile photo action.
-     *
-     * @param Request                $request    HTTP request
-     * @param User                   $user
-     * @param ProfilePhotoRepository $repository ProfilePhoto Repository
-     *
-     * @return Response HTTP response
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     *
-     * @Route(
-     *     "/users/{id}/newphoto",
-     *     methods={"GET", "POST"},
-     *     requirements={"id": "[1-9]\d*"},
-     *     name="new_profile_photo",
-     * )
-     * @IsGranted(
-     *     "MANAGE",
-     *     subject="user",
-     * )
-     */
-    public function newPhoto(Request $request, User $user, ProfilePhotoRepository $repository): Response
-    {
-        if ($user->getProfilePhoto()) {
-            $profilePhoto = $user->getProfilePhoto();
-
-            return $this->redirectToRoute(
-                'profile_photo_edit',
-                ['id' => $profilePhoto->getId()]
-            );
-        }
-        $profilePhoto = new ProfilePhoto();
-        $form = $this->createForm(ProfilePhotoType::class, $profilePhoto);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $profilePhoto->setUser($user);
-            $profilePhoto->setCreatedAt(new DateTime());
-            $profilePhoto->setUpdatedAt(new DateTime());
-            $repository->save($profilePhoto);
-            $this->addFlash('success', 'message.created_successfully');
-
-            return $this->redirectToRoute('user_view', ['id' => $user->getId()]);
-        }
-
-        return $this->render(
-            'registration/new_profile_photo.html.twig',
-            ['form' => $form->createView(),
-                'user' => $user,
-            ]
-        );
-    }
-
-    /**
      * Change password action.
      *
      * @param Request                      $request         HTTP request
@@ -282,7 +221,7 @@ class RegistrationController extends AbstractController
             $repository->save($user);
             $this->addFlash('success', 'message.updated_successfully');
 
-            return $this->redirectToRoute('user_view');
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render(
@@ -407,7 +346,7 @@ class RegistrationController extends AbstractController
      * @return Response HTTP response
      *
      * @Route(
-     *     "/{id}/events",
+     *     "/users/{id}/events",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_interested",
@@ -420,9 +359,6 @@ class RegistrationController extends AbstractController
      */
     public function showInterested(Request $request, User $user, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $user->getInterests(),
             $request->query->getInt('page', 1),
@@ -444,7 +380,7 @@ class RegistrationController extends AbstractController
      * @return Response HTTP response
      *
      * @Route(
-     *     "/{id}/my_events",
+     *     "/users/{id}/my_events",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_events",
@@ -457,9 +393,6 @@ class RegistrationController extends AbstractController
      */
     public function showMyEvents(Request $request, User $user, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $user->getEvents(),
             $request->query->getInt('page', 1),
@@ -483,7 +416,7 @@ class RegistrationController extends AbstractController
      * @return Response HTTP response
      *
      * @Route(
-     *     "/{id}/my_groups",
+     *     "/users/{id}/my_groups",
      *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
      *     name="user_groups",
@@ -496,9 +429,6 @@ class RegistrationController extends AbstractController
      */
     public function showGroups(Request $request, User $user, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $user->getMembers(),
             $request->query->getInt('page', 1),
@@ -508,6 +438,33 @@ class RegistrationController extends AbstractController
         return $this->render(
             'registration/my_groups.html.twig',
             ['pagination' => $pagination]
+        );
+    }
+    /**
+     * Shows events made by user.
+     * @param User $user User entity
+     *
+     * @return Response HTTP response
+     *
+     * @Route(
+     *     "/users/{id}/my_events",
+     *     methods={"GET", "PUT"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="user_events",
+     * )
+     *
+     * @IsGranted(
+     *     "MANAGE",
+     *     subject="user",
+     * )
+     */
+    public function showUserEvents(User $user): Response
+    {
+        return $this->render(
+            'registration/my_events.html.twig',
+            [
+                'user' => $user,
+            ]
         );
     }
 }

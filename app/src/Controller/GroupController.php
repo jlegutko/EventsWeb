@@ -5,9 +5,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Group;
 use App\Entity\Post;
-use App\Repository\PostRepository;
 use App\Form\PostType;
 use App\Entity\Member;
 use App\Repository\MemberRepository;
@@ -32,6 +32,50 @@ use Symfony\Component\Routing\Annotation\Route;
 class GroupController extends AbstractController
 {
     /**
+     * Add a new group action.
+     *
+     * @param Request         $request    HTTP request
+     * @param GroupRepository $repository Group repository
+     *
+     * @param Event           $event
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newgroup",
+     *     methods={"GET", "POST"},
+     *     name="event_new_group",
+     * )
+     */
+    public function newGroup(Request $request, Event $event, GroupRepository $repository): Response
+    {
+        $group = new Group();
+        $form = $this->createForm(GroupType::class, $group);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $group->setCreatedAt(new DateTime());
+            $group->setUpdatedAt(new DateTime());
+            $group->setEvent($event);
+            $group->setAuthor($this->getUser());
+            $repository->save($group);
+
+            $this->addFlash('success', 'message.created_successfully');
+
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        }
+
+        return $this->render(
+            'event/new_group.html.twig',
+            ['form' => $form->createView(),
+                'event' => $event,
+            ]
+        );
+    }
+    /**
      * Index action.
      *
      * @param Request            $request    HTTP request
@@ -47,9 +91,6 @@ class GroupController extends AbstractController
      */
     public function index(Request $request, GroupRepository $repository, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -79,9 +120,6 @@ class GroupController extends AbstractController
      */
     public function view(Group $group, Request $request): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $post = new Post();
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
@@ -206,10 +244,6 @@ class GroupController extends AbstractController
      */
     public function newMember(Group $group, MemberRepository $repository): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         $check = $repository -> findOneBy(['member' => $this->getUser(), 'community' => $group]);
         if ($check instanceof Member) {
             $repository->delete($check);
@@ -228,61 +262,32 @@ class GroupController extends AbstractController
     }
 
     /**
-     * Add a new post action.
-     *
-     * @param Request          $request          HTTP request
-     * @param Group            $group
-     * @param PostRepository   $repository       Post repository
-     * @param MemberRepository $memberRepository Member repository
+     * Shows groups connected with event.
+     * @param Request            $request   HTTP request
+     * @param Event              $event     Event entity
+     * @param PaginatorInterface $paginator Paginator
      *
      * @return Response HTTP response
      *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     *
      * @Route(
-     *     "/{id}/newpost",
-     *     methods={"GET", "POST"},
+     *     "/{id}/groups",
+     *     methods={"GET", "PUT"},
      *     requirements={"id": "[1-9]\d*"},
-     *     name="group_new_post",
+     *     name="event_groups",
      * )
+     *
      */
-    public function newPost(Request $request, Group $group, PostRepository $repository, MemberRepository $memberRepository): Response
+    public function eventGroups(Request $request, Event $event, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-        $check = $memberRepository -> findOneBy(['member' => $this->getUser(), 'community' => $group]);
-        if ($check instanceof Member) {
-            $post = new Post();
-            $form = $this->createForm(PostType::class, $post);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $post->setCreatedAt(new DateTime());
-                $post->setUpdatedAt(new DateTime());
-                $post->setUser($this->getUser());
-                $post->setCommunity($group);
-                $repository->save($post);
-
-                $this->addFlash('success', 'message.created_successfully');
-
-                return $this->redirectToRoute('group_view', ['id' => $group->getId()]);
-            }
-
-            return $this->render(
-                'group/new_post.html.twig',
-                ['form' => $form->createView(),
-                    'group' => $group,
-                ]
-            );
-        }
+        $pagination = $paginator->paginate(
+            $event->getGroups(),
+            $request->query->getInt('page', 1),
+            Group::NUMBER_OF_ITEMS
+        );
 
         return $this->render(
-            'group/new_post.html.twig',
-            [
-                'group' => $group,
-            ]
+            'event/groups.html.twig',
+            ['pagination' => $pagination]
         );
     }
 }

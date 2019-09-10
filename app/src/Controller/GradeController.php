@@ -5,8 +5,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Event;
 use App\Entity\Grade;
+use App\Form\GradeType;
 use App\Repository\GradeRepository;
+use DateTime;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Knp\Component\Pager\PaginatorInterface;
@@ -25,6 +28,56 @@ use Symfony\Component\Routing\Annotation\Route;
 class GradeController extends AbstractController
 {
     /**
+     * Add a new grade action.
+     *
+     * @param Request         $request    HTTP request
+     * @param Event           $event
+     * @param GradeRepository $repository Event Repository
+     *
+     * @return Response HTTP response
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     *
+     * @Route(
+     *     "/{id}/newgrade",
+     *     methods={"GET", "POST"},
+     *     requirements={"id": "[1-9]\d*"},
+     *     name="event_new_grade",
+     * )
+     */
+    public function newGrade(Request $request, Event $event, GradeRepository $repository): Response
+    {
+        $check = $repository -> findOneBy(['user' => $this->getUser(), 'event' => $event]);
+        if ($check instanceof Grade) {
+            return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+        } else {
+            $grade = new Grade();
+            $form = $this->createForm(GradeType::class, $grade);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $grade->setCreatedAt(new DateTime());
+                $grade->setUpdatedAt(new DateTime());
+                $grade->setUser($this->getUser());
+                $grade->setEvent($event);
+                $repository->save($grade);
+
+                $this->addFlash('success', 'message.created_successfully');
+
+                return $this->redirectToRoute('event_view', ['id' => $event->getId()]);
+            }
+        }
+
+        return $this->render(
+            'event/new_grade.html.twig',
+            ['form' => $form->createView(),
+                'event' => $event,
+                'grade' => $grade,
+            ]
+        );
+    }
+    /**
      * Index action.
      *
      * @param Request            $request    HTTP request
@@ -40,9 +93,6 @@ class GradeController extends AbstractController
      */
     public function index(Request $request, GradeRepository $repository, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -69,10 +119,6 @@ class GradeController extends AbstractController
      */
     public function view(Grade $grade): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         return $this->render(
             'grade/view.html.twig',
             ['grade' => $grade]

@@ -42,9 +42,6 @@ class CategoryController extends AbstractController
      */
     public function index(Request $request, CategoryRepository $repository, PaginatorInterface $paginator): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
         $pagination = $paginator->paginate(
             $repository->queryAll(),
             $request->query->getInt('page', 1),
@@ -72,10 +69,6 @@ class CategoryController extends AbstractController
      */
     public function view(Category $category): Response
     {
-        if ($this->getUser() === null) {
-            return $this->redirectToRoute('security_login');
-        }
-
         return $this->render(
             'category/view.html.twig',
             ['category' => $category]

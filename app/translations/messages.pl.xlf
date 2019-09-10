@@ -189,9 +189,13 @@
                 <source>label.event_name</source>
                 <target>Nazwa</target>
             </trans-unit>
-            <trans-unit id="label.event_date">
-                <source>label.event_date</source>
+            <trans-unit id="label.event_start_date">
+                <source>label.event_start_date</source>
                 <target>Data rozpoczęcia</target>
+            </trans-unit>
+            <trans-unit id="label.event_end_date">
+                <source>label.event_end_date</source>
+                <target>Data zakończenia</target>
             </trans-unit>
             <trans-unit id="label.event_price">
                 <source>label.event_price</source>
@@ -335,7 +339,7 @@
                 <target>Wg ceny:</target>
             </trans-unit>
             <trans-unit id="message.item_not_found">
-                <source>label.message.item_not_found</source>
+                <source>message.item_not_found</source>
                 <target>Nie znaleziono :(</target>
             </trans-unit>
             <trans-unit id="title.profile_photo_view">
@@ -741,6 +745,10 @@
             <trans-unit id="message.form_error">
                 <source>message.form_error</source>
                 <target>Wystąpił błąd.</target>
+            </trans-unit>
+            <trans-unit id="title.comment_delete">
+                <source>title.comment_delete</source>
+                <target>Czy chcesz usunąć komentarz?</target>
             </trans-unit>
         </body>
     </file>
